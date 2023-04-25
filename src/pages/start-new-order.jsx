@@ -5,7 +5,7 @@ import SideNav from '~/components/SideNav'
 const startNewOrder = () => {
   return (
     <Layout title={"start-new-order"}>
-        
+        Test
     </Layout>
   )
 }

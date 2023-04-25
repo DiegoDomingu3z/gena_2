@@ -9,8 +9,10 @@ const Layout = ({ children, title }) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <SideNav />
-      <main className="min-h-screen">{children}</main>
+      <div className='flex'>
+        <SideNav />
+        <main className="min-h-screen">{children}</main>
+      </div>
     </div>
   );
 };
