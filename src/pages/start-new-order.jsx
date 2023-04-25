@@ -1,11 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import Layout from '~/components/Layout'
-import SideNav from '~/components/SideNav'
+import { currentUser } from '../../store/userLogin'
+
 
 const startNewOrder = () => {
+  const userName = useSelector((state) => state)
+  console.log(userName)
   return (
     <Layout title={"start-new-order"}>
-        Test
+        {/* {currentUser} */}
     </Layout>
   )
 }
