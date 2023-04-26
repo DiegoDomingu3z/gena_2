@@ -1,19 +1,26 @@
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 import Layout from "~/components/Layout";
 import Login from "~/components/Login";
-import { currentUser } from "../../store/userLogin";
+import { useEffect, useState } from "react";
+import { LoginProvider } from "~/Contexts/LoginContext";
+import HomeDashboard from "~/components/HomeDashboard";
+
 
 
 export default function Home() {
-  const currentUser = useSelector((state) => state.currentUser)
-  console.log(currentUser)
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken');
+
+  }, [])
+
   const router = useRouter;
   
   return (
-    <Layout title={"home"}>
-      {!currentUser.userName && <Login />}
-      {currentUser.userName && <h1>Hello</h1>}
-    </Layout>
+    <LoginProvider>
+      <Layout title={"home"}>
+        <Login />
+        <HomeDashboard />
+      </Layout>
+    </LoginProvider>
   )
 }

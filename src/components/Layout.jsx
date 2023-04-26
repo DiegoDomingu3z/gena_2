@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import SideNav from './SideNav';
+import { LoginProvider } from "~/Contexts/LoginContext";
+
 
 const Layout = ({ children, title }) => {
   return (
@@ -8,10 +10,12 @@ const Layout = ({ children, title }) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <div className='flex'>
-        <SideNav />
-        <main className="min-h-screen w-full grid">{children}</main>
-      </div>
+        <div className='flex'>
+          <LoginProvider>
+            <SideNav />
+            <main className="min-h-screen w-full grid">{children}</main>
+          </LoginProvider>
+        </div>
     </div>
   );
 };
