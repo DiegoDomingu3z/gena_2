@@ -83,7 +83,6 @@ export function LoginProvider({ children }) {
                 groupLead: userInputs.groupLead,
                 privileges: 'team-member',
             })
-            // sessionStorage.setItem("accessToken", res.data.accessToken)
             setUser((prev) => {
                 return res.data;
             })
