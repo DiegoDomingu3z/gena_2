@@ -10,7 +10,7 @@ export function useLoginInput() {
     const context = useContext(LoginContext);
     if (!context) {
         throw new Error("useLoginInput must be used within a LoginProvider");
-      }
+    }
     return context;
 }
 
@@ -18,21 +18,21 @@ export function useLoginInputUpdate() {
     const context = useContext(LoginUpdateContext);
     if (!context) {
         throw new Error("useLoginInputUpdate must be used within a LoginProvider");
-      }
+    }
     return context;
 }
 export function useSubmitLogin() {
     const context = useContext(SubmitLoginContext);
     if (!context) {
         throw new Error("useLoginInputUpdate must be used within a LoginProvider");
-      }
+    }
     return context;
 }
 export function useSignupLogin() {
     const context = useContext(SignupContext);
     if (!context) {
         throw new Error("useLoginInputUpdate must be used within a LoginProvider");
-      }
+    }
     return context;
 }
 
@@ -57,7 +57,7 @@ export function LoginProvider({ children }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const res = await api.post("api/account/login", {userName: userInputs.userName, password: userInputs.password})
+            const res = await api.post("api/account/login", { userName: userInputs.userName, password: userInputs.password })
             sessionStorage.setItem("accessToken", res.data.accessToken)
             setUser((prev) => {
                 return res.data;
@@ -72,7 +72,7 @@ export function LoginProvider({ children }) {
         e.preventDefault()
         try {
             const res = await api.post("api/account/create", {
-                userName: userInputs.userName, 
+                userName: userInputs.userName,
                 password: userInputs.password,
                 firstName: userInputs.firstName,
                 lastName: userInputs.lastName,
@@ -82,9 +82,8 @@ export function LoginProvider({ children }) {
                 teamLead: userInputs.teamLead,
                 groupLead: userInputs.groupLead,
                 privileges: 'team-member',
-                departmentId: "302985u23ef23rfd"
             })
-            sessionStorage.setItem("accessToken", res.data.accessToken)
+            // sessionStorage.setItem("accessToken", res.data.accessToken)
             setUser((prev) => {
                 return res.data;
             })
@@ -98,7 +97,7 @@ export function LoginProvider({ children }) {
 
 
     return (
-        <LoginContext.Provider value={{userInputs, setUserInputs, user, setUser}}>
+        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser }}>
             <LoginUpdateContext.Provider value={handleInput}>
                 <SubmitLoginContext.Provider value={handleSubmit}>
                     <SignupContext.Provider value={handleSignup}>
