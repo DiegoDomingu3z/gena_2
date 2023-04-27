@@ -9,9 +9,9 @@ const Signup = () => {
     const logUserIn = useSubmitLogin();
     const signUserUp = useSignupLogin();
 
-    useEffect(() => {
-        console.log(userInputs.userInputs)
-    }, [userInputs])
+    // useEffect(() => {
+    //     console.log(userInputs.userInputs)
+    // }, [userInputs])
 
   return (
         <div className={'md:w-4/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg'}>
@@ -39,7 +39,8 @@ const Signup = () => {
                     <div className='flex justify-around gap-8'>
                         <div className='grow w-[11.5rem]'>
                             <label htmlFor='department' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department</label>
-                            <select name="department" id="department" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Marketing" required="">
+                            <select onChange={updateInputs} name="department" id="department" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. Marketing" required="">
+                                <option value="none">N/A</option>
                                 <option value="marketing">Marketing</option>
                                 <option value="sales">Sales</option>
                                 <option value="production">Production</option>
@@ -48,8 +49,8 @@ const Signup = () => {
                             </select>
                         </div>
                         <div className='grow'>
-                            <label htmlFor="departmentId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department ID</label>
-                            <input type="text" onChange={updateInputs} name="departmentId" id="departmentId" placeholder="Department ID" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
+                            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                            <input type="email" onChange={updateInputs} name="email" id="email" placeholder="e.g. johnd@inventive-group.com" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
                         </div>
                     </div>
                     <div className='flex justify-around gap-8'>
@@ -60,6 +61,16 @@ const Signup = () => {
                         <div className='grow'>
                             <label htmlFor="groupLead" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Group Lead</label>
                             <input type="text" onChange={updateInputs} name="groupLead" id="groupLead" placeholder="e.g. BenC" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
+                        </div>
+                    </div>
+                    <div className='flex justify-around gap-8'>
+                        <div className='grow'>
+                            <label htmlFor='companyName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
+                            <select type="text" onChange={updateInputs} name="companyName" id="companyName" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. AlexR" required="" >
+                                <option value="none">N/A</option>
+                                <option value="IG">IG</option>
+                                <option value="IWS">IWS</option>
+                            </select>
                         </div>
                     </div>
                     <div className="flex items-center justify-between">

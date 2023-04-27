@@ -76,19 +76,23 @@ export function LoginProvider({ children }) {
                 password: userInputs.password,
                 firstName: userInputs.firstName,
                 lastName: userInputs.lastName,
-                departmentId: userInputs.departmentId,
                 department: userInputs.department,
+                companyName: userInputs.companyName,
+                email: userInputs.email,
                 teamLead: userInputs.teamLead,
-                groupLead: userInputs.groupLead
+                groupLead: userInputs.groupLead,
+                privileges: 'team-member',
+                departmentId: "302985u23ef23rfd"
             })
             sessionStorage.setItem("accessToken", res.data.accessToken)
             setUser((prev) => {
                 return res.data;
             })
+            console.log(res.data);
             return res.data;
         } catch {
             //Add Error Logic Here
-            alert('Bad Request')
+            console.log("bad request homie!")
         }
     }
 
