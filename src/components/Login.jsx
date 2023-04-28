@@ -8,13 +8,18 @@ const Login = () => {
     const userInputs = useLoginInput();
     const updateInputs = useLoginInputUpdate();
     const logUserIn = useSubmitLogin();
+    const loginState = userInputs.loginState;
+    const setLoginState = userInputs.setLoginState;
+    console.log(setLoginState)
+
+    //LEFT OF HERE NEED TO DO ONCLICK SETLOGINSTATE THINGY
 
 
 
     
 
   return (
-    <div className={!userInputs.user ? 'md:w-2/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg' : 'hidden'}>
+    <div className={!userInputs.user && loginState ? 'md:w-2/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg' : 'hidden'}>
         <form className="space-y-4 md:space-y-6" onSubmit={logUserIn}>
             <div>
                 <label htmlFor='Username' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
@@ -37,7 +42,7 @@ const Login = () => {
             </div>
             <button type='submit' className="w-full text-white bg-[#1baded] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet? <Link href="/signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
+                Don’t have an account yet? <button className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</button>
             </p>
         </form>
     </div>

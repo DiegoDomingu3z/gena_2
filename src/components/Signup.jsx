@@ -8,13 +8,16 @@ const Signup = () => {
     const updateInputs = useLoginInputUpdate();
     const logUserIn = useSubmitLogin();
     const signUserUp = useSignupLogin();
+    const user = userInputs.user;
+    const loginState = userInputs.loginState;
+
 
     // useEffect(() => {
     //     console.log(userInputs.userInputs)
     // }, [userInputs])
 
   return (
-        <div className={'md:w-4/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg'}>
+        <div className={!user && !loginState ? 'md:w-4/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg' : 'hidden'}>
                 <form className="space-y-4 md:space-y-6 flex flex-col" onSubmit={signUserUp}>
                     <div className='flex justify-around gap-8'>
                         <div className='grow'>

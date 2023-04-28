@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { api } from "../../axiosService";
+import { useRouter } from 'next/router'
 
 export const LoginContext = createContext({});
 export const LoginUpdateContext = createContext({});
@@ -42,6 +43,10 @@ export function LoginProvider({ children }) {
         password: ""
     });
     const [user, setUser] = useState(null);
+    const [loginState, setLoginState] = useState(true);
+
+    const router = useRouter();
+    console.log(router)
 
 
     const handleInput = (e) => {
@@ -87,6 +92,7 @@ export function LoginProvider({ children }) {
                 return res.data;
             })
             console.log(res.data);
+            router.push('/');
             return res.data;
         } catch {
             //Add Error Logic Here
@@ -96,7 +102,7 @@ export function LoginProvider({ children }) {
 
 
     return (
-        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser }}>
+        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser, loginState, setLoginState }}>
             <LoginUpdateContext.Provider value={handleInput}>
                 <SubmitLoginContext.Provider value={handleSubmit}>
                     <SignupContext.Provider value={handleSignup}>

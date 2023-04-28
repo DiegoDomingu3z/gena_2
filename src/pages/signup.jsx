@@ -8,7 +8,7 @@ const signup = () => {
 
   return (
     <LoginProvider>
-        <Layout title={"signup"}>
+        <Layout title={"Gena | Signup"}>
             <Signup />
         </Layout>
     </LoginProvider>
