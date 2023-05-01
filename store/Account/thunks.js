@@ -40,8 +40,10 @@ export const login = createAsyncThunk(
     'account/login',
     async (loginData) => {
         try {
+            console.log(loginData)
             const res = await api.post('api/account/login', loginData)
                 .then((res) => res.data)
+            sessionStorage.setItem('accessToken', res.accessToken)
             return res
         } catch (error) {
             throw error

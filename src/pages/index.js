@@ -4,6 +4,8 @@ import Login from "~/components/Login";
 import { useEffect, useState } from "react";
 import { LoginProvider } from "~/Contexts/LoginContext";
 import HomeDashboard from "~/components/HomeDashboard";
+import { Provider } from "react-redux";
+import { store } from "../../store";
 
 
 
@@ -14,13 +16,15 @@ export default function Home() {
   }, [])
 
   const router = useRouter;
-  
+
   return (
-    <LoginProvider>
-      <Layout title={"home"}>
-        <Login />
-        <HomeDashboard />
-      </Layout>
-    </LoginProvider>
+    <Provider store={store}>
+      <LoginProvider>
+        <Layout title={"home"}>
+          <Login />
+          <HomeDashboard />
+        </Layout>
+      </LoginProvider>
+    </Provider>
   )
 }
