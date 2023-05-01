@@ -34,7 +34,6 @@ export default function Home() {
       <LoginProvider>
         <Layout title={"home"}>
           <Login />
-          <HomeDashboard />
         </Layout>
       </LoginProvider>
     </Provider>

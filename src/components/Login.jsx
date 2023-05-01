@@ -3,19 +3,33 @@ import { useEffect } from 'react';
 import { useLoginInput, useLoginInputUpdate, useSubmitLogin } from '~/Contexts/LoginContext'
 import Link from 'next/link';
 import { Formik, Form, Field } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/Account/thunks';
-
+import { useRouter } from 'next/router';
 
 const Login = () => {
-    const userInputs = useLoginInput();
+
     const dispatch = useDispatch()
+    const router = useRouter()
+    const user = useSelector((state) => state.Account)
 
 
+    // const goToHome = async () => {
+    //     await user
+    //     if (user.accessToken) {
+
+    //     }
+
+    // }
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('accessToken')
+        token && router.push('/home')
+    }, [user])
 
 
     return (
-        <div className={!userInputs.user ? 'md:w-2/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg' : 'hidden'}>
+        <div className='md:w-2/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg' >
             <Formik
                 initialValues={{
                     userName: '',
@@ -23,6 +37,8 @@ const Login = () => {
                 }}
                 onSubmit={async (values) => {
                     dispatch(login(values))
+                    // goToHome(values)
+
                 }}
             >
                 {({ isSubmitting }) => (
