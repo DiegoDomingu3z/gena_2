@@ -22,7 +22,7 @@ const Signup = () => {
     // }, [userInputs])
 
   return (
-        <div className={'flex gap-10 flex-col items-center justify-center'}>
+        <div className={'flex gap-10 flex-col justify-center items-center h-full'}>
             <div className='flex w-4/5'>
                 <Link href="/">
                     <button className='justify-self-start bg-white rounded-full px-4 py-2 drop-shadow-md transition-all ease-in-out duration-200 hover:bg-[#1baded] hover:text-white'>

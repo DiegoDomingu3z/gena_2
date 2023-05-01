@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCirclePlus, faSuitcase } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faSuitcase, faHouse } from '@fortawesome/free-solid-svg-icons'
 import { useLoginInput } from '~/Contexts/LoginContext'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,6 +28,12 @@ export const NavButtons = () => {
   return (
     <>
       <div className='w-full flex flex-col justify-center mb-auto'>
+        <Link href={'/'} className={router.pathname !== '/home' ? "flex items-center gap-5 text-sm" : "hidden"}>
+          <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
+          <FontAwesomeIcon className='text-slate-400' icon={faHouse} />
+            <span className='font-genaPrimary'>Home</span>
+          </button>
+        </Link>
         <Link href={'/start-new-order'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5 text-sm" : "hidden"}>
           <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
             <FontAwesomeIcon className='text-slate-400' icon={faCirclePlus} />
