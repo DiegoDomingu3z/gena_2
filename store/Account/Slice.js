@@ -8,9 +8,10 @@ export const AccountSlice = createSlice({
     name: 'Account',
     initialState: {
         account: {},
-        loading: false,
+        loading: true,
         errorCodes: '',
         accessToken: ''
+
     },
     reducers: {
 
@@ -74,5 +75,4 @@ export const AccountSlice = createSlice({
         // Delete Account
     }
 })
-
 export default AccountSlice.reducer
