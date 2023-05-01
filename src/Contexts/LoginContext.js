@@ -38,15 +38,12 @@ export function useSignupLogin() {
 }
 
 export function LoginProvider({ children }) {
-    const [userInputs, setUserInputs] = useState({
-        userName: "",
-        password: ""
-    });
+    const [userInputs, setUserInputs] = useState({});
     const [user, setUser] = useState(null);
     const [loginState, setLoginState] = useState(true);
+    const [error, setError] = useState(null);
 
     const router = useRouter();
-    console.log(router)
 
 
     const handleInput = (e) => {
@@ -64,13 +61,12 @@ export function LoginProvider({ children }) {
         try {
             const res = await api.post("api/account/login", { userName: userInputs.userName, password: userInputs.password })
             sessionStorage.setItem("accessToken", res.data.accessToken)
-            setUser((prev) => {
-                return res.data;
-            })
+            setUser(() => res.data)
             return res.data;
-        } catch {
-            //Add Error Logic Here
-            alert('Bad Request')
+        } catch(error) {
+            const status = error;
+            status == "INCORRECT Password" && setError("INCORRECT Password")
+            status.response.data == "ACCOUNT DOES NOT EXISTS" && setError("ACCOUNT DOES NOT EXISTS")
         }
     }
     const handleSignup = async (e) => {
@@ -88,21 +84,18 @@ export function LoginProvider({ children }) {
                 groupLead: userInputs.groupLead,
                 privileges: 'team-member',
             })
-            setUser((prev) => {
-                return res.data;
-            })
-            console.log(res.data);
-            router.push('/');
+            setUser(() => res.data)
             return res.data;
-        } catch {
-            //Add Error Logic Here
-            console.log("bad request homie!")
+        } catch(error) {
+            const status = error.request.status;
+            status.response.data == "ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS" && setError("ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS")
+            status.response.data == "USERNAME EXISTS ALREADY" && setError("USERNAME EXISTS ALREADY")
         }
     }
 
 
     return (
-        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser, loginState, setLoginState }}>
+        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser, loginState, setLoginState, error }}>
             <LoginUpdateContext.Provider value={handleInput}>
                 <SubmitLoginContext.Provider value={handleSubmit}>
                     <SignupContext.Provider value={handleSignup}>
