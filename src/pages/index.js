@@ -31,10 +31,8 @@ export default function Home() {
   
   return (
     <LoginProvider>
-      <Layout title={"Gena | Home"}>
+      <Layout title={"Gena | Login"}>
         <Login />
-        <HomeDashboard />
-        <Signup />
       </Layout>
     </LoginProvider>
   )
