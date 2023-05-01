@@ -84,6 +84,7 @@ export function LoginProvider({ children }) {
                 groupLead: userInputs.groupLead,
                 privileges: 'team-member',
             })
+            router.push('/')
             setUser(() => res.data)
             return res.data;
         } catch(error) {
