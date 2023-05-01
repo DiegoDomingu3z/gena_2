@@ -74,3 +74,5 @@ export const AccountSlice = createSlice({
         // Delete Account
     }
 })
+
+export default AccountSlice.reducer
