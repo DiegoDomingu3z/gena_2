@@ -13,7 +13,7 @@ const Layout = ({ children, title }) => {
         <div className='flex'>
           <LoginProvider>
             <SideNav />
-            <main className="min-h-screen w-full grid">{children}</main>
+            <main className="min-h-screen w-full">{children}</main>
           </LoginProvider>
         </div>
     </div>
