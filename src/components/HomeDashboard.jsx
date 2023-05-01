@@ -10,7 +10,7 @@ const HomeDashboard = () => {
     const date = mm + ' ' + dd;
 
   return (
-    <div className={user.user ? "flex flex-col p-20" : "hidden"}>
+    <div className={"flex flex-col p-20"}>
         <div className='flex items-end'>
             <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>{user.user && user.user.firstName}'s Dashboard</h1></div>
             <span className='rounded bg-[#1baded] text-white py-1 px-4'>Today: {date}</span>

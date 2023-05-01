@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../../axiosService";
+import { useRouter } from 'next/router'
 
 export const LoginContext = createContext({});
 export const LoginUpdateContext = createContext({});
@@ -37,11 +38,12 @@ export function useSignupLogin() {
 }
 
 export function LoginProvider({ children }) {
-    const [userInputs, setUserInputs] = useState({
-        userName: "",
-        password: ""
-    });
+    const [userInputs, setUserInputs] = useState({});
     const [user, setUser] = useState(null);
+    const [loginState, setLoginState] = useState(true);
+    const [errorState, setErrorState] = useState(null);
+
+    const router = useRouter();
 
 
     const handleInput = (e) => {
@@ -59,13 +61,12 @@ export function LoginProvider({ children }) {
         try {
             const res = await api.post("api/account/login", { userName: userInputs.userName, password: userInputs.password })
             sessionStorage.setItem("accessToken", res.data.accessToken)
-            setUser((prev) => {
-                return res.data;
-            })
+            setUser(() => res.data)
             return res.data;
-        } catch {
-            //Add Error Logic Here
-            alert('Bad Request')
+        } catch(error) {
+            const { response } = error;
+            response.data === "INCORRECT Password" && setErrorState("INCORRECT Password")
+            response.data === "ACCOUNT DOES NOT EXISTS" && setErrorState("ACCOUNT DOES NOT EXISTS")
         }
     }
     const handleSignup = async (e) => {
@@ -83,21 +84,19 @@ export function LoginProvider({ children }) {
                 groupLead: userInputs.groupLead,
                 privileges: 'team-member',
             })
-            // sessionStorage.setItem("accessToken", res.data.accessToken)
-            setUser((prev) => {
-                return res.data;
-            })
-            console.log(res.data);
+            router.push('/')
+            setUser(() => res.data)
             return res.data;
-        } catch {
-            //Add Error Logic Here
-            console.log("bad request homie!")
+        } catch(error) {
+            const { response } = error;
+            response.data === "ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS" && setErrorState("ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS")
+            response.data === "USERNAME EXISTS ALREADY" && setErrorState("USERNAME EXISTS ALREADY")
         }
     }
 
 
     return (
-        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser }}>
+        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser, loginState, setLoginState, errorState }}>
             <LoginUpdateContext.Provider value={handleInput}>
                 <SubmitLoginContext.Provider value={handleSubmit}>
                     <SignupContext.Provider value={handleSignup}>

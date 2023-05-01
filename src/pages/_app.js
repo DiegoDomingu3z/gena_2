@@ -4,6 +4,8 @@ import { LoginProvider } from '~/Contexts/LoginContext'
 
 export default function App({ Component, pageProps }) {
   return (
-    <Component {...pageProps} />
+    <LoginProvider>
+      <Component {...pageProps} />
+    </LoginProvider>
   )
 }
