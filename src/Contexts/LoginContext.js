@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../../axiosService";
 import { useRouter } from 'next/router'
 
@@ -41,7 +41,7 @@ export function LoginProvider({ children }) {
     const [userInputs, setUserInputs] = useState({});
     const [user, setUser] = useState(null);
     const [loginState, setLoginState] = useState(true);
-    const [error, setError] = useState(null);
+    const [errorState, setErrorState] = useState(null);
 
     const router = useRouter();
 
@@ -64,9 +64,9 @@ export function LoginProvider({ children }) {
             setUser(() => res.data)
             return res.data;
         } catch(error) {
-            const status = error;
-            status == "INCORRECT Password" && setError("INCORRECT Password")
-            status.response.data == "ACCOUNT DOES NOT EXISTS" && setError("ACCOUNT DOES NOT EXISTS")
+            const { response } = error;
+            response.data === "INCORRECT Password" && setErrorState("INCORRECT Password")
+            response.data === "ACCOUNT DOES NOT EXISTS" && setErrorState("ACCOUNT DOES NOT EXISTS")
         }
     }
     const handleSignup = async (e) => {
@@ -87,15 +87,15 @@ export function LoginProvider({ children }) {
             setUser(() => res.data)
             return res.data;
         } catch(error) {
-            const status = error.request.status;
-            status.response.data == "ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS" && setError("ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS")
-            status.response.data == "USERNAME EXISTS ALREADY" && setError("USERNAME EXISTS ALREADY")
+            const { response } = error;
+            response.data === "ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS" && setErrorState("ACCOUNT DATA DOES NOT CONTAIN ALL FIELDS")
+            response.data === "USERNAME EXISTS ALREADY" && setErrorState("USERNAME EXISTS ALREADY")
         }
     }
 
 
     return (
-        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser, loginState, setLoginState, error }}>
+        <LoginContext.Provider value={{ userInputs, setUserInputs, user, setUser, loginState, setLoginState, errorState }}>
             <LoginUpdateContext.Provider value={handleInput}>
                 <SubmitLoginContext.Provider value={handleSubmit}>
                     <SignupContext.Provider value={handleSignup}>
