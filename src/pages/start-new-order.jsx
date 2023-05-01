@@ -24,7 +24,7 @@ const startNewOrder = () => {
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
           <div className='flex justify-end items-end gap-5 w-2/5'>
             <FontAwesomeIcon className='p-3 rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} />
-            <input name='labelSearch' type="text" className='w-2/4 drop-shadow-md bg-white text-white focus:text-[#233042] rounded-md h-10 transition-all ease-in-out outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
+            <input name='labelSearch' type="text" className='w-2/4 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
           </div>
         </div>
         <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
