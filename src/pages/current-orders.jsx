@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 
 
 const CurrentOrders = () => {
-    const [ordersArray, setOrdersArray] = useState(null);
+    // const [ordersArray, setOrdersArray] = useState(null);
 
 //  $$$$$$\             $$\            $$$$$$\                  $$\                                     $$\   $$\                                     
 // $$  __$$\            $$ |          $$  __$$\                 $$ |                                    $$ |  $$ |                                    
@@ -24,9 +24,9 @@ const CurrentOrders = () => {
 
 
 
-    useEffect(() => {
-        getOrders()
-    }, [])
+    // useEffect(() => {
+    //     getOrders()
+    // }, [])
 
     // const orderCard = ordersArray.map((order) => {
     //     return (
