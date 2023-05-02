@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <Provider store={store}>
       <LoginProvider>
-        <Layout title={"home"}>
+        <Layout title={"Gena | Login"}>
           <Login />
         </Layout>
       </LoginProvider>
