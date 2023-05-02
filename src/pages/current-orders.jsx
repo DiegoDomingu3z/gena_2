@@ -2,10 +2,46 @@ import React from 'react'
 import Layout from '~/components/Layout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import LabelCard from '~/components/LabelCard'
 import OrderCard from '~/components/OrderCard'
+import { api } from '../../axiosService'
+import { useState } from 'react'
+import { useEffect } from 'react'
+
+
+
 
 const CurrentOrders = () => {
+    const [ordersArray, setOrdersArray] = useState(null);
+
+//  $$$$$$\             $$\            $$$$$$\                  $$\                                     $$\   $$\                                     
+// $$  __$$\            $$ |          $$  __$$\                 $$ |                                    $$ |  $$ |                                    
+// $$ /  \__| $$$$$$\ $$$$$$\         $$ /  $$ | $$$$$$\   $$$$$$$ | $$$$$$\   $$$$$$\   $$$$$$$\       $$ |  $$ | $$$$$$\   $$$$$$\   $$$$$$\        
+// $$ |$$$$\ $$  __$$\\_$$  _|        $$ |  $$ |$$  __$$\ $$  __$$ |$$  __$$\ $$  __$$\ $$  _____|      $$$$$$$$ |$$  __$$\ $$  __$$\ $$  __$$\       
+// $$ |\_$$ |$$$$$$$$ | $$ |          $$ |  $$ |$$ |  \__|$$ /  $$ |$$$$$$$$ |$$ |  \__|\$$$$$$\        $$  __$$ |$$$$$$$$ |$$ |  \__|$$$$$$$$ |      
+// $$ |  $$ |$$   ____| $$ |$$\       $$ |  $$ |$$ |      $$ |  $$ |$$   ____|$$ |       \____$$\       $$ |  $$ |$$   ____|$$ |      $$   ____|      
+// \$$$$$$  |\$$$$$$$\  \$$$$  |       $$$$$$  |$$ |      \$$$$$$$ |\$$$$$$$\ $$ |      $$$$$$$  |      $$ |  $$ |\$$$$$$$\ $$ |      \$$$$$$$\       
+//  \______/  \_______|  \____/        \______/ \__|       \_______| \_______|\__|      \_______/       \__|  \__| \_______|\__|       \_______| 
+
+
+
+    useEffect(() => {
+        getOrders()
+    }, [])
+
+    // const orderCard = ordersArray.map((order) => {
+    //     return (
+    //         <OrderCard
+    //             key={order.createdOn}
+    //             labels={order.labels}
+    //         />
+    //     )
+    // })
+    
+
+
+
+
+
   return (
     <Layout title={'Gena | Current Orders'}>
         <div className={"flex flex-col p-20"}>

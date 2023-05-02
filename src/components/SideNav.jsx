@@ -18,7 +18,6 @@ export const NavButtons = () => {
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     dispatch(getAccount(token))
-    console.log(user)
   }, [])
 
 
