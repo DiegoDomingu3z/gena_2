@@ -10,12 +10,12 @@ const Layout = ({ children, title }) => {
       <Head>
         <title>{title}</title>
       </Head>
-        <div className='flex'>
-          <LoginProvider>
-            <SideNav />
-            <main className="min-h-screen w-full grid">{children}</main>
-          </LoginProvider>
-        </div>
+      <div className='flex'>
+        <LoginProvider>
+          <SideNav />
+          <main className="min-h-screen w-full">{children}</main>
+        </LoginProvider>
+      </div>
     </div>
   );
 };

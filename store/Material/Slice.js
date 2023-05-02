@@ -1,0 +1,33 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { getMaterials } from "./Thunks";
+
+
+
+
+export const MaterialSlice = createSlice({
+    name: 'Material',
+    initialState: {
+        materials: [],
+        loading: false,
+        errorCode: ''
+    },
+    reducers: {
+
+    },
+
+    extraReducers: (builder) => {
+        builder
+            .addCase(getMaterials.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getMaterials.fulfilled, (state, action) => {
+                state.materials = action.payload
+                state.loading = false
+            })
+            .addCase(getMaterials.rejected, (state, action) => {
+                state.loading = false
+            })
+    }
+})
+
+export default MaterialSlice.reducer
