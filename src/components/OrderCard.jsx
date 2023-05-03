@@ -33,7 +33,7 @@ const OrderCard = ({ modalState, setModalState, date, status, labels }) => {
         <p>#000253</p>
         <p className=''>{qty}</p>
         <p className=''>{date}</p>
-        <span className={`min-w-full px-5 ${statusColors[status]} text-white rounded-lg max-h-8 flex items-center`}>{statusDisplayText[status]}</span>
+        <span className={`px-5 ${statusColors[status]} text-white rounded-lg max-h-8 flex items-center`}>{statusDisplayText[status]}</span>
         <div className='flex gap-5'>
           <button onClick={() => {setModalState(!modalState)}} className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
           <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faTrash} /></button>
