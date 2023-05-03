@@ -4,13 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import OrderCard from '~/components/OrderCard'
 import { api } from '../../axiosService'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import OrderModal from '~/components/OrderModal'
+
 
 
 
 
 const CurrentOrders = () => {
+    const [modalState, setModalState] = useState(false);
+
     // const [ordersArray, setOrdersArray] = useState(null);
 
 //  $$$$$$\             $$\            $$$$$$\                  $$\                                     $$\   $$\                                     
@@ -44,6 +47,7 @@ const CurrentOrders = () => {
 
   return (
     <Layout title={'Gena | Current Orders'}>
+        {modalState && <OrderModal modalState={modalState} setModalState={setModalState} />}
         <div className={"flex flex-col p-20"}>
             <div className='flex items-end'>
                 <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1></div>
@@ -54,7 +58,7 @@ const CurrentOrders = () => {
             </div>
             <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
             <div className='grid laptop:grid-cols-3 laptop:justify-items-center gap-y-12 w-full px-8 h-[95rem] laptop:h-[44rem] overflow-auto rounded-md laptop:border py-5'>
-                <OrderCard />
+                <OrderCard modalState={modalState} setModalState={setModalState} />
                 <OrderCard />
                 <OrderCard />
                 <OrderCard />
