@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCirclePlus, faSuitcase, faHouse } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faSuitcase, faHouse, faList } from '@fortawesome/free-solid-svg-icons'
 import { useLoginInput } from '~/Contexts/LoginContext'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,6 @@ export const NavButtons = () => {
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     dispatch(getAccount(token))
-    console.log(user)
   }, [])
 
 
@@ -28,27 +27,27 @@ export const NavButtons = () => {
   return (
     <>
       <div className='w-full flex flex-col justify-center mb-auto'>
-        <Link href={'/home'} className={router.pathname !== '/home' ? "flex items-center gap-5 text-sm" : "hidden"}>
+        <Link href={'/home'} className={router.pathname !== '/home' && user.accessToken ? "flex items-center gap-5" : "hidden"}>
           <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
             <FontAwesomeIcon className='text-slate-400' icon={faHouse} />
             <span className='font-genaPrimary'>Home</span>
           </button>
         </Link>
-        <Link href={'/start-new-order'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5 text-sm" : "hidden"}>
+        <Link href={'/start-new-order'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5" : "hidden"}>
           <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
             <FontAwesomeIcon className='text-slate-400' icon={faCirclePlus} />
             <span className='font-genaPrimary'>New Order</span>
           </button>
         </Link>
-        <Link href={'/current-orders'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5 text-sm" : "hidden"}>
+        <Link href={'/current-orders'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5" : "hidden"}>
           <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
             <FontAwesomeIcon className='text-slate-400' icon={faSuitcase} />
             <span className='font-genaPrimary'>Current Orders</span>
           </button>
         </Link>
-        <Link href={'/NewLabel'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5 text-sm" : "hidden"}>
+        <Link href={'/NewLabel'} className={router.pathname === '/home' && user.account.privileges != 'printshop' ? "flex items-center gap-5" : "hidden"}>
           <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
-            <FontAwesomeIcon className='text-slate-400' icon={faSuitcase} />
+            <FontAwesomeIcon className='text-slate-400' icon={faList} />
             <span className='font-genaPrimary'>Print Orders</span>
           </button>
         </Link>
