@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import SideNav from './SideNav';
 import { LoginProvider } from "~/Contexts/LoginContext";
+import Navbar from './Navbar';
 
 
 const Layout = ({ children, title }) => {
@@ -13,6 +14,7 @@ const Layout = ({ children, title }) => {
         <div className='flex'>
           <LoginProvider>
             <SideNav />
+            <Navbar />
             <main className="min-h-screen w-full">{children}</main>
           </LoginProvider>
         </div>
