@@ -4,46 +4,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import OrderCard from '~/components/OrderCard'
 import { api } from '../../axiosService'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import OrderModal from '~/components/OrderModal'
+import orders from '~/testDB'
+
 
 
 
 
 const CurrentOrders = () => {
-    // const [ordersArray, setOrdersArray] = useState(null);
-
-//  $$$$$$\             $$\            $$$$$$\                  $$\                                     $$\   $$\                                     
-// $$  __$$\            $$ |          $$  __$$\                 $$ |                                    $$ |  $$ |                                    
-// $$ /  \__| $$$$$$\ $$$$$$\         $$ /  $$ | $$$$$$\   $$$$$$$ | $$$$$$\   $$$$$$\   $$$$$$$\       $$ |  $$ | $$$$$$\   $$$$$$\   $$$$$$\        
-// $$ |$$$$\ $$  __$$\\_$$  _|        $$ |  $$ |$$  __$$\ $$  __$$ |$$  __$$\ $$  __$$\ $$  _____|      $$$$$$$$ |$$  __$$\ $$  __$$\ $$  __$$\       
-// $$ |\_$$ |$$$$$$$$ | $$ |          $$ |  $$ |$$ |  \__|$$ /  $$ |$$$$$$$$ |$$ |  \__|\$$$$$$\        $$  __$$ |$$$$$$$$ |$$ |  \__|$$$$$$$$ |      
-// $$ |  $$ |$$   ____| $$ |$$\       $$ |  $$ |$$ |      $$ |  $$ |$$   ____|$$ |       \____$$\       $$ |  $$ |$$   ____|$$ |      $$   ____|      
-// \$$$$$$  |\$$$$$$$\  \$$$$  |       $$$$$$  |$$ |      \$$$$$$$ |\$$$$$$$\ $$ |      $$$$$$$  |      $$ |  $$ |\$$$$$$$\ $$ |      \$$$$$$$\       
-//  \______/  \_______|  \____/        \______/ \__|       \_______| \_______|\__|      \_______/       \__|  \__| \_______|\__|       \_______| 
+    const [modalState, setModalState] = useState(false);
 
 
-
-    // useEffect(() => {
-    //     getOrders()
-    // }, [])
-
-    // const orderCard = ordersArray.map((order) => {
-    //     return (
-    //         <OrderCard
-    //             key={order.createdOn}
-    //             labels={order.labels}
-    //         />
-    //     )
-    // })
-    
-
-
+    const orderRow = orders.map((order) => {
+        return (
+            <OrderCard
+                key={order.createdOn}
+                modalState={modalState}
+                setModalState={setModalState}
+                date={order.createdOn}
+                status={order.status}
+                labels={order.labels}
+            />
+        )
+    })
 
 
 
   return (
     <Layout title={'Gena | Current Orders'}>
+        {modalState && <OrderModal modalState={modalState} setModalState={setModalState} />}
         <div className={"flex flex-col p-20"}>
             <div className='flex items-end'>
                 <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1></div>
@@ -53,12 +43,18 @@ const CurrentOrders = () => {
                 </div>
             </div>
             <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
-            <div className='grid laptop:grid-cols-3 laptop:justify-items-center gap-y-12 w-full px-8 h-[95rem] laptop:h-[44rem] overflow-auto rounded-md laptop:border py-5'>
-                <OrderCard />
-                <OrderCard />
-                <OrderCard />
-                <OrderCard />
-                <OrderCard />
+            <div className='bg-white p-5 rounded-md shadow-md'>
+                <h1 className='text-xl font-medium mb-10'>Orders</h1>
+                <div className='grid grid-cols-5 justify-items-center font-medium mb-5'>
+                    <h4>Order ID</h4>
+                    <h4>Labels</h4>
+                    <h4>Date</h4>
+                    <h4>Status</h4>
+                    <h4>Actions</h4>
+                </div>
+                <div className='flex flex-col'>
+                    {orderRow}
+                </div>
             </div>
         </div>
     </Layout>

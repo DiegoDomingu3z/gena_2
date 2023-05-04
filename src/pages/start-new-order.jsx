@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 
+
 const startNewOrder = () => {
+
   
   // const labelCards = () => {
   //   write some logic here that gets all Labels
@@ -30,7 +32,7 @@ const startNewOrder = () => {
         <div className='grid w-full h-full'>
           <LabelCard />
         </div>
-    </div>
+      </div>
     </Layout>
   )
 }
