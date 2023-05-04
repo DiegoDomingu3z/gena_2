@@ -8,22 +8,23 @@ import { useSelector } from "react-redux";
 
 export const createLabelInfo = createAsyncThunk(
     'label/createInfo',
-    async (data, files) => {
+    async ({ data, formData }) => {
         try {
-            console.log(files)
+            console.log(data)
+            console.log(formData, 'files')
             const token = await sessionStorage.getItem('accessToken')
             const res = await api.post(`/api/upload/label/cat/${data.categoryId}/subCat/${data.subCategoryId}`, data, {
                 headers: {
                     Authorization: token
                 }
             }).then((res) => res.data)
-            const res2 = await api.post(`/api/upload/pdf/cat/${data.categoryId}/subCat/${data.subCategoryId}`, files, {
+            const res2 = await api.post(`/api/upload/pdf/cat/${data.categoryId}/subCat/${data.subCategoryId}`, formData, {
                 headers: {
                     Authorization: token,
-                    contentType: false,
-                    processData: false
-                },
 
+                },
+                contentType: false,
+                processData: false
             })
             console.log(res)
             console.log(res2)
