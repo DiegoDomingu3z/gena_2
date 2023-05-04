@@ -21,22 +21,22 @@ const Layout = ({ children, title }) => {
 
   useEffect(() => {
     !token && router.push('/')
-}, [user])
+  }, [user])
 
   return (
     <div>
       <Head>
         <title>{title}</title>
       </Head>
-        <div className='flex'>
-          <CanvasProvider>
-            <SideNav />
-            <Navbar />
-            <CanvasDrawer />
-            {user.accessToken && <button onClick={() => dispatch(logout(token))} className='text-black p-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
-            <main className="min-h-screen w-full">{children}</main>
-          </CanvasProvider>
-        </div>
+      <div className='flex'>
+        <CanvasProvider>
+          <SideNav />
+          <Navbar />
+          <CanvasDrawer />
+          {user.accessToken && <button onClick={() => dispatch(logout(token))} className='text-black p-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
+          <main className="min-h-screen w-full">{children}</main>
+        </CanvasProvider>
+      </div>
     </div>
   );
 };
