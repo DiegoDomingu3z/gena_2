@@ -23,7 +23,8 @@ const NewLabel = () => {
     const [fields, setFields] = useState([])
     const token = useSelector((state) => state.Account.accessToken)
     const onDrop = useCallback(acceptedFiles => {
-        setFiles(prevFiles => [...prevFiles, ...acceptedFiles])
+        let fileIndex = acceptedFiles[0]
+        setFiles(prevFiles => [...prevFiles, fileIndex])
     }, [files])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
@@ -97,16 +98,14 @@ const NewLabel = () => {
 
     const pushFiles = () => {
         return new Promise((resolve) => {
-            let formData = new FormData()
+            const formData = new FormData();
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                formData.append('pdf', file)
+                formData.append("pdf", file);
             }
-            resolve(formData)
-        })
-
-    }
-
+            resolve(formData);
+        });
+    };
 
 
     const submitLabelInfo = async (values) => {
@@ -125,8 +124,9 @@ const NewLabel = () => {
             categoryId: activeCategory,
             subCategoryId: values.subCategoryId
         }
-        let file = await pushFiles()
-        dispatch(createLabelInfo(data, file))
+        // console.log(labelFile, "FILE IN FUNCTION")
+        const formData = await pushFiles()
+        dispatch(createLabelInfo({ data, formData }));
     }
 
 
@@ -179,21 +179,21 @@ const NewLabel = () => {
                                         <Field type="text" name="labelName" id="labelName" className="bg-gray-50 border border-gray-300
                                      text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
                                       dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                       dark:focus:border-blue-500" placeholder="label name..." required="" />
+                                       dark:focus:border-blue-500" placeholder="label name..." required />
                                     </div>
                                     <div className='grow'>
                                         <label htmlFor="docNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Document Number: <span className='text-red-500'>*</span></label>
                                         <Field type="text" name="docNum" id="docNum" placeholder="Doc#" className="bg-gray-50 border
                                      border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                                      block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                                      dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
+                                      dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                                     </div>
                                     <div className='grow'>
                                         <label htmlFor="maxOrderQty" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Max Order Qty: <span className='text-red-500'>*</span></label>
                                         <Field type="number" name="maxOrderQty" id="maxOrderQty" placeholder="max#" className="bg-gray-50 
                                     border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                                     block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
-                                    dark:focus:ring-blue-500 dark:focus:border-blue-500 " required="" />
+                                    dark:focus:ring-blue-500 dark:focus:border-blue-500 " required />
                                     </div>
                                 </div>
                                 <div className='flex justify-around gap-8 mt-10'>
@@ -202,7 +202,7 @@ const NewLabel = () => {
                                         <Field type="number" name="unitPack" id="unitPack" className="bg-gray-50 border border-gray-300
                                      text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700
                                      dark:border-gray-600 dark:placeholder-gray-400
-                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="#..." required="" />
+                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="#..." required />
                                     </div>
                                     <div className='grow'>
                                         <label htmlFor="materialTypeId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Type <span className='text-red-500'>*</span></label>
@@ -227,7 +227,7 @@ const NewLabel = () => {
                                         <label htmlFor="materialType" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Name<span className='text-red-500'>*</span></label>
                                         <Field onChange={filterSubCats} value={activeCategory} component='select' name="categoryId" id="categoryId" className="bg-gray-50 border border-gray-300
                                      text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700
-                                      dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" >
+                                      dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
                                             <option className='text-gray-600' disabled selected>SELECT CATEGORY</option>
                                             {category.categories ?
                                                 category.categories.map((c) => (
@@ -243,7 +243,7 @@ const NewLabel = () => {
                                         <label htmlFor='unitPack' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-Category Name<span className='text-red-500'>*</span></label>
                                         <Field component='select' name="subCategoryId" id="subCategoryId" className="bg-gray-50 border border-gray-300
                                      text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700
-                                      dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" >
+                                      dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
                                             <option className='text-gray-600'  >SELECT SUB-CATEGORY</option>
                                             {activeSubCats.length > 0 ?
                                                 activeSubCats.map((a) => (
@@ -334,7 +334,7 @@ const NewLabel = () => {
                                                                     d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                                                             <div className="input_field flex flex-col w-max mx-auto text-center">
                                                                 <label>
-                                                                    <input className="text-sm cursor-pointer w-36 hidden" type="file" {...getInputProps()} />
+                                                                    <input className="text-sm cursor-pointer w-36 hidden" type="file" {...getInputProps()} formEncType="multipart/form-data" />
                                                                     <div className="text bg-indigo-600 text-white border border-gray-300 rounded 
                                                     font-semibold cursor-pointer p-1 px-3 hover:bg-indigo-500">Select</div>
                                                                 </label>
@@ -366,7 +366,7 @@ const NewLabel = () => {
                                                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                                                                     <div class="input_field flex flex-col w-max mx-auto text-center">
                                                                         <label>
-                                                                            <input class="text-sm cursor-pointer w-36 hidden" type="file"  {...getInputProps()} />
+                                                                            <input class="text-sm cursor-pointer w-36 hidden" type="file" formEncType="multipart/form-data" {...getInputProps()} />
                                                                             <div class="text bg-indigo-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-indigo-500">Select</div>
                                                                         </label>
 
