@@ -5,7 +5,6 @@ import { useCanvasDrawer } from '~/Contexts/canvasDrawerContext'
 
 const Navbar = () => {
   const { toggleCanvasDrawer, setToggleCanvasDrawer } = useCanvasDrawer();
-  console.log(toggleCanvasDrawer)
 
   return (
     <nav className='flex laptop:hidden w-full h-16 fixed items-center px-8'>

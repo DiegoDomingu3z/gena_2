@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../axiosService";
+import { useRouter } from "next/router";
 
 
 export const createAccount = createAsyncThunk(
@@ -42,6 +43,7 @@ export const login = createAsyncThunk(
             const res = await api.post('api/account/login', loginData)
                 .then((res) => res.data)
             sessionStorage.setItem('accessToken', res.accessToken)
+            router.push('/')
             return res
         } catch (error) {
             throw error
@@ -59,6 +61,7 @@ export const logout = createAsyncThunk(
                     Authorization: token
                 }
             })
+            sessionStorage.removeItem('accessToken')
             return res
         } catch (error) {
             throw error
