@@ -7,6 +7,8 @@ import { getAllSubCats } from '../../../store/Sub-Category/Thunks'
 import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { useDropzone } from 'react-dropzone';
 import { createLabelInfo, uploadPdf } from '../../../store/Label/Thunks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 const NewLabel = () => {
     const dispatch = useDispatch()
@@ -140,11 +142,14 @@ const NewLabel = () => {
 
     return (
         <div>
-            <div className='bg-[#7490b9] h-20'>
-                <h1 className='text-center pt-6 text-white text-2xl font-bold'>New Label Dashboard</h1>
+            <div className={"flex flex-col p-20 pb-8"}>
+
+                <div className='flex items-end border-b'>
+                    <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary mb-2'>Add New Label</h1></div>
+                </div>
             </div>
             <div className={'flex gap-10 flex-col items-center justify-center'}>
-                <div className={'md:w-11/12 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg mt-10'}>
+                <div className={'md:w-11/12 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg'}>
                     <Formik
                         initialValues={{
                             labelName: '',

@@ -18,3 +18,19 @@ export const getAllSubCats = createAsyncThunk(
         }
     }
 )
+
+
+export const getAllInCats = createAsyncThunk(
+    'subCats/inCats',
+    async (categoryId) => {
+        try {
+            const res = await api.get(`/api/subcategory/incat/${categoryId}`)
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

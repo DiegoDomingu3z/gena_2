@@ -18,6 +18,7 @@ export const NavButtons = () => {
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     dispatch(getAccount(token))
+    console.log(user.account.privileges)
   }, [])
 
 
@@ -45,10 +46,16 @@ export const NavButtons = () => {
             <span className='font-genaPrimary'>Current Orders</span>
           </button>
         </Link>
-        <Link href={'/NewLabel'} className={router.pathname !== '/NewLabel' && user.accessToken ? "flex items-center gap-5" : "hidden"}>
+        <Link href={'/NewLabel'} className={((router.pathname !== '/NewLabel' && user.accessToken) && (user.account.privileges == 'admin' || user.account.privileges == 'printshop')) ? "flex items-center gap-5" : "hidden"}>
           <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
             <FontAwesomeIcon className='text-slate-400' icon={faList} />
             <span className='font-genaPrimary'>Print Orders</span>
+          </button>
+        </Link>
+        <Link href={'/NewCategory'} className={((router.pathname !== '/NewCategory' && user.accessToken) && (user.account.privileges == 'admin' || user.account.privileges == 'printshop')) ? "flex items-center gap-5" : "hidden"}>
+          <button className={'h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8'}>
+            <FontAwesomeIcon className='text-slate-400' icon={faList} />
+            <span className='font-genaPrimary'>New Category</span>
           </button>
         </Link>
       </div>
