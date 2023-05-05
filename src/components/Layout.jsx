@@ -17,9 +17,10 @@ const Layout = ({ children, title }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const user = useSelector((state) => state.Account)
-  const token = user.accessToken
-
+  let token;
+  
   useEffect(() => {
+    token = sessionStorage.accessToken
     !token && router.push('/')
 }, [user])
 

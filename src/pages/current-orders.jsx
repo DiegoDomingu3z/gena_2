@@ -43,7 +43,7 @@ const CurrentOrders = () => {
                 </div>
             </div>
             <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
-            <div className='bg-white p-5 rounded-md shadow-md'>
+            <div className='bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'>
                 <h1 className='text-xl font-medium mb-10'>Orders</h1>
                 <div className='grid grid-cols-5 justify-items-center font-medium mb-5'>
                     <h4>Order ID</h4>

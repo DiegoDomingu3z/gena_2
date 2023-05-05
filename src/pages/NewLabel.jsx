@@ -7,7 +7,7 @@ import NewLabel from '~/components/PrintShopView/NewLabel'
 const newLabel = () => {
   return (
     <LoginProvider>
-      <Layout title={"New Label"}>
+      <Layout title={"Gena | New Label"}>
         <NewLabel />
       </Layout>
     </LoginProvider>
