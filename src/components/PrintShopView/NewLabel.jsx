@@ -7,6 +7,8 @@ import { getAllSubCats } from '../../../store/Sub-Category/Thunks'
 import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { useDropzone } from 'react-dropzone';
 import { createLabelInfo, uploadPdf } from '../../../store/Label/Thunks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 const NewLabel = () => {
     const dispatch = useDispatch()
@@ -114,7 +116,7 @@ const NewLabel = () => {
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
-            labelName: values.labelName,
+            name: values.labelName,
             docNum: values.docNum,
             fileName: files[0].name,
             isKanban: values.isKanban,
