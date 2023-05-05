@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/Account/thunks';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const Login = () => {
 
@@ -19,7 +20,8 @@ const Login = () => {
 
 
     return (
-        <div className='h-full flex justify-center'>
+        <div className='h-full flex flex-col justify-center items-center gap-y-10'>
+            <Image src="/images/GENA-Logo.png" className='bg-[#233043] rounded p-2' width={80} height={80} alt="GENA Image" />
             <div className='md:w-2/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg' >
                 <Formik
                     initialValues={{

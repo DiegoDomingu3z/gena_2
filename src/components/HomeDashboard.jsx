@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import CurrentOrdersTile from './CurrentOrdersTile'
 const HomeDashboard = () => {
     const { account } = useSelector((state) => state.Account)
     const dispatch = useDispatch()
@@ -21,9 +22,7 @@ const HomeDashboard = () => {
         </div>
         <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
         <div className='grid w-full h-full'>
-            <div className='bg-[#dfe8f6] w-96 h-96 rounded-lg drop-shadow-md font-genaPrimary p-4'>
-                <h1 className='text-xl text-[#376fd0]'>Current Orders</h1>
-            </div>
+            <CurrentOrdersTile />
         </div>
     </div>
   )

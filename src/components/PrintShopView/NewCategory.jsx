@@ -2,6 +2,8 @@ import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, removeCategory } from "../../../store/Category/Thunk";
 import { FaMinusCircle, FaPenSquare } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { RingLoader } from "react-spinners"
@@ -31,7 +33,7 @@ const NewCategory = () => {
                 let timerInterval
                 await Swal.fire({
                     title: `Deleting ${name}`,
-                    html: 'This make take some time <br> <b></b> Seconds left.',
+                    html: 'This may take some time <br> <b></b> Seconds left.',
                     timer: 8000,
                     timerProgressBar: true,
                     didOpen: () => {
@@ -66,30 +68,32 @@ const NewCategory = () => {
 
 
     return (
-        <div className="">
-            <div className={"flex flex-col p-20 pb-8"}>
+        <div className="flex flex-col p-20 pb-8">
+            <div className={""}>
 
-                <div className='flex items-end border-b'>
-                    <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary mb-2'>Categories</h1></div>
+                <div className='flex items-end'>
+                    <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Categories</h1></div>
                 </div>
+                <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
             </div>
-            <div className={'flex flex-col items-center  bg-white mx-20 h-[44rem]  overflow-y-scroll'}>
+            <div className={'bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'}>
+                <h1 className='text-xl font-medium mb-10'>Categories</h1>
                 {
                     cats ?
                         cats.map((c) => (
                             <div onClick={() => showSubCats(c._id)}
                                 className={'md:w-11/12 w-4/5 self-center justify-self-center p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={c._id}>
                                 <span>{c.name}</span>
-                                <div>
-                                    <button className="hover:scale-125 transition-all ease-in-out me-5" onClick={(event) => {
+                                <div className="flex gap-5">
+                                    <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full' onClick={(event) => {
                                         event.stopPropagation(); // Stop propagation here
 
-                                    }}><FaPenSquare className="text-blue-500" size={20} /></button>
-                                    <button className="hover:scale-125 transition-all ease-in-out " onClick={(event) => {
+                                    }}><FontAwesomeIcon icon={faPencil} /></button>
+                                    <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full" onClick={(event) => {
                                         event.stopPropagation(); // Stop propagation here
                                         deleteCat(c._id, c.name);
                                     }}>
-                                        <FaMinusCircle className="text-red-500" size={20} />
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </button>
                                 </div>
                             </div>
@@ -101,7 +105,7 @@ const NewCategory = () => {
                 }
 
             </div>
-            <div className="flex flex-col px-20 mt-3 ">
+            <div className="flex flex-col mt-3 ">
                 <Formik
                     initialValues={{
                         name: ''

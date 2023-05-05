@@ -6,7 +6,7 @@ import { Formik, Form, Field } from 'formik';
 import { createAccount, login } from '../../store/Account/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import loginPage from '~/pages/login';
+import Image from 'next/image';
 
 
 
@@ -16,13 +16,15 @@ const Signup = () => {
     const user = useSelector((state) => state.Account)
 
   return (
-        <div className={'flex gap-10 flex-col justify-center items-center h-full'}>
+        <div className={'flex gap-y-10 flex-col justify-center items-center h-full'}>
+            <Image src="/images/GENA-Logo.png" className='bg-[#233043] rounded p-2' width={80} height={80} alt="GENA Image" />
             <div className='flex w-4/5'>
                 <Link href="/">
                     <button className='justify-self-start bg-white rounded-full px-4 py-2 drop-shadow-md transition-all ease-in-out duration-200 hover:bg-[#1baded] hover:text-white'>
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </button>
                 </Link>
+                <div></div>
             </div>
             <div className={'md:w-4/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg'}>
                 <Formik 
