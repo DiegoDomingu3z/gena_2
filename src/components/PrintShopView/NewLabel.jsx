@@ -116,7 +116,7 @@ const NewLabel = () => {
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
-            labelName: values.labelName,
+            name: values.labelName,
             docNum: values.docNum,
             fileName: files[0].name,
             isKanban: values.isKanban,
@@ -213,7 +213,7 @@ const NewLabel = () => {
                                         <label htmlFor="materialTypeId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Type <span className='text-red-500'>*</span></label>
                                         <Field component='select' name="materialTypeId" id="materialTypeId" className="bg-gray-50 border border-gray-300
                                      text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700
-                                      dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" >
+                                      dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required >
                                             <option className='text-gray-600' selected>SELECT MATERIAL</option>
                                             {material.materials ?
                                                 material.materials.map((m) => (
