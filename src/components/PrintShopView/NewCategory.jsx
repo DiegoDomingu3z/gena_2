@@ -4,6 +4,7 @@ import { addCategory, removeCategory } from "../../../store/Category/Thunk";
 import { FaMinusCircle, FaPenSquare } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
+import { RingLoader } from "react-spinners"
 const NewCategory = () => {
     const cats = useSelector((state) => state.Category.categories)
     const dispatch = useDispatch()
@@ -19,17 +20,16 @@ const NewCategory = () => {
         const token = await sessionStorage.getItem('accessToken')
         Swal.fire({
             title: `Remove ${name}?`,
-            text: "All labels within this folder will be deleted",
+            text: "All labels and sub-categories within this category will be deleted",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                dispatch(removeCategory({ id, token }))
                 let timerInterval
-                Swal.fire({
+                await Swal.fire({
                     title: `Deleting ${name}`,
                     html: 'This make take some time <br> <b></b> Seconds left.',
                     timer: 8000,
@@ -43,8 +43,10 @@ const NewCategory = () => {
                     },
                     willClose: () => {
                         clearInterval(timerInterval)
+
                     }
                 })
+                dispatch(removeCategory({ id, token }))
             }
         })
     }
@@ -71,7 +73,7 @@ const NewCategory = () => {
                     <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary mb-2'>Categories</h1></div>
                 </div>
             </div>
-            <div className={'flex flex-col items-center justify-center bg-white mx-20 h-[44rem] pt-72 overflow-y-scroll'}>
+            <div className={'flex flex-col items-center  bg-white mx-20 h-[44rem]  overflow-y-scroll'}>
                 {
                     cats ?
                         cats.map((c) => (
@@ -79,14 +81,23 @@ const NewCategory = () => {
                                 className={'md:w-11/12 w-4/5 self-center justify-self-center p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={c._id}>
                                 <span>{c.name}</span>
                                 <div>
-                                    <button className="hover:scale-125 transition-all ease-in-out me-5"><FaPenSquare className="text-blue-500" /></button>
-                                    <button className="hover:scale-125 transition-all ease-in-out " onClick={() => deleteCat(c._id, c.name)}>
-                                        <FaMinusCircle className="text-red-500" />
+                                    <button className="hover:scale-125 transition-all ease-in-out me-5" onClick={(event) => {
+                                        event.stopPropagation(); // Stop propagation here
+
+                                    }}><FaPenSquare className="text-blue-500" size={20} /></button>
+                                    <button className="hover:scale-125 transition-all ease-in-out " onClick={(event) => {
+                                        event.stopPropagation(); // Stop propagation here
+                                        deleteCat(c._id, c.name);
+                                    }}>
+                                        <FaMinusCircle className="text-red-500" size={20} />
                                     </button>
                                 </div>
                             </div>
                         ))
-                        : null
+                        :
+                        <div className="mt-80 ">
+                            <RingLoader color="#36d7b7" size={90} />
+                        </div>
                 }
 
             </div>
