@@ -21,7 +21,9 @@ const Layout = ({ children, title }) => {
   
   useEffect(() => {
     token = sessionStorage.accessToken
-    !token && router.push('/')
+    if (!token && router.pathname !== '/signup') {
+      router.push('/')
+    }
 }, [user])
 
   return (

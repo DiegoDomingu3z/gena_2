@@ -14,14 +14,6 @@ const Login = () => {
     const user = useSelector((state) => state.Account)
 
 
-    // const goToHome = async () => {
-    //     await user
-    //     if (user.accessToken) {
-
-    //     }
-
-    // }
-
     useEffect(() => {
         const token = sessionStorage.getItem('accessToken')
         token && router.push('/home')
@@ -38,8 +30,6 @@ const Login = () => {
                     }}
                     onSubmit={async (values) => {
                         dispatch(login(values))
-                        // goToHome(values)
-
                     }}
                 >
                     {({ isSubmitting }) => (
