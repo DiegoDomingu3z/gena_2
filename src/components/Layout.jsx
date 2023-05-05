@@ -17,9 +17,9 @@ const Layout = ({ children, title }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const user = useSelector((state) => state.Account)
-  const token = user.accessToken
-
+  let token
   useEffect(() => {
+    token = sessionStorage.getItem('accessToken')
     !token && router.push('/')
   }, [user])
 
@@ -33,7 +33,7 @@ const Layout = ({ children, title }) => {
           <SideNav />
           <Navbar />
           <CanvasDrawer />
-          {user.accessToken && <button onClick={() => dispatch(logout(token))} className='text-black p-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
+          {user.accessToken && <button onClick={() => dispatch(logout(user.accessToken))} className='text-black p-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
           <main className="min-h-screen w-full">{children}</main>
         </CanvasProvider>
       </div>

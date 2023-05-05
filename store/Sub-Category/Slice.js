@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllSubCats } from "./Thunks.js"
+import { getAllInCats, getAllSubCats } from "./Thunks.js"
 
 
 
@@ -12,7 +12,8 @@ export const SubCategorySlice = createSlice({
     initialState: {
         subCats: [],
         loading: false,
-        errorCode: ''
+        errorCode: '',
+        catSubCats: []
     },
     reducers: {
 
@@ -27,6 +28,17 @@ export const SubCategorySlice = createSlice({
                 state.loading = false
             })
             .addCase(getAllSubCats.rejected, (state, action) => {
+                state.errorCode = action.error
+                state.loading = false
+            })
+            .addCase(getAllInCats.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getAllInCats.fulfilled, (state, action) => {
+                state.catSubCats = action.payload
+                state.loading = false
+            })
+            .addCase(getAllInCats.rejected, (state, action) => {
                 state.errorCode = action.error
                 state.loading = false
             })

@@ -57,7 +57,7 @@ export const logout = createAsyncThunk(
     async (token) => {
         try {
             console.log(token)
-            const res = await api.put('api/account/logout', {
+            const res = await api.put('/api/account/logout', {
                 headers: {
                     Authorization: token
                 }
