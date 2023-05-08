@@ -7,6 +7,7 @@ import { createAccount, login } from '../../store/Account/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useState } from 'react';
 
 
 
@@ -14,6 +15,18 @@ const Signup = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const user = useSelector((state) => state.Account)
+    const [inputValues, setInputValues] = useState({});
+
+    const handleInput = (e) => {
+        setInputValues((prev) => (
+            {
+                [e.target.name]: e.target.value,
+                ...prev
+            }
+        ))
+        console.log(inputValues)
+    }
+
 
   return (
         <div className={'flex gap-y-10 flex-col justify-center items-center h-full'}>
@@ -56,11 +69,11 @@ const Signup = () => {
                         <div className='flex justify-around gap-8'>
                             <div className='grow'>
                                 <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                                <Field type="text" name="firstName" id="firstName" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First" required="" />
+                                <Field onChange={handleInput} type="text" name="firstName" id="firstName" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} placeholder="First" required="" />
                             </div>
                             <div className='grow'>
                                 <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                                <Field type="text" name="lastName" id="lastName" placeholder="Last" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
+                                <Field onChange={handleInput} type="text" name="lastName" id="lastName" placeholder="Last" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} required="" />
                             </div>
                         </div>
                         <div className='flex justify-around gap-8'>
@@ -111,15 +124,9 @@ const Signup = () => {
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
-                            <div className="flex items-start">
-                                <div className="flex items-center h-5">
-                                    {/* <Field id="signupRemember" checked aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" /> */}
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
-                                </div>
-                            </div>
                             <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+                            {user.account === 'ACCOUNT DOES NOT EXISTS' && <p className="text-red-500 text-sm">* Please fill out all fields</p>}
+                            {user.account === 'INCORRECT Password' && <p className="text-red-500 text-sm">* Username already exists</p>}
                         </div>
                         <button disabled={isSubmitting} type='submit' className="w-44 self-center text-white bg-[#1baded] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign Up</button>
                     </Form>

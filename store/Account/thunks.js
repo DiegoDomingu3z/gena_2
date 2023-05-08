@@ -11,7 +11,9 @@ export const createAccount = createAsyncThunk(
                 .then((res) => res.data)
             return res
         } catch (error) {
-            throw error
+            const { data } = error.response;
+            console.log(data)
+            return data;
         }
     }
 )
@@ -45,7 +47,9 @@ export const login = createAsyncThunk(
             router.push('/')
             return res
         } catch (error) {
-            throw error
+            const { data } = error.response;
+            console.log(data)
+            return data;
         }
     }
 )
