@@ -9,6 +9,9 @@ import { getCategories } from '../../store/Category/Thunk'
 import { Formik, Field } from 'formik'
 import { getAllSubCats } from '../../store/Sub-Category/Thunks'
 import { getLabels } from '../../store/Label/Thunks'
+import { useCanvasDrawer } from '~/Contexts/canvasDrawerContext'
+import CartCanvasDrawer from '~/components/CartCanvasDrawer'
+
 
 
 const startNewOrder = () => {
@@ -18,6 +21,9 @@ const startNewOrder = () => {
   const [activeSubCats, setActiveSubCats] = useState(null)
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null)
+  const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
+  console.log(toggleCartCanvas)
+
   const filterSubCats = (event) => {
     let id = event.target.value
     let cat = cats.filter(c => c._id == id)
@@ -46,6 +52,7 @@ const startNewOrder = () => {
 
   return (
     <Layout title={"Gena | New Order"}>
+      <CartCanvasDrawer toggleCartCanvas={toggleCartCanvas} setToggleCartCanvas={setToggleCartCanvas} />
       <div className={"flex flex-col p-20"}>
         <div className='flex items-end'>
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
@@ -53,10 +60,13 @@ const startNewOrder = () => {
             <FontAwesomeIcon className='p-3 rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} />
             <input name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
              outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
-            <div className='relative'><FontAwesomeIcon icon={faShoppingBasket} size='2xl' />
-              <div className='absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex items-center justify-center text-white text-xs'>
-                1
-              </div>
+            <div className='relative'>
+              <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
+                <FontAwesomeIcon className='rounded-full drop-shadow-sm text-[#233042]' icon={faShoppingBasket} size='2xl' />
+                <div className='absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex items-center justify-center text-white text-xs'>
+                  1
+                </div>
+              </button>
             </div>
           </div>
         </div>
