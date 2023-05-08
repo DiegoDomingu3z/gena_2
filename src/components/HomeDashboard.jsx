@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CurrentOrdersTile from './CurrentOrdersTile'
+import Spending from './Spending'
 const HomeDashboard = () => {
     const { account } = useSelector((state) => state.Account)
     const dispatch = useDispatch()
@@ -21,8 +22,9 @@ const HomeDashboard = () => {
             <span className='rounded bg-[#1baded] text-white py-1 px-4'>Today: {date}</span>
         </div>
         <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
-        <div className='grid w-full h-full'>
+        <div className='grid grid-cols-2 w-full h-full'>
             <CurrentOrdersTile />
+            {account.privileges === ('admin' || 'printshop') && <Spending />}
         </div>
     </div>
   )
