@@ -13,7 +13,7 @@ const newCategory = () => {
 
     return (
         <LoginProvider>
-            <Layout title={'New Category'}>
+            <Layout title={'Gena | New Category'}>
                 <NewCategory />
             </Layout>
         </LoginProvider>

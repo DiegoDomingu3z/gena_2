@@ -7,6 +7,9 @@ import { FaMinusCircle, FaPenSquare } from "react-icons/fa";
 import { Field, Form, Formik } from "formik"
 import { RingLoader } from "react-spinners"
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons"
+
 const NewSubCategory = () => {
     const router = useRouter()
     const dispatch = useDispatch()
@@ -58,69 +61,74 @@ const NewSubCategory = () => {
     }, [router.query])
 
     return (
-        <div className="">
-            <div className={"flex flex-col p-20 pb-8"}>
+        <div>
+            <div className="flex flex-col p-20 pb-8">
+                <div className={""}>
 
-                <div className='flex items-end border-b'>
-                    <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary mb-2'>{category.name} | Sub-Categories</h1></div>
+                    <div className='flex items-end'>
+                        <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>{category.name} | Sub-Categories</h1></div>
+                    </div>
+                    <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
                 </div>
-            </div>
-            <div className="  ">
-                <div className={'flex flex-col items-center h-4/5 mx-20 bg-white h-[44rem]  overflow-y-scroll'}>
-                    {
-                        subCats.length > 0 ?
+                <div className='bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'>
+                <h1 className='text-xl font-medium mb-10'>Sub Categories</h1>
 
-                            subCats.map((s) => (
-                                <div
-                                    className={'md:w-11/12 w-4/5 self-center justify-self-center p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={s._id}>
-                                    <span>{s.name}</span>
-                                    <div>
-                                        <button className="hover:scale-125 transition-all ease-in-out me-5"><FaPenSquare className="text-blue-500" size={20} /></button>
-                                        <button className="hover:scale-125 transition-all ease-in-out ">
-                                            <FaMinusCircle className="text-red-500" size={20} onClick={() => removeSubCategory(s._id, s.name)} />
-                                        </button>
+                    <div className={''}>
+                        {
+                            subCats.length > 0 ?
+
+                                subCats.map((s) => (
+                                    <div
+                                        className={'md:w-11/12 w-4/5 self-center justify-self-center p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={s._id}>
+                                        <span>{s.name}</span>
+                                        <div className="flex gap-5">
+                                            <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"><FontAwesomeIcon icon={faPencil} /></button>
+                                            <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full" onClick={() => removeSubCategory(s._id, s.name)}>
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </button>
+                                        </div>
                                     </div>
+                                ))
+                                :
+                                <div className="flex justify-center">
+                                    {category.name ?
+                                        <div className="mt-60 text-lg font-bold antialiased">No Sub - Categories in  {category.name}</div>
+                                        :
+                                        <div className="mt-60 ">
+                                            <RingLoader color="#36d7b7" size={90} />
+                                        </div>}
                                 </div>
-                            ))
-                            :
-                            <div>
-                                {category.name ?
-                                    <div className="mt-60 text-lg font-bold antialiased">No Sub - Categories in  {category.name}</div>
-                                    :
-                                    <div className="mt-80 ">
-                                        <RingLoader color="#36d7b7" size={90} />
-                                    </div>}
-                            </div>
 
-                    }
+                        }
+                    </div>
                 </div>
-                <div className="flex flex-col px-20 mt-3 ">
-                    <Formik
-                        initialValues={{
-                            name: ''
-                        }}
-                        onSubmit={async (values) => {
-                            const { categoryId } = router.query
-                            const token = await sessionStorage.getItem('accessToken')
-                            dispatch(addSubCategory({ values, categoryId, token }))
-                            document.getElementById('subCategoryFrom').reset()
-                        }}
-                    >
-                        {({ isSubmitting }) => (
+                    <div className="flex flex-col px-20 mt-3 ">
+                        <Formik
+                            initialValues={{
+                                name: ''
+                            }}
+                            onSubmit={async (values) => {
+                                const { categoryId } = router.query
+                                const token = await sessionStorage.getItem('accessToken')
+                                dispatch(addSubCategory({ values, categoryId, token }))
+                                document.getElementById('subCategoryFrom').reset()
+                            }}
+                        >
+                            {({ isSubmitting }) => (
 
-                            <Form id="subCategoryForm"
-                            >
-                                <div className="md:w-6/12 w-2/5 self-center justify-self-center flex">
-                                    <Field name='name' id='name' type="text" className="bg-gray-50 border border-gray-300
-                                     text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
-                                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                     dark:focus:border-blue-500" placeholder="Sub-Category Name" />
-                                    <button className="bg-blue-300 px-5 ms-5 rounded-lg" type="submit" disabled={isSubmitting}>Submit</button>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
-                </div>
+                                <Form id="subCategoryForm"
+                                >
+                                    <div className="md:w-6/12 w-2/5 self-center justify-self-center flex">
+                                        <Field name='name' id='name' type="text" className="bg-gray-50 border border-gray-300
+                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
+                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
+                                        dark:focus:border-blue-500" placeholder="Sub-Category Name" />
+                                        <button className="bg-blue-300 px-5 ms-5 rounded-lg" type="submit" disabled={isSubmitting}>Submit</button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
             </div>
         </div>
     )

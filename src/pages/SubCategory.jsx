@@ -5,7 +5,7 @@ import NewSubCategory from "~/components/PrintShopView/NewSubCategory"
 const SubCategory = () => {
     return (
         <LoginProvider>
-            <Layout title={'SubCategory'}>
+            <Layout title={'Gena | SubCategory'}>
                 <NewSubCategory />
             </Layout>
         </LoginProvider>

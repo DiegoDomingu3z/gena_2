@@ -39,7 +39,6 @@ const Spending = () => {
         display: true,
         title: {
           display: true,
-          text: 'Months',
           font: {
             size: 16,
             weight: 'bold',
@@ -53,7 +52,6 @@ const Spending = () => {
         display: true,
         title: {
           display: true,
-          text: 'Money Spent',
           font: {
             size: 16,
             weight: 'bold',
@@ -113,7 +111,7 @@ const Spending = () => {
             <p className='text-2xl'>$236.40</p>
         </div>
       <div>
-        <canvas className='w-[35rem]' ref={chartRef} id="line-chart" />
+        <canvas className='w-[35.5rem]' ref={chartRef} id="line-chart" />
         {tooltipContent && tooltipContent.raw && tooltipContent.raw.y && (
             <Tooltip place="top" type="dark" effect="solid">
                 {tooltipContent.raw.y}
