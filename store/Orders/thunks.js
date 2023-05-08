@@ -12,7 +12,25 @@ export const getOrders = createAsyncThunk(
                 }
             })
             return orders
-        } catch(error) {
+        } catch (error) {
+            throw error
+        }
+    }
+)
+
+
+export const addToBasket = createAsyncThunk(
+    'add/order',
+    async (data) => {
+        try {
+            const sanatizedData = {
+                qty: data.qty,
+                labelId: data.labelId,
+                textToPut: data.textToPut
+            }
+            return sanatizedData
+        } catch (error) {
+            console.log(error)
             throw error
         }
     }
