@@ -3,6 +3,7 @@ import Layout from '~/components/Layout'
 import LabelCard from '~/components/LabelCard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCategories } from '../../store/Category/Thunk'
 import { Formik, Field } from 'formik'
@@ -50,7 +51,13 @@ const startNewOrder = () => {
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
           <div className='flex justify-end items-end gap-5 w-2/5'>
             <FontAwesomeIcon className='p-3 rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} />
-            <input name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
+            <input name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
+             outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
+            <div className='relative'><FontAwesomeIcon icon={faShoppingBasket} size='2xl' />
+              <div className='absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex items-center justify-center text-white text-xs'>
+                1
+              </div>
+            </div>
           </div>
         </div>
         <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />

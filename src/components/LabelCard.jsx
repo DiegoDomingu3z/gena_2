@@ -1,22 +1,87 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Image from 'next/image';
+import Head from 'next/head';
+import { Field, Form, Formik } from 'formik';
+import { addToBasket } from '../../store/Orders/thunks';
 const LabelCard = () => {
   const labels = useSelector((state) => state.Label.activeLabels)
+  const [OrderQty, setOrderQty] = useState(0)
+  const dispatch = useDispatch()
+  const [qtyValue, setQtyValue] = useState('')
+  const handleInput = (e) => {
+    setQtyValue((prev) => {
+      console.log(qtyValue)
+      return {
+        [e.target.name]: e.value
+      }
+    })
+  }
+  const handleOrderQty = (event) => {
+    const inputValue = event.target.value;
+    setOrderQty(inputValue);
+  }
   return (
-    <div>
-
+    <div className=' grid grid-cols-4 gap-8 h-[40.3rem]  overflow-y-scroll '>
       {labels ?
-        labels.map((l) => (
-          <div className='bg-[#dfe8f6] w-full h-72 laptop:w-96 laptop:h-96 rounded-lg drop-shadow-md font-genaPrimary p-4'>
-            <div className='w-full border border-black h-[15rem] rounded-md justify-center flex items-center'>
-              <iframe src='pdflabels/3.35x2.3-Cards/Extra-Stock-Cards/ALL-3.35x2.3-Extra-Stock-Card-REG-DOC0419.pdf' ></iframe>
+        labels.map((l, index) => {
+          let vals = l.fields.reduce((acc, curr) => {
+            acc[curr.name] = curr.value || '';
+            console.log(acc, 'yuh')
+            return acc;
+          }, {});
+          return (
 
-            </div>
-            <div>{`${l.pdfPath}${l.categoryName}/${l.subCategoryName}/${l.fileName}`}</div>
+            <Formik
+              initialValues={vals}
+              onSubmit={async (values) => {
+                dispatch(addToBasket(values))
+                document.getElementById(`${l._id}`).reset()
+                document.getElementById(l.docNum).reset()
+                setOrderQty('')
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form id={l._id}>
+                  <div className='bg-[#dfe8f6] w-full h-76 laptop:w-80 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary p-4'>
+                    <div className='text-end text-xs'>{l.docNum}</div>
+                    <div className='text-center text-lg font-bold mb-2'>{l.name}</div>
+                    <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
+                      <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="220" className='rounded-lg'></iframe>
+                    </div>
+                    <div className='text-center text-md font-semibold'>
+                      <span>Pack of {l.unitPack}</span>
+                    </div>
+                    <div >
+                      <Field className=" bg-gray-50 ms-3.5 border border-gray-300 text-center mt-1
+           sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
+           dark:border-gray-600 dark:placeholder-gray-400
+           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="number" max={l.maxOrderQty}
+                        placeholder={`ENTER QTY: MAX(${l.maxOrderQty})`} value={qtyValue} onChange={handleInput} name="qty" required key={l.docNum} id={l.docNum} />
+                      {l.isKanban ?
+                        l.fields.map((f) => {
+                          console.log(f.name)
+                          return (
+                            <div className='flex'><Field className="bg-gray-50 ms-3.5 border border-gray-300 text-center mt-1
+                          sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
+                          dark:border-gray-600 dark:placeholder-gray-400
+                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={f.name} type={f.type} placeholder={f.name} key={f._id} required />
+                              {f.type === 'checkbox' ? <span className=''>{f.name.toUpperCase()}</span> : null}
+                            </div>
+                          )
+                        })
+                        : null
 
-          </div>
-        ))
+                      }
+                    </div>
+                    <div className='text-center mt-3'><button className='bg-red-500 px-3 py-1 rounded-lg text-white' type='submit' disabled={isSubmitting}>Add to Order</button></div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+
+          )
+        })
 
 
         : null}
