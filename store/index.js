@@ -5,11 +5,13 @@ import AccountReducer from './Account/Slice'
 import MaterialReducer from "./Material/Slice";
 import CategoryReducer from './Category/Slice'
 import SubCategoryReducer from './Sub-Category/Slice'
+import LabelReducer from './Label/Slice'
 export const store = configureStore({
     reducer: {
         Account: AccountReducer,
         Material: MaterialReducer,
         Category: CategoryReducer,
-        SubCategory: SubCategoryReducer
+        SubCategory: SubCategoryReducer,
+        Label: LabelReducer
     }
 })
