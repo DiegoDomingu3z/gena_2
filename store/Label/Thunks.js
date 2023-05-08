@@ -34,3 +34,19 @@ export const createLabelInfo = createAsyncThunk(
         }
     }
 )
+
+export const getLabels = createAsyncThunk(
+    'label/getLabels',
+    async ({ activeCategory, activeSubCategoryId }) => {
+        try {
+            console.log(activeCategory, "IN THUNK")
+            const res = await api.get(`api/upload/get/category/${activeCategory}/subCategory/${activeSubCategoryId}`)
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

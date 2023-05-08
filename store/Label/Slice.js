@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getLabels } from "./Thunks";
 
 
 
@@ -9,7 +10,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const LabelSlice = createSlice({
     name: 'Label',
     initialState: {
-        Labels: [],
+        activeLabels: [],
         loading: false,
 
     },
@@ -18,6 +19,16 @@ export const LabelSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getLabels.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getLabels.fulfilled, (state, action) => {
+                state.activeLabels = action.payload
+                state.loading = false
+            })
+            .addCase(getLabels.rejected, (state, action) => {
+                state.loading = false
+            })
 
     }
 })
