@@ -1,4 +1,4 @@
-import { addToBasket, getBasketLabels, getOrders } from "./thunks";
+import { addToBasket, getBasketLabels, getOrders, removeFromBasket } from "./thunks";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -9,7 +9,7 @@ export const OrdersSlice = createSlice({
         activeNote: '',
         myOrders: [],
         loading: false,
-        currentBasketLabels: []
+
     },
     reducers: {
 
@@ -27,16 +27,10 @@ export const OrdersSlice = createSlice({
             .addCase(addToBasket.rejected, (state, action) => {
                 console.log(action.error)
             })
-            .addCase(getBasketLabels.pending, (state, action) => {
-                state.loading = true
-            })
-            .addCase(getBasketLabels.fulfilled, (state, action) => {
+            .addCase(removeFromBasket.fulfilled, (state, action) => {
                 state.loading = false
-                state.currentBasketLabels = action.payload
-            })
-            .addCase(getBasketLabels.rejected, (state, action) => {
-                state.loading = false
-                console.log(action.error)
+                console.log(action.payload)
+                state.labelBasket = state.labelBasket.filter(c => c.labelId != action.payload)
             })
     }
 })

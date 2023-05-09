@@ -37,6 +37,18 @@ export const addToBasket = createAsyncThunk(
     }
 )
 
+export const removeFromBasket = createAsyncThunk(
+    'remove/label',
+    async (id) => {
+        try {
+            return id
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
 
 export const getBasketLabels = createAsyncThunk(
     'get/basket',
