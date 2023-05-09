@@ -10,7 +10,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
 
 
   return (
-    <div className=' grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8 max-h-[90rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
+    <div className=' grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
       {labels ?
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
