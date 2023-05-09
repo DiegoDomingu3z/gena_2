@@ -10,7 +10,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
 
 
   return (
-    <div className=' grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
+    <div className=' grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
       {labels ?
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
@@ -46,7 +46,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
             >
               {({ isSubmitting }) => (
                 <Form id={l._id}>
-                  <div className='bg-[#dfe8f6] w-[21rem] h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
+                  <div className='bg-[#dfe8f6] w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                       <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
                     </div>
