@@ -104,7 +104,7 @@ const startNewOrder = () => {
             </div>
           </Formik>
         </div>
-        <div className='grid w-full h-full'>
+        <div className=''>
           <LabelCard />
         </div>
       </div>
