@@ -50,3 +50,19 @@ export const getLabels = createAsyncThunk(
         }
     }
 )
+
+export const searchLabel = createAsyncThunk(
+    'label/search',
+    async (data) => {
+        try {
+            console.log(data, 'search by')
+            const res = await api.get(`/api/upload/search?q=${data}`,)
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

@@ -25,7 +25,6 @@ const NewLabel = () => {
     const [fields, setFields] = useState([])
     const token = useSelector((state) => state.Account.accessToken)
     const onDrop = useCallback(acceptedFiles => {
-        console.log(acceptedFiles[0])
         let fileIndex = acceptedFiles[0]
         setFiles(prevFiles => [...prevFiles, fileIndex])
     }, [files])
@@ -41,7 +40,6 @@ const NewLabel = () => {
             let newFile = files
             newFile.splice(1, 1)
             setFiles(newFile)
-            console.log(files)
         }
     }
     const handleAddInput = () => {
@@ -57,14 +55,12 @@ const NewLabel = () => {
         const newFieldTypes = [...fieldTypes]
         newFieldTypes[index] = value
         setFieldTypes(newFieldTypes)
-        console.log(fieldTypes)
     }
 
     const handleInputChange = (index, value) => {
         const newInputValues = [...inputValues];
         newInputValues[index] = value;
         setInputValues(newInputValues);
-        console.log(inputValues)
     };
 
 
@@ -113,7 +109,6 @@ const NewLabel = () => {
 
     const submitLabelInfo = async (values) => {
         let fields = await configureFields()
-        console.log(fields, "FIELDS")
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
@@ -127,7 +122,6 @@ const NewLabel = () => {
             categoryId: activeCategory,
             subCategoryId: values.subCategoryId
         }
-        // console.log(labelFile, "FILE IN FUNCTION")
         const formData = await pushFiles()
         dispatch(createLabelInfo({ data, formData }));
     }
@@ -164,7 +158,6 @@ const NewLabel = () => {
                             subCategoryId: ''
                         }}
                         onSubmit={async (values) => {
-                            console.log(values)
                             submitLabelInfo(values)
                             document.getElementById('newLabelForm').reset()
                             deleteLabels()

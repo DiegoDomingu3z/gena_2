@@ -15,8 +15,6 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
-            // console.log(acc, 'yuh')
-            console.log(l)
             return acc;
           }, {});
           vals['qty'] = '';

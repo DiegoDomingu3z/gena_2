@@ -57,8 +57,6 @@ const CartCanvasLabelCard = ({ toggleCartCanvas }) => {
       }
     }
     getLabels()
-    console.log(basket, 'basketss')
-    console.log(basketLabels, 'basket labelss')
   }, [toggleCartCanvas])
 
 
