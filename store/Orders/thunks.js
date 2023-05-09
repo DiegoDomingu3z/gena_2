@@ -36,3 +36,16 @@ export const addToBasket = createAsyncThunk(
         }
     }
 )
+
+
+export const getBasketLabels = createAsyncThunk(
+    'get/basket',
+    async (data) => {
+        try {
+            return data
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

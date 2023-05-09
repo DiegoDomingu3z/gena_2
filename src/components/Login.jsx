@@ -12,7 +12,7 @@ const Login = () => {
     const router = useRouter()
     const user = useSelector((state) => state.Account)
 
-
+    console.log(user)
     useEffect(() => {
         const token = sessionStorage.getItem('accessToken')
         token && router.push('/home')

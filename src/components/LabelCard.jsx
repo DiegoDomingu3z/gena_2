@@ -8,20 +8,6 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const [qtyValue, setQtyValue] = useState('')
 
 
-  const handleInput = (e) => {
-    setQtyValue((prev) => {
-      console.log(qtyValue)
-      return {
-        [e.target.name]: e.value
-      }
-    })
-  }
-
-  const handleOrderQty = (event) => {
-    const inputValue = event.target.value;
-    setOrderQty(inputValue);
-  }
-
 
   return (
     <div className=' grid grid-cols-4 gap-8 border h-[90rem] laptop:h-[44rem]  overflow-auto '>
@@ -29,13 +15,10 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
-            console.log(acc, 'yuh')
-
             return acc;
           }, {});
           vals['qty'] = '';
           return (
-
             <Formik
               initialValues={vals}
               onSubmit={async (values) => {
@@ -50,13 +33,10 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                   }
                   finalArr.push(obj)
                 }
-                console.log(finalArr)
                 await dispatch(addToBasket({ finalArr, qty, id }))
                 await setToggleCartCanvas(!toggleCartCanvas)
                 setTimeout(async () => {
-                  console.log("GETTING CALLED TOGGLE")
                   await setToggleCartCanvas(false)
-                  console.log(toggleCartCanvas)
                 }, 1500)
                 document.getElementById(`${l._id}`).reset()
                 document.getElementById(`${l.docNum}`).reset()
@@ -79,10 +59,9 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                            dark:border-gray-600 dark:placeholder-gray-400
                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="number" max={l.maxOrderQty}
-                          placeholder={`Enter Qty: MAX(${l.maxOrderQty})`} value={qtyValue} onChange={handleInput} name="qty" required key={l.docNum} id={l.docNum} />
+                          placeholder={`Enter Qty: MAX(${l.maxOrderQty})`} name="qty" required key={l.docNum} id={l.docNum} />
                         {l.isKanban ?
                           l.fields.map((f) => {
-                            console.log(f.name)
                             return (
                               <div className='flex'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
@@ -95,9 +74,9 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                           : null
 
                         }
-                        </div>
-                        <div className='text-center mt-3'><button className='bg-red-500 px-3 py-1 rounded-lg text-white' type='submit' disabled={isSubmitting}>Add to Order</button></div>
                       </div>
+                      <div className='text-center mt-3'><button className='bg-red-500 px-3 py-1 rounded-lg text-white' type='submit' disabled={isSubmitting}>Add to Order</button></div>
+                    </div>
                   </div>
                 </Form>
               )}
