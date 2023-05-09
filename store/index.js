@@ -14,6 +14,6 @@ export const store = configureStore({
         Category: CategoryReducer,
         SubCategory: SubCategoryReducer,
         Label: LabelReducer,
-        Order: OrderReducer
+        Orders: OrderReducer
     }
 })

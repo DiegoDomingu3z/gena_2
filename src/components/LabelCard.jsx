@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Image from 'next/image';
-import Head from 'next/head';
 import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
-const LabelCard = () => {
+const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
 
@@ -35,6 +33,12 @@ const LabelCard = () => {
                 }
                 console.log(finalArr)
                 await dispatch(addToBasket({ finalArr, qty, id }))
+                await setToggleCartCanvas(!toggleCartCanvas)
+                setTimeout(async () => {
+                  console.log("GETTING CALLED TOGGLE")
+                  await setToggleCartCanvas(false)
+                  console.log(toggleCartCanvas)
+                }, 1500)
                 document.getElementById(`${l._id}`).reset()
                 document.getElementById(`${l.docNum}`).reset()
               }}
