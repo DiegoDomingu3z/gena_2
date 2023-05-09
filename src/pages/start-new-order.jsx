@@ -22,7 +22,6 @@ const startNewOrder = () => {
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null)
   const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
-  console.log(toggleCartCanvas)
 
   const filterSubCats = (event) => {
     let id = event.target.value
