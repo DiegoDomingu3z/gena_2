@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { logout } from '../../store/Account/thunks';
 import { useEffect } from 'react';
+import CartCanvasDrawer from './CartCanvasDrawer';
 
 
 const Layout = ({ children, title }) => {
