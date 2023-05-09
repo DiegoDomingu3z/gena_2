@@ -8,29 +8,15 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const [qtyValue, setQtyValue] = useState('')
 
 
-  const handleInput = (e) => {
-    setQtyValue((prev) => {
-      console.log(qtyValue)
-      return {
-        [e.target.name]: e.value
-      }
-    })
-  }
-
-  const handleOrderQty = (event) => {
-    const inputValue = event.target.value;
-    setOrderQty(inputValue);
-  }
-
 
   return (
-    <div className=' grid grid-cols-4 gap-8 border h-[90rem] laptop:h-[44rem]  overflow-auto '>
+    <div className=' grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8 max-h-[90rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
       {labels ?
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
-            console.log(acc, 'yuh')
-
+            // console.log(acc, 'yuh')
+            console.log(l)
             return acc;
           }, {});
           vals['qty'] = '';
@@ -64,13 +50,13 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
             >
               {({ isSubmitting }) => (
                 <Form id={l._id}>
-                  <div className='bg-[#dfe8f6] border border-black w-full h-76 laptop:w-80 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
+                  <div className='bg-[#dfe8f6] w-[21rem] h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                       <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
                     </div>
                     <div className='p-4'>
-                      <div className='text-center text-lg font-bold mb-2'>{l.name}</div>
                       <div className='text-end text-xs'>{l.docNum}</div>
+                      <div className='text-center text-md text-gray-500 mb-5'>{l.name}</div>
                       <div className='text-center text-md font-semibold'>
                         <span>Pack of {l.unitPack}</span>
                       </div>
@@ -79,7 +65,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                            dark:border-gray-600 dark:placeholder-gray-400
                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="number" max={l.maxOrderQty}
-                          placeholder={`Enter Qty: MAX(${l.maxOrderQty})`} value={qtyValue} onChange={handleInput} name="qty" required key={l.docNum} id={l.docNum} />
+                          placeholder={`Enter Qty: MAX(${l.maxOrderQty})`} name="qty" required key={l.docNum} id={l.docNum} />
                         {l.isKanban ?
                           l.fields.map((f) => {
                             console.log(f.name)

@@ -13,7 +13,8 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       screens:{
-        'laptop': '1200px'
+        'laptop': '1200px',
+        'laptoplg': '1486px'
       },
       fontFamily: {
         'genaPrimary': "font-family: 'Inter', sans-serif;"
