@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CurrentOrdersTile from './CurrentOrdersTile'
-import Spending from './Spending'
+import Spending from './PrintShopView/Spending'
 const HomeDashboard = () => {
     const { account } = useSelector((state) => state.Account)
     const dispatch = useDispatch()

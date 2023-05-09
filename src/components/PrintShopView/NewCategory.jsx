@@ -82,7 +82,7 @@ const NewCategory = () => {
                     cats ?
                         cats.map((c) => (
                             <div onClick={() => showSubCats(c._id)}
-                                className={'md:w-11/12 w-4/5 self-center justify-self-center p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={c._id}>
+                                className={'w-full p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={c._id}>
                                 <span>{c.name}</span>
                                 <div className="flex gap-5">
                                     <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full' onClick={(event) => {
