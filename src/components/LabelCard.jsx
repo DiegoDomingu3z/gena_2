@@ -5,6 +5,23 @@ import { addToBasket } from '../../store/Orders/thunks';
 const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
+  const [qtyValue, setQtyValue] = useState('')
+
+
+  const handleInput = (e) => {
+    setQtyValue((prev) => {
+      console.log(qtyValue)
+      return {
+        [e.target.name]: e.value
+      }
+    })
+  }
+
+  const handleOrderQty = (event) => {
+    const inputValue = event.target.value;
+    setOrderQty(inputValue);
+  }
+
 
   return (
     <div className=' grid grid-cols-4 gap-8 h-[40.3rem]  overflow-y-scroll '>
@@ -12,6 +29,8 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
+            console.log(acc, 'yuh')
+
             return acc;
           }, {});
           vals['qty'] = '';
