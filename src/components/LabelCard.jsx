@@ -46,7 +46,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
             >
               {({ isSubmitting }) => (
                 <Form id={l._id}>
-                  <div className='bg-[#dfe8f6] w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
+                  <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                       <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
                     </div>
@@ -77,7 +77,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
 
                         }
                       </div>
-                      <div className='text-center mt-3'><button className='bg-red-500 px-3 py-1 rounded-lg text-white' type='submit' disabled={isSubmitting}>Add to Order</button></div>
+                      <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-white hover:text-[#1baded] border border-[#1baded] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Add to Order</button></div>
                     </div>
                   </div>
                 </Form>

@@ -20,7 +20,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
           <textarea className='rounded-lg bg-[#233042] text-white p-5 max-h-44 min-h-[6rem]' placeholder='Notes...' name="" id="" cols="40" rows="6"></textarea>
         </div>
         <div className='w-full flex flex-col justify-center'>
-          <button className='bg-red-500 mx-3 p-3 rounded-xl text-white'>Submit Order</button>
+          <button className='bg-[#1baded] mx-3 p-3 rounded-xl text-white hover:bg-white border border-[#1baded] hover:text-[#1baded] transition-all ease-in-out'>Submit Order</button>
         </div>
       </div>
     </div>
