@@ -9,7 +9,6 @@ import { addToBasket } from '../../store/Orders/thunks';
 
 const LabelCard = () => {
   const labels = useSelector((state) => state.Label.activeLabels)
-  const [OrderQty, setOrderQty] = useState(0)
   const dispatch = useDispatch()
   const [qtyValue, setQtyValue] = useState('')
 
@@ -28,6 +27,7 @@ const LabelCard = () => {
     setOrderQty(inputValue);
   }
 
+
   return (
     <div className=' grid grid-cols-4 gap-8 h-[40.3rem]  overflow-y-scroll '>
       {labels ?
@@ -35,18 +35,30 @@ const LabelCard = () => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
             console.log(acc, 'yuh')
-            console.log(l)
+
             return acc;
           }, {});
+          vals['qty'] = '';
           return (
 
             <Formik
               initialValues={vals}
               onSubmit={async (values) => {
-                dispatch(addToBasket(values))
+                const { qty, ...newValues } = values;
+                delete values.qty;
+                let id = l._id
+                let finalArr = []
+                for (const property in newValues) {
+                  let obj = {
+                    name: property,
+                    text: newValues[property]
+                  }
+                  finalArr.push(obj)
+                }
+                console.log(finalArr)
+                await dispatch(addToBasket({ finalArr, qty, id }))
                 document.getElementById(`${l._id}`).reset()
-                document.getElementById(l.docNum).reset()
-                setOrderQty('')
+                document.getElementById(`${l.docNum}`).reset()
               }}
             >
               {({ isSubmitting }) => (
@@ -65,7 +77,7 @@ const LabelCard = () => {
            sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
            dark:border-gray-600 dark:placeholder-gray-400
            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="number" max={l.maxOrderQty}
-                        placeholder={`ENTER QTY: MAX(${l.maxOrderQty})`} value={qtyValue} onChange={handleInput} name="qty" required key={l.docNum} id={l.docNum} />
+                        placeholder={`ENTER QTY: MAX(${l.maxOrderQty})`} name="qty" required key={l.docNum} id={l.docNum} />
                       {l.isKanban ?
                         l.fields.map((f) => {
                           console.log(f.name)

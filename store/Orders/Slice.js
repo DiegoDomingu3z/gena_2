@@ -18,6 +18,7 @@ export const OrdersSlice = createSlice({
                 console.log('YOLO')
             })
             .addCase(addToBasket.fulfilled, (state, action) => {
+                console.log(action.payload)
                 state.labelBasket.push(action.payload)
                 console.log(state.labelBasket, "REDUX STORE")
             })
@@ -26,3 +27,5 @@ export const OrdersSlice = createSlice({
             })
     }
 })
+
+export default OrdersSlice.reducer
