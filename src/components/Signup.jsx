@@ -15,17 +15,7 @@ const Signup = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const user = useSelector((state) => state.Account)
-    const [inputValues, setInputValues] = useState({});
 
-    const handleInput = (e) => {
-        setInputValues((prev) => (
-            {
-                [e.target.name]: e.target.value,
-                ...prev
-            }
-        ))
-        console.log(inputValues)
-    }
 
 
   return (
@@ -69,11 +59,11 @@ const Signup = () => {
                         <div className='flex justify-around gap-8'>
                             <div className='grow'>
                                 <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                                <Field onChange={handleInput} type="text" name="firstName" id="firstName" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} placeholder="First" required="" />
+                                <Field type="text" name="firstName" id="firstName" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} placeholder="First" required="" />
                             </div>
                             <div className='grow'>
                                 <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                                <Field onChange={handleInput} type="text" name="lastName" id="lastName" placeholder="Last" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} required="" />
+                                <Field type="text" name="lastName" id="lastName" placeholder="Last" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} required="" />
                             </div>
                         </div>
                         <div className='flex justify-around gap-8'>
