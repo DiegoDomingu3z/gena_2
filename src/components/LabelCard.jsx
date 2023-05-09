@@ -21,7 +21,6 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
           }, {});
           vals['qty'] = '';
           return (
-
             <Formik
               initialValues={vals}
               onSubmit={async (values) => {
@@ -36,13 +35,10 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                   }
                   finalArr.push(obj)
                 }
-                console.log(finalArr)
                 await dispatch(addToBasket({ finalArr, qty, id }))
                 await setToggleCartCanvas(!toggleCartCanvas)
                 setTimeout(async () => {
-                  console.log("GETTING CALLED TOGGLE")
                   await setToggleCartCanvas(false)
-                  console.log(toggleCartCanvas)
                 }, 1500)
                 document.getElementById(`${l._id}`).reset()
                 document.getElementById(`${l.docNum}`).reset()
@@ -68,7 +64,6 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                           placeholder={`Enter Qty: MAX(${l.maxOrderQty})`} name="qty" required key={l.docNum} id={l.docNum} />
                         {l.isKanban ?
                           l.fields.map((f) => {
-                            console.log(f.name)
                             return (
                               <div className='flex'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
@@ -81,9 +76,9 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                           : null
 
                         }
-                        </div>
-                        <div className='text-center mt-3'><button className='bg-red-500 px-3 py-1 rounded-lg text-white' type='submit' disabled={isSubmitting}>Add to Order</button></div>
                       </div>
+                      <div className='text-center mt-3'><button className='bg-red-500 px-3 py-1 rounded-lg text-white' type='submit' disabled={isSubmitting}>Add to Order</button></div>
+                    </div>
                   </div>
                 </Form>
               )}

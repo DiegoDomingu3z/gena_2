@@ -1,4 +1,4 @@
-import { addToBasket, getOrders } from "./thunks";
+import { addToBasket, getBasketLabels, getOrders, removeFromBasket } from "./thunks";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -7,7 +7,9 @@ export const OrdersSlice = createSlice({
     initialState: {
         labelBasket: [],
         activeNote: '',
-        myOrders: []
+        myOrders: [],
+        loading: false,
+
     },
     reducers: {
 
@@ -24,6 +26,11 @@ export const OrdersSlice = createSlice({
             })
             .addCase(addToBasket.rejected, (state, action) => {
                 console.log(action.error)
+            })
+            .addCase(removeFromBasket.fulfilled, (state, action) => {
+                state.loading = false
+                console.log(action.payload)
+                state.labelBasket = state.labelBasket.filter(c => c.labelId != action.payload)
             })
     }
 })
