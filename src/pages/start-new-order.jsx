@@ -18,6 +18,7 @@ const startNewOrder = () => {
   const dispatch = useDispatch()
   const cats = useSelector((state) => state.Category.categories)
   const subCats = useSelector((state) => state.SubCategory.subCats)
+  const basket = useSelector((state) => state.Orders.labelBasket)
   const [activeSubCats, setActiveSubCats] = useState(null)
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null)
@@ -63,7 +64,7 @@ const startNewOrder = () => {
               <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
                 <FontAwesomeIcon className='rounded-full drop-shadow-sm text-[#233042]' icon={faShoppingBasket} size='2xl' />
                 <div className='absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex items-center justify-center text-white text-xs'>
-                  1
+                  {basket ? basket.length : 0}
                 </div>
               </button>
             </div>
@@ -105,7 +106,7 @@ const startNewOrder = () => {
           </Formik>
         </div>
         <div className=''>
-          <LabelCard />
+          <LabelCard setToggleCartCanvas={setToggleCartCanvas} toggleCartCanvas={toggleCartCanvas} />
         </div>
       </div>
     </Layout>

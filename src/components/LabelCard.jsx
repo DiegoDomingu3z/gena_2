@@ -1,15 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Image from 'next/image';
-import Head from 'next/head';
 import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
-
-
-
-const LabelCard = () => {
+const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
-  const [OrderQty, setOrderQty] = useState(0)
   const dispatch = useDispatch()
   const [qtyValue, setQtyValue] = useState('')
 
@@ -28,6 +22,7 @@ const LabelCard = () => {
     setOrderQty(inputValue);
   }
 
+
   return (
     <div className=' grid grid-cols-4 gap-8 border h-[90rem] laptop:h-[44rem]  overflow-auto '>
       {labels ?
@@ -35,18 +30,36 @@ const LabelCard = () => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
             console.log(acc, 'yuh')
-            console.log(l)
+
             return acc;
           }, {});
+          vals['qty'] = '';
           return (
 
             <Formik
               initialValues={vals}
               onSubmit={async (values) => {
-                dispatch(addToBasket(values))
+                const { qty, ...newValues } = values;
+                delete values.qty;
+                let id = l._id
+                let finalArr = []
+                for (const property in newValues) {
+                  let obj = {
+                    name: property,
+                    text: newValues[property]
+                  }
+                  finalArr.push(obj)
+                }
+                console.log(finalArr)
+                await dispatch(addToBasket({ finalArr, qty, id }))
+                await setToggleCartCanvas(!toggleCartCanvas)
+                setTimeout(async () => {
+                  console.log("GETTING CALLED TOGGLE")
+                  await setToggleCartCanvas(false)
+                  console.log(toggleCartCanvas)
+                }, 1500)
                 document.getElementById(`${l._id}`).reset()
-                document.getElementById(l.docNum).reset()
-                setOrderQty('')
+                document.getElementById(`${l.docNum}`).reset()
               }}
             >
               {({ isSubmitting }) => (

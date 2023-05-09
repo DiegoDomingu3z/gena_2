@@ -21,13 +21,14 @@ export const getOrders = createAsyncThunk(
 
 export const addToBasket = createAsyncThunk(
     'add/order',
-    async (data) => {
+    async ({ finalArr, qty, id }) => {
         try {
             const sanatizedData = {
-                qty: data.qty,
-                labelId: data.labelId,
-                textToPut: data.textToPut
+                qty: qty,
+                labelId: id,
+                textToPut: finalArr
             }
+            console.log(sanatizedData)
             return sanatizedData
         } catch (error) {
             console.log(error)
