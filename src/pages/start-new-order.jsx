@@ -78,7 +78,7 @@ const startNewOrder = () => {
           }}
 
           >
-            <div className='flex items-center justify-around'>
+            <div className='flex items-center justify-around mb-20 laptop:mb-10'>
               <Field onChange={filterSubCats} value={activeCategory} type="text" component="select" name="categoryId" className='bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/5 p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
