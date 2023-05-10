@@ -39,9 +39,9 @@ export const addToBasket = createAsyncThunk(
 
 export const removeFromBasket = createAsyncThunk(
     'remove/label',
-    async (id) => {
+    async (index) => {
         try {
-            return id
+            return index
         } catch (error) {
             console.log(error)
             throw error
@@ -49,3 +49,77 @@ export const removeFromBasket = createAsyncThunk(
     }
 )
 
+
+export const placeOrder = createAsyncThunk(
+    'submit/order',
+    async ({ orderNote, basket, token }) => {
+        try {
+            const data = {
+                notes: orderNote,
+                labels: basket
+            }
+            const res = await api.post('api/orders/create', data, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+
+export const clearBasket = createAsyncThunk(
+    'clear/basket',
+    async () => {
+        try {
+            return 'success'
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+
+export const getMyOrders = createAsyncThunk(
+    'my-orders/order',
+    async (token) => {
+        try {
+            const res = await api.get('api/orders/my-orders', {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+
+export const removeOrder = createAsyncThunk(
+    'remove/order',
+    async ({ id, token }) => {
+        try {
+            const res = await api.delete(`api/orders/delete/${id}`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
