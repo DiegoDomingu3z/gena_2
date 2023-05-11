@@ -10,7 +10,7 @@ const newLabel = () => {
   const account = useSelector((state) => state.Account.account)
   const router = useRouter()
   useEffect(() => {
-    if (account.privileges != 'admin' && account.privileges != 'printshop') {
+    if (account.privileges != 'admin') {
       router.push('/home')
     }
   }, [])

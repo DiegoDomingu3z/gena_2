@@ -8,10 +8,12 @@ const DepartmentView = () => {
     const dept = useSelector((state) => state.Department.departments)
     const router = useRouter()
     const user = useSelector((state) => state.Account)
+
     const dispatch = useDispatch()
-    const showUsers = (id) => {
+    const showUsers = (id, name) => {
         const queryParams = {
-            departmentId: id
+            departmentId: id,
+            name: name
         };
         router.push({
             pathname: "/Department-Users",
@@ -35,27 +37,25 @@ const DepartmentView = () => {
                 <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
             </div>
             <div className={'bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'}>
-                <h1 className='text-xl font-medium mb-10'>Categories</h1>
                 {
                     dept ?
                         dept.map((d) => (
-                            <div onClick={() => showUsers(d._id)}
+                            <div onClick={() => showUsers(d._id, d.name)}
                                 className={'w-full p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer flex justify-between'} key={d._id}>
                                 <span>{d.name}</span>
-                                <div className="flex gap-5">
-                                    <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'
-                                        onClick={(event) => {
-                                            event.stopPropagation(); // Stop propagation here
+                                {user.account.privileges == 'admin' ?
 
-                                        }}><FontAwesomeIcon icon={faPencil} /></button>
-                                    <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
-                                        onClick={(event) => {
-                                            event.stopPropagation(); // Stop propagation here
-                                            deleteCat(d._id, d.name);
-                                        }}>
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </button>
-                                </div>
+                                    <div className="flex gap-5">
+                                        <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                                            onClick={(event) => {
+                                                event.stopPropagation(); // Stop propagation here
+
+                                            }}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </button>
+                                    </div>
+                                    : null
+                                }
                             </div>
                         ))
                         :

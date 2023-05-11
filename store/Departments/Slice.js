@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createDepartment, getDepartments, getLeads } from "./Thunks";
+import { createDepartment, getDepartments, getLeads, getUsersInDepartment } from "./Thunks";
+import { createAccount } from "../Account/thunks";
 
 
 
@@ -10,7 +11,8 @@ export const DepartmentSlice = createSlice({
     initialState: {
         departments: [],
         loading: false,
-        leads: []
+        leads: [],
+        users: []
     },
     reducers: {
 
@@ -40,15 +42,39 @@ export const DepartmentSlice = createSlice({
 
                 state.loading = false
             })
+            // create department
             .addCase(createDepartment.pending, (state, action) => {
                 state.loading = true
             })
             .addCase(createDepartment.fulfilled, (state, action) => {
-                state.leads.push(action.payload)
+                state.departments.push(action.payload)
                 state.loading = false
             })
             .addCase(createDepartment.rejected, (state, action) => {
                 state.loading = false
+            })
+            // get users in department
+            .addCase(getUsersInDepartment.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getUsersInDepartment.fulfilled, (state, action) => {
+                state.users = action.payload
+                state.loading = false
+            })
+            .addCase(getUsersInDepartment.rejected, (state, action) => {
+                state.loading = false
+            })
+            .addCase(createAccount.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(createAccount.fulfilled, (state, action) => {
+                state.users.push(action.payload)
+                state.loading = false
+            })
+            .addCase(createAccount.rejected, (state, action) => {
+                state.errorCodes = action.error
+                state.loading = false
+
             })
     }
 })

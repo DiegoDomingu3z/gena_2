@@ -19,13 +19,13 @@ const Layout = ({ children, title }) => {
   const router = useRouter()
   const user = useSelector((state) => state.Account)
   let token;
-  
+
   useEffect(() => {
     token = sessionStorage.accessToken
-    if (!token && router.pathname !== '/signup') {
+    if (!token) {
       router.push('/')
     }
-}, [user])
+  }, [user])
 
   return (
     <div>

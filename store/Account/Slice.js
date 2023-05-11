@@ -20,19 +20,6 @@ export const AccountSlice = createSlice({
     extraReducers: (builder) => {
         builder
             // CREATE ACCOUNT
-            .addCase(createAccount.pending, (state, action) => {
-                state.loading = true
-            })
-            .addCase(createAccount.fulfilled, (state, action) => {
-                state.account = action.payload
-                state.accessToken = action.payload.accessToken
-                state.loading = false
-            })
-            .addCase(createAccount.rejected, (state, action) => {
-                state.errorCodes = action.error
-                state.loading = false
-
-            })
             // GET ACCOUNT
             .addCase(getAccount.pending, (state, action) => {
                 state.loading = true
