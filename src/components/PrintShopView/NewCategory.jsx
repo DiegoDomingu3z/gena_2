@@ -11,6 +11,7 @@ const NewCategory = () => {
     const cats = useSelector((state) => state.Category.categories)
     const dispatch = useDispatch()
     const router = useRouter()
+    const user = useSelector((state) => state.Account)
 
 
     const addCat = async (values) => {
@@ -36,6 +37,17 @@ const NewCategory = () => {
                     html: 'This may take some time <br> <b></b> Seconds left.',
                     timer: 8000,
                     timerProgressBar: true,
+                    allowOutsideClick: () => {
+                        const popup = Swal.getPopup()
+                        popup.classList.remove('swal2-show')
+                        setTimeout(() => {
+                            popup.classList.add('animate__animated', 'animate__headShake')
+                        })
+                        setTimeout(() => {
+                            popup.classList.remove('animate__animated', 'animate__headShake')
+                        }, 500)
+                        return false
+                    },
                     didOpen: () => {
                         Swal.showLoading()
                         const b = Swal.getHtmlContainer().querySelector('b')
@@ -48,6 +60,7 @@ const NewCategory = () => {
 
                     }
                 })
+
                 dispatch(removeCategory({ id, token }))
             }
         })
@@ -69,7 +82,7 @@ const NewCategory = () => {
 
     return (
         <div className="flex flex-col p-20 pb-8">
-            <div className={""}>
+            <div>
 
                 <div className='flex items-end'>
                     <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Categories</h1></div>
@@ -105,7 +118,7 @@ const NewCategory = () => {
                 }
 
             </div>
-            <div className="flex flex-col mt-3 ">
+            <div className={(user.accessToken) && (user.account.privileges == 'admin') ? "flex flex-col mt-3" : "hidden"}>
                 <Formik
                     initialValues={{
                         name: ''

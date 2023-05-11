@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faPencil, faTrash, faNoteSticky } from '@fortawesome/free-solid-svg-icons'
 import orders from '~/testDB'
-
-const OrderCard = ({ modalState, setModalState, date, status, labels }) => {
-
-  // Open a modal when the edit button is clicked to display all labels in the order.
-  // The thumbnail picture will just be the first label added to the order.
-
-  // For Order status: Grab label status and use one of these colors:
+import { useDispatch, useSelector } from 'react-redux'
+import { getMyOrders, removeOrder } from '../../store/Orders/thunks'
+import { Tooltip } from 'antd'
+import Swal from 'sweetalert2'
+const OrderCard = () => {
+  const dispatch = useDispatch()
+  const order = useSelector((state) => state.Orders.myOrders)
   const statusColors = {
     'waiting for approval': 'bg-[#ef5350]',
     'processing': 'bg-[#ff9800]',
@@ -16,29 +16,90 @@ const OrderCard = ({ modalState, setModalState, date, status, labels }) => {
     'delivered': 'bg-[#63cb67]'
   }
 
-  const statusDisplayText = {
-    'waiting for approval': 'Waiting for approval',
-    'approved': 'Approved',
-    'processing': 'Processing',
-    'delivered': 'Delivered'
+
+  const deleteOrder = async (id) => {
+    const token = sessionStorage.getItem('accessToken')
+    Swal.fire({
+      title: `Remove Order: <br> ${id}?`,
+      text: "You will not be able to revert this",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let timerInterval
+        await Swal.fire({
+          title: `Deleting Order: <br> ${id}`,
+          html: 'This may take some time <br> <b></b> Seconds left.',
+          timer: 1000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+              b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        })
+        dispatch(removeOrder({ id, token }))
+      }
+    })
+
   }
+  useEffect(() => {
+    const getOrders = async () => {
+      const token = sessionStorage.getItem('accessToken')
+      await dispatch(getMyOrders(token))
+      console.log(order)
+    }
+    getOrders()
 
-  const qty = labels.reduce((acc, label) => {
-    return label.qty + acc
-  }, 0)
+  }, [])
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
 
   return (
-      <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100'>
-        <p>#000253</p>
-        <p className=''>{qty}</p>
-        <p className=''>{date}</p>
-        <span className={`px-5 ${statusColors[status]} text-white rounded-lg max-h-8 flex items-center`}>{statusDisplayText[status]}</span>
-        <div className='flex gap-5'>
-          <button onClick={() => {setModalState(!modalState)}} className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
-          <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faTrash} /></button>
-        </div>
-      </div>
+    <div >
+      {order.length > 0 ?
+        order.map((o) => (
+          <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100' key={o._id}>
+            <p>{o._id}</p>
+            <p className=''>{o.labels.length}</p>
+            <p className=''>{formatDate(o.createdOn)}</p>
+            <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
+            <div className='flex gap-5'>
+              <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
+              <button onClick={() => deleteOrder(o._id)} className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faTrash} /></button>
+              {o.notes ?
+                <Tooltip placement="top" title={o.notes}>
+                  <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                    <FontAwesomeIcon icon={faNoteSticky} />
+                  </button>
+                </Tooltip>
+                : null
+              }
+            </div>
+
+          </div>
+        ))
+
+        : null
+
+
+      }
+
+    </div>
   )
 }
 
