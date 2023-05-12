@@ -1,4 +1,4 @@
-import { addToBasket, clearBasket, getBasketLabels, getMyOrders, getOrders, placeOrder, removeFromBasket, removeOrder } from "./thunks";
+import { addToBasket, approveOrder, clearBasket, declineOrder, getBasketLabels, getMyOrders, getOrders, getOrdersToApprove, placeOrder, removeFromBasket, removeOrder } from "./thunks";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -9,6 +9,7 @@ export const OrdersSlice = createSlice({
         activeNote: '',
         myOrders: [],
         loading: false,
+        leadDepartmentOrders: []
 
     },
     reducers: {
@@ -73,6 +74,39 @@ export const OrdersSlice = createSlice({
 
             })
             .addCase(removeOrder.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            // Orders lead needs to approve
+            .addCase(getOrdersToApprove.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getOrdersToApprove.fulfilled, (state, action) => {
+                state.loading = false
+                state.leadDepartmentOrders = action.payload
+            })
+            .addCase(getOrdersToApprove.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            // APPROVE ORDER
+            .addCase(approveOrder.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(approveOrder.fulfilled, (state, action) => {
+                state.loading = false
+                state.leadDepartmentOrders = state.leadDepartmentOrders.filter(o => o._id != action.payload._id)
+            })
+            .addCase(approveOrder.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            // DECLINE ORDER
+            .addCase(declineOrder.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(declineOrder.fulfilled, (state, action) => {
+                state.loading = false
+                state.leadDepartmentOrders = state.leadDepartmentOrders.filter(o => o._id != action.payload._id)
+            })
+            .addCase(declineOrder.rejected, (state, action) => {
                 console.log(action.error)
             })
     }
