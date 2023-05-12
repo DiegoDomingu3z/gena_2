@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getLabels, searchLabel } from "./Thunks";
+import { findLabelFields, getLabels, searchLabel } from "./Thunks";
 
 
 
@@ -12,8 +12,8 @@ export const LabelSlice = createSlice({
     initialState: {
         activeLabels: [],
         loading: false,
-        searchedLabels: []
-
+        searchedLabels: [],
+        labelFields: []
     },
     reducers: {
 
@@ -38,6 +38,16 @@ export const LabelSlice = createSlice({
                 state.loading = false
             })
             .addCase(searchLabel.rejected, (state, action) => {
+                state.loading = false
+            })
+            .addCase(findLabelFields.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(findLabelFields.fulfilled, (state, action) => {
+                state.labelFields = action.payload
+                state.loading = false
+            })
+            .addCase(findLabelFields.rejected, (state, action) => {
                 state.loading = false
             })
 

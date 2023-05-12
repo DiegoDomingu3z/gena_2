@@ -24,9 +24,11 @@ const NewLabel = () => {
     const [files, setFiles] = useState([])
     const [fields, setFields] = useState([])
     const token = useSelector((state) => state.Account.accessToken)
+
     const onDrop = useCallback(acceptedFiles => {
         let fileIndex = acceptedFiles[0]
         setFiles(prevFiles => [...prevFiles, fileIndex])
+
     }, [files])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
@@ -165,7 +167,7 @@ const NewLabel = () => {
                             setFiles([])
                             setInputValues([''])
                             setIsChecked(false)
-                            setBulkCheck(False)
+                            setBulkCheck(false)
                         }}
                     >
                         {({ isSubmitting }) => (

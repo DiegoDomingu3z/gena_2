@@ -33,9 +33,9 @@ const DepartmentUsers = () => {
                     <div className="grid grid-cols-6 p-5 text-lg font-semibold border-b">
                         <div className="">Name</div>
                         <div>Department</div>
-                        <div>Email</div>
                         <div>Position</div>
                         <div>Team Lead</div>
+                        <div>Group Lead</div>
                         <div>Email</div>
                     </div>
 
@@ -46,11 +46,11 @@ const DepartmentUsers = () => {
                                 users.map((u) => (
                                     <div
                                         className={'w-full grid grid-cols-6 p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer  justify-between'} key={u._id}>
-                                        <span>{u.firstName}</span>
-                                        <span>{u.lastName}</span>
+                                        <span>{u.firstName} {u.lastName}</span>
                                         <span>{u.department}</span>
                                         <span>{u.privileges}</span>
-                                        <span>{u.teamLead}</span>
+                                        <span>{u.teamLead != ' ' || undefined ? u.teamLead : 'N/A'}</span>
+                                        <span>{u.groupLead != ' ' || undefined ? u.groupLead : 'N/A'}</span>
                                         <span>{u.email ? u.email : 'N/A'}</span>
                                         {/* <div className="flex gap-5">
                                             <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"><FontAwesomeIcon icon={faPencil} /></button>

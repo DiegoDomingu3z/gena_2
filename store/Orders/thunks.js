@@ -123,3 +123,61 @@ export const removeOrder = createAsyncThunk(
         }
     }
 )
+
+
+export const getOrdersToApprove = createAsyncThunk(
+    'leads/get-orders',
+    async (token) => {
+        try {
+            const res = await api.get('api/orders/need-to-approve', {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+
+export const approveOrder = createAsyncThunk(
+    'order/approve',
+    async ({ token, id }) => {
+        try {
+            const res = await api.put(`api/orders/${id}/approve`, null, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+export const declineOrder = createAsyncThunk(
+    'order/decline',
+    async ({ token, id }) => {
+        try {
+            const res = await api.put(`api/orders/${id}/decline`, null, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
