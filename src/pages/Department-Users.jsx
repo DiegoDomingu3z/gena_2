@@ -8,7 +8,7 @@ import Layout from '~/components/Layout'
 
 const DepartmentUsers = () => {
     return (
-        <Layout>
+        <Layout title={"Gena | Deparment Users"}>
             <DepartmentUsersComponent />
         </Layout>
     )

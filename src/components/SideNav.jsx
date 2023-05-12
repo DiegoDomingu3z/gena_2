@@ -13,6 +13,7 @@ import { getAccount } from '../../store/Account/thunks';
 export const NavButtons = () => {
   const user = useSelector((state) => state.Account)
   const dispatch = useDispatch()
+  console.log(user)
 
 
   useEffect(() => {

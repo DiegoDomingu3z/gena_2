@@ -17,7 +17,7 @@ const Users = () => {
         }
     })
     return (
-        <Layout>
+        <Layout title={"Gena | Add User"}>
             <Signup />
         </Layout>
     )

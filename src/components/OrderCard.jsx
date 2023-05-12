@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faTrash, faNoteSticky } from '@fortawesome/free-solid-svg-icons'
-import orders from '~/testDB'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMyOrders, getOrdersToApprove, removeOrder } from '../../store/Orders/thunks'
 import { Tooltip } from 'antd'
@@ -75,12 +74,12 @@ const OrderCard = () => {
     <div >
       {order.length > 0 ?
         order.map((o) => (
-          <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100' key={o._id}>
+          <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2' key={o._id}>
             <p>{o._id}</p>
             <p className=''>{o.labels.length}</p>
             <p className=''>{formatDate(o.createdOn)}</p>
-            <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
-            <div className='flex gap-5'>
+            <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center text-sm`}>{o.status}</span>
+            <div className='flex gap-5 w-32'>
               <Tooltip placement='top' title="Edit Order">
                 <button className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>

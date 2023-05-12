@@ -12,7 +12,7 @@ const Departments = () => {
         dispatch(getDepartments())
     }, [])
     return (
-        <Layout>
+        <Layout title={"Gena | Departments"}>
             <div>
                 <DepartmentView />
             </div>
