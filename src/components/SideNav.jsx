@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCirclePlus, faSuitcase, faHouse, faList, faTag, faFolderPlus, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faSuitcase, faHouse, faList, faTag, faFolderPlus, faUser, faUsers, faPrint } from '@fortawesome/free-solid-svg-icons'
 import { useLoginInput } from '~/Contexts/LoginContext'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +33,12 @@ export const NavButtons = () => {
           <button className={`h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${router.pathname === '/home' && "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"}`}>
             <FontAwesomeIcon className='text-[#28aeeb]' icon={faHouse} />
             <span className='font-genaPrimary'>Home</span>
+          </button>
+        </Link>
+        <Link href={'/PrintShop'} className={user.accessToken ? "flex items-center gap-5" : "hidden"}>
+          <button className={`h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${router.pathname === '/PrintShop' && "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"}`}>
+            <FontAwesomeIcon className='text-slate-400' icon={faPrint} />
+            <span className='font-genaPrimary'>Print Orders</span>
           </button>
         </Link>
         <Link href={'/start-new-order'} className={user.accessToken ? "flex items-center gap-5" : "hidden"}>

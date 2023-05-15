@@ -43,3 +43,7 @@ body {
   margin-bottom: 200px;
   z-index: 60px;
 }
+
+.react-pdf__Page__textContent.textLayer {
+  display: none;
+}

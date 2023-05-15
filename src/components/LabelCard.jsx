@@ -47,6 +47,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                   <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                       <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
+
                     </div>
                     <div className='p-4'>
                       <div className='text-end text-xs'>{l.docNum}</div>
