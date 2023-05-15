@@ -37,7 +37,7 @@ const CurrentOrders = () => {
                     </div> */}
                 </div>
 
-                <div className='mb-2 mt-5 border-t border-gray-300 rounded-full' />
+                <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
 
                 {
                     account.privileges == 'team-lead' || account.privileges == 'group-lead' ?
@@ -53,7 +53,7 @@ const CurrentOrders = () => {
                             </div>
                             <div className='bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'>
                                 <h1 className='text-xl font-medium mb-10'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approval'}</h1>
-                                <div className={tab == 'my-orders' ? 'grid grid-cols-5 justify-items-center font-medium mb-5' : 'grid grid-cols-6 justify-items-center font-medium mb-5'}>
+                                <div className={tab == 'my-orders' ? 'grid grid-cols-5 justify-items-center font-medium mb-5 sticky top-0' : 'grid grid-cols-6 justify-items-center font-medium mb-5'}>
                                     {tab == 'approve-order' ? <h4>Name</h4> : null}
                                     <h4>Order ID</h4>
                                     <h4>Labels</h4>
@@ -83,7 +83,6 @@ const CurrentOrders = () => {
                                 <OrderCard />
                             </div>
                         </div>
-
                 }
 
             </div>

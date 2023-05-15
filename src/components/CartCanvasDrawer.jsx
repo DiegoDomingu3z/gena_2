@@ -22,11 +22,11 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
   const toast = async () => {
     const Toast = Swal.mixin({
       toast: true,
-      position: 'bottom',
+      position: 'top',
       iconColor: 'white',
       customClass: {
         popup: 'colored-toast',
-        container: 'bottom-margin',
+        container: 'top-margin',
       },
       showConfirmButton: false,
       timer: 1500,
