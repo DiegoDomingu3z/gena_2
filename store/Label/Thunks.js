@@ -71,6 +71,7 @@ export const findLabelFields = createAsyncThunk(
     'field/label',
     async (formData) => {
         try {
+            console.log(formData)
             const res = await api.post(`api/upload/find-pdf-fields`, formData)
                 .then((res) => res.data)
             console.log(res)

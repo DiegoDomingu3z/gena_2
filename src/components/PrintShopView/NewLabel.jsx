@@ -6,7 +6,7 @@ import { getCategories } from '../../../store/Category/Thunk'
 import { getAllSubCats } from '../../../store/Sub-Category/Thunks'
 import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { useDropzone } from 'react-dropzone';
-import { createLabelInfo, uploadPdf } from '../../../store/Label/Thunks'
+import { createLabelInfo, findLabelFields, uploadPdf } from '../../../store/Label/Thunks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
@@ -15,6 +15,7 @@ const NewLabel = () => {
     const material = useSelector((state) => state.Material)
     const category = useSelector((state) => state.Category)
     const subCategory = useSelector((state) => state.SubCategory)
+    // const labelFields = useSelector((state) => state.Label.labelFields)
     const [activeSubCats, setActiveSubCats] = useState([])
     const [activeCategory, setActiveCategory] = useState(null)
     const [inputValues, setInputValues] = useState(['']);
@@ -31,6 +32,26 @@ const NewLabel = () => {
 
     }, [files])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
+
+    useEffect(() => {
+        console.log(files.length)
+        if (files.length > 0 && files.length < 2) {
+            const formData = new FormData();
+            formData.append("pdf", files[0])
+            dispatch(findLabelFields(formData)).then((res) => {
+                const labelFields = res.payload
+                if (labelFields.length > 0) {
+                    setFields(labelFields)
+                    setIsChecked(true)
+                }
+            }).catch((err) => {
+
+            })
+
+        }
+    }, [files])
+
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
@@ -77,6 +98,7 @@ const NewLabel = () => {
     const deleteLabels = () => {
         setFiles([])
         setBulkCheck(false)
+        setFields([])
     }
 
     const configureFields = () => {
@@ -266,11 +288,23 @@ const NewLabel = () => {
                                 </div>
                                 <div className='flex justify-around gap-8 mt-10'>
                                     <div className='grow'>
-                                        <div className='flex items-center -mt-2'>
+                                        {/* <div className='flex items-center -mt-2'>
                                             <label htmlFor="isKanban" className='block text-sm font-medium text-gray-900 dark:text-white'>Form Fillable?</label>
-                                            <Field onClick={handleCheckboxChange} type='checkbox' name='isKanban' className='h-4 ml-5 w-4 text-[#28aeeb] focus:outline outline-2 outline-offset-2 rounded-md' />
+                                            <Field id="isKanban" onClick={handleCheckboxChange} type='checkbox' name='isKanban' className='h-4 ml-5 w-4 text-[#28aeeb] focus:outline outline-2 outline-offset-2 rounded-md' />
+                                        </div> */}
+                                        <div className='flex'>
+                                            {fields.length > 0 ?
+                                                fields.map((f) => (
+                                                    <div className=''>
+                                                        <div ><span className='font-semibold'>Field Name: </span>{f.name}</div>
+                                                        <div><span className='font-semibold'>Type: </span>{f.type.toUpperCase()}</div>
+                                                    </div>
+                                                ))
+
+                                                : null
+                                            }
                                         </div>
-                                        <div className=''>
+                                        {/* <div className=''>
                                             {isChecked ?
                                                 <div className='mt-3'>
                                                     <div className='w-36'>
@@ -300,7 +334,7 @@ const NewLabel = () => {
 
                                                 </div> : null}
 
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                 </div>
