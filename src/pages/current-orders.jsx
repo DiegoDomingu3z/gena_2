@@ -4,17 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import OrderCard from '~/components/OrderCard'
 import { api } from '../../axiosService'
-import { useState, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import OrderModal from '~/components/OrderModal'
 import orders from '~/testDB'
 import { Menu } from 'antd';
 import LeadsOrderApproval from '~/components/LeadsOrderApproval'
 import { useSelector } from 'react-redux'
-
+import { useScrollPosition } from '~/hooks/useScrollPosition'
 
 
 
 const CurrentOrders = () => {
+    const containerRef = useRef(null);
+    const scrollPosition = useScrollPosition(containerRef);
     const [modalState, setModalState] = useState(false);
     const [tab, setTab] = useState('my-orders');
     const account = useSelector((state) => state.Account.account)
@@ -37,7 +39,7 @@ const CurrentOrders = () => {
                     </div> */}
                 </div>
 
-                <div className='mb-2 mt-5 border-t border-gray-300 rounded-full' />
+                <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
 
                 {
                     account.privileges == 'team-lead' || account.privileges == 'group-lead' ?
@@ -51,9 +53,9 @@ const CurrentOrders = () => {
                                         <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{approveOrder.length}</span></Menu.Item>
                                 </Menu>
                             </div>
-                            <div className='bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'>
-                                <h1 className='text-xl font-medium mb-10'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approval'}</h1>
-                                <div className={tab == 'my-orders' ? 'grid grid-cols-5 justify-items-center font-medium mb-5' : 'grid grid-cols-6 justify-items-center font-medium mb-5'}>
+                            <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
+                                <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approval'}</h1>
+                                <div className={tab == 'my-orders' ? `grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500` : `grid grid-cols-6 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
                                     {tab == 'approve-order' ? <h4>Name</h4> : null}
                                     <h4>Order ID</h4>
                                     <h4>Labels</h4>
@@ -71,9 +73,9 @@ const CurrentOrders = () => {
                         </div>
                         :
                         <div>
-                            <div className='bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'>
-                                <h1 className='text-xl font-medium mb-10'>My Orders</h1>
-                                <div className='grid grid-cols-5 justify-items-center font-medium mb-5'>
+                            <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
+                                <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>My Orders</h1>
+                                <div className={`grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
                                     <h4>Order ID</h4>
                                     <h4>Labels</h4>
                                     <h4>Date</h4>
@@ -83,7 +85,6 @@ const CurrentOrders = () => {
                                 <OrderCard />
                             </div>
                         </div>
-
                 }
 
             </div>

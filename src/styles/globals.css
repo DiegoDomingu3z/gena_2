@@ -39,7 +39,14 @@ body {
   color: black;
 }
 
-.bottom-margin {
-  margin-bottom: 200px;
+.top-margin {
+  margin-top: 200px;
   z-index: 60px;
+}
+
+
+@media screen and (min-width: 1200px) {
+  .top-margin {
+    margin-left: 120px;
+  }
 }

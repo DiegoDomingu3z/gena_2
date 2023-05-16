@@ -67,11 +67,11 @@ const OrderCard = () => {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${month}/${day}/${year}`;
   };
 
   return (
-    <div >
+    <div className='p-5'>
       {order.length > 0 ?
         order.map((o) => (
           <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2' key={o._id}>
