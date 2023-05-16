@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { createAccount, getAccount, login, logout, deleteAccount } from "./thunks";
+import { createAccount, getAccount, login, logout, deleteAccount, getAllUsers } from "./thunks";
 
 
 
@@ -10,7 +10,8 @@ export const AccountSlice = createSlice({
         account: {},
         loading: true,
         errorCodes: '',
-        accessToken: ''
+        accessToken: '',
+        users: []
 
     },
     reducers: {
@@ -59,7 +60,18 @@ export const AccountSlice = createSlice({
                 state.errorCodes = action.error
                 state.loading = true
             })
-        // Delete Account
+            .addCase(getAllUsers.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getAllUsers.fulfilled, (state, action) => {
+                state.users = action.payload
+                state.loading = false
+            })
+            .addCase(getAllUsers.rejected, (state, action) => {
+                state.errorCodes = action.error
+                state.loading = true
+            })
+
     }
 })
 export default AccountSlice.reducer

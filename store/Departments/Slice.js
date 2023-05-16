@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createDepartment, getDepartments, getLeads, getUsersInDepartment } from "./Thunks";
+import { createDepartment, getAllUsers, getDepartments, getLeads, getUsersInDepartment } from "./Thunks";
 import { createAccount } from "../Account/thunks";
 
 
@@ -76,6 +76,7 @@ export const DepartmentSlice = createSlice({
                 state.loading = false
 
             })
+
     }
 })
 

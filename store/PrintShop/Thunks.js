@@ -32,7 +32,7 @@ export const getProcessingOrder = createAsyncThunk(
                 }
             })
                 .then((res) => res.data)
-            console.log(res, 'this the res')
+            console.log(res, 'processing orders')
             return res
         } catch (error) {
             console.log(error)
@@ -51,6 +51,24 @@ export const getDeliveredOrders = createAsyncThunk(
             })
                 .then((res) => res.data)
             console.log(res, 'this the res')
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+export const printOrder = createAsyncThunk(
+    'orders/print',
+    async ({ token, id }) => {
+        try {
+            const res = await api.post(`api/printshop/order/${id}/printing`, null, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
             return res
         } catch (error) {
             console.log(error)

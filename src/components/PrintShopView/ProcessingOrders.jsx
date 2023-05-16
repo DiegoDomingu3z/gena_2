@@ -1,26 +1,19 @@
+
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react";
 import { Collapse, Divider, Tooltip } from 'antd';
 import { PrinterOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
-import { printOrder } from "../../../store/PrintShop/Thunks";
-import Swal from "sweetalert2";
-const { Panel } = Collapse;
-const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
-    const order = useSelector((state) => state.PrintShop.approvedOrders.orders)
-    const pdf = useSelector((state) => state.PrintShop.approvedOrders.arr)
-    const user = useSelector((state) => state.Account.users)
-    const [orders, setOrders] = useState([])
-    const dispatch = useDispatch()
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-        return `${month}/${day}/${year}`;
-    }
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faNoteSticky, faCheckCircle, faAdd } from '@fortawesome/free-solid-svg-icons'
 
+const { Panel } = Collapse;
+const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) => {
+    const order = useSelector((state) => state.PrintShop.processingOrders.orders)
+    const pdf = useSelector((state) => state.PrintShop.processingOrders.arr)
+    const user = useSelector((state) => state.Account.users)
+    const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getAllUsers())
     }, [])
@@ -30,34 +23,25 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         return `${singleUser.department}`
     }
 
-
-    const printLabels = async (id) => {
-        const token = sessionStorage.getItem('accessToken')
-        dispatch(printOrder({ token, id })).then(async (res) => {
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top',
-                iconColor: 'white',
-                customClass: {
-                    popup: 'colored-toast',
-                    container: 'top-margin',
-                },
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true
-            })
-            await Toast.fire({
-                icon: 'success',
-                title: `Processing Order ID: ${id}`
-            })
-        }).catch((err) => {
-            console.log(err)
-        })
+    const getUserName = (id) => {
+        const singleUser = user.filter(u => u._id == id).shift()
+        return `${singleUser.firstName}-${singleUser.lastName}`
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
+    }
 
-
-
+    const sanitizePath = (path) => {
+        console.log(path, 'realPATH')
+        // MIGHT HAVE TO CHANGE IN THE FUTURE
+        let realPath = path.slice(39)
+        return `${realPath}`
+    }
 
     return (
         <div>
@@ -68,35 +52,37 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                         <Collapse size="large">
                             <Panel onClick={() => console.log(o._id)} header={`${o.creatorName} - ${o._id} - ${formatDate(o.createdOn)}`} key={o._id} extra={
                                 <div>
-                                    {!multipleOrders.includes(o._id) ?
-                                        <Tooltip placement="top" title={`Print ${o.creatorName}'s order?`} >
+                                    {o.notes || o.notes != '' ?
+                                        <Tooltip placement="top" title={o.notes}>
+                                            <button className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
+                                                <FontAwesomeIcon icon={faNoteSticky} />
+                                            </button>
+                                        </Tooltip> : null
+                                    }
+                                    {!deliverMultipleOrders.includes(o._id) ?
+                                        <Tooltip placement="top" title={`Deliver ${o.creatorName}'s order?`} >
                                             <button onClick={(event) => {
                                                 printLabels(o._id)
                                                 event.stopPropagation();
-                                            }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full pb-2'>
-                                                <PrinterOutlined />
+                                            }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
+                                                <FontAwesomeIcon icon={faCheckCircle} />
                                             </button>
                                         </Tooltip>
                                         : null}
-                                    {!multipleOrders.includes(o._id)
+                                    {!deliverMultipleOrders.includes(o._id)
                                         ?
-                                        <Tooltip placement="top" title={`Add to process multiple?`} >
-                                            <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full pb-2'>
-                                                <UploadOutlined
-                                                    onClick={(event) => {
-                                                        setMultipleOrders(prevIds => [...prevIds, o._id])
-                                                        event.stopPropagation();
-                                                    }}
-                                                />
+                                        <Tooltip placement="top" title={`Add to Deliver multiple?`} >
+                                            <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full py-1 '>
+                                                <FontAwesomeIcon icon={faAdd} />
                                             </button>
                                         </Tooltip>
                                         :
-                                        <Tooltip title={`Remove from process multiple`}>
+                                        <Tooltip title={`Remove from Deliver multiple`}>
                                             <button>
                                                 <BeatLoader size={8} color="red"
                                                     onClick={(event) => {
-                                                        let newList = multipleOrders.filter(i => i != o._id)
-                                                        setMultipleOrders(newList)
+                                                        let newList = deliverMultipleOrders.filter(i => i != o._id)
+                                                        setDeliverMultipleOrders(newList)
                                                         event.stopPropagation();
                                                     }}
                                                 />
@@ -112,7 +98,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                             <div key={i} className="mb-5 border-b">
                                                 <div className="text-center">DOCNUM: {p.docNum}</div>
                                                 <div className="flex justify-center">
-                                                    <iframe src={`images/pdflabels/${p.categoryName}/${p.subCategoryName}/${p.fileName}`} className="w-11/12"></iframe>
+                                                    <iframe src={sanitizePath(o.finalOrderPaths[i])} className="w-11/12"></iframe>
                                                 </div>
                                                 <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
                                             </div>
@@ -126,11 +112,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                 : null
             }
         </div>
-    );
-
+    )
 }
 
-export default PrintShopApproved
-
-
-
+export default ProcessingOrders;

@@ -135,20 +135,20 @@ const NewLabel = () => {
 
 
     const submitLabelInfo = async (values) => {
-        let fields = await configureFields()
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
             name: values.labelName,
-            docNum: values.docNum,
+            docNum: docNum,
             fileName: files[0].name,
-            isKanban: values.isKanban,
-            isBulkLabel: values.isBulkLabel,
+            isKanban: isChecked,
+            isBulkLabel: isBulkChecked,
             unitPack: values.unitPack,
             materialTypeId: values.materialTypeId,
             categoryId: activeCategory,
             subCategoryId: values.subCategoryId
         }
+        console.log(data)
         const formData = await pushFiles()
         dispatch(createLabelInfo({ data, formData }));
     }

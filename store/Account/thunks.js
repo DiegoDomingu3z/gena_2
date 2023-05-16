@@ -59,7 +59,6 @@ export const logout = createAsyncThunk(
     'account/logout',
     async (token) => {
         try {
-            console.log(token)
             const res = await api.put('/api/account/logout', null, {
                 headers: {
                     Authorization: token
@@ -84,6 +83,21 @@ export const deleteAccount = createAsyncThunk(
             })
             return res
         } catch (error) {
+            throw error
+        }
+    }
+)
+
+
+export const getAllUsers = createAsyncThunk(
+    'all/users',
+    async () => {
+        try {
+            const res = await api.get('api/account/all')
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
             throw error
         }
     }
