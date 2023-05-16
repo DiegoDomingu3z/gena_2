@@ -75,9 +75,9 @@ const Signup = () => {
                         dispatch(createAccount(values))
                             .then((res) => {
                                 toast(values.firstName, values.lastName, values.departmentId)
-                                if (values.email != '') {
-                                    sendUserCredentials(values)
-                                }
+                                // if (values.email != '') {
+                                //     sendUserCredentials(values)
+                                // }
                             }).catch((error) => {
                                 console.log(error);
                             });
