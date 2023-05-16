@@ -87,3 +87,18 @@ export const deleteAccount = createAsyncThunk(
         }
     }
 )
+
+
+export const getAllUsers = createAsyncThunk(
+    'all/users',
+    async () => {
+        try {
+            const res = await api.get('api/account/all')
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

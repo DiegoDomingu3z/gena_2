@@ -8,8 +8,8 @@ import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { useDropzone } from 'react-dropzone';
 import { createLabelInfo, findLabelFields, uploadPdf } from '../../../store/Label/Thunks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-
+import { faFileCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from 'antd'
 const NewLabel = () => {
     const dispatch = useDispatch()
     const material = useSelector((state) => state.Material)
@@ -23,6 +23,7 @@ const NewLabel = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [isBulkChecked, setBulkCheck] = useState(false);
     const [files, setFiles] = useState([])
+    const [docNum, setDocNum] = useState('')
     const [fields, setFields] = useState([])
     const token = useSelector((state) => state.Account.accessToken)
 
@@ -32,11 +33,12 @@ const NewLabel = () => {
 
     }, [files])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
-
     useEffect(() => {
         console.log(files.length)
         if (files.length > 0 && files.length < 2) {
+            console.log(files)
+            let docNum = files[0].name.slice(files[0].name.length - 11, files[0].name.length - 4);
+            setDocNum(docNum)
             const formData = new FormData();
             formData.append("pdf", files[0])
             dispatch(findLabelFields(formData)).then((res) => {
@@ -99,6 +101,7 @@ const NewLabel = () => {
         setFiles([])
         setBulkCheck(false)
         setFields([])
+        setDocNum('')
     }
 
     const configureFields = () => {
@@ -132,20 +135,20 @@ const NewLabel = () => {
 
 
     const submitLabelInfo = async (values) => {
-        let fields = await configureFields()
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
             name: values.labelName,
-            docNum: values.docNum,
+            docNum: docNum,
             fileName: files[0].name,
-            isKanban: values.isKanban,
-            isBulkLabel: values.isBulkLabel,
+            isKanban: isChecked,
+            isBulkLabel: isBulkChecked,
             unitPack: values.unitPack,
             materialTypeId: values.materialTypeId,
             categoryId: activeCategory,
             subCategoryId: values.subCategoryId
         }
+        console.log(data)
         const formData = await pushFiles()
         dispatch(createLabelInfo({ data, formData }));
     }
@@ -172,7 +175,7 @@ const NewLabel = () => {
                             labelName: '',
                             fields: inputValues,
                             maxOrderQty: 1,
-                            docNum: '',
+                            docNum: docNum,
                             fileName: '',
                             isKanban: isChecked,
                             isBulkLabel: isBulkChecked,
@@ -204,7 +207,7 @@ const NewLabel = () => {
                                     </div>
                                     <div className='grow'>
                                         <label htmlFor="docNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Document Number <span className='text-red-500'>*</span></label>
-                                        <Field type="text" name="docNum" id="docNum" placeholder="Doc #" className="bg-gray-50 border
+                                        <Field onChange={setDocNum} value={docNum} type="text" name="docNum" id="docNum" placeholder="Doc #" className="bg-gray-50 border
                                         border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                                         block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                         dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
@@ -288,18 +291,20 @@ const NewLabel = () => {
                                 </div>
                                 <div className='flex justify-around gap-8 mt-10'>
                                     <div className='grow'>
-                                        {/* <div className='flex items-center -mt-2'>
-                                            <label htmlFor="isKanban" className='block text-sm font-medium text-gray-900 dark:text-white'>Form Fillable?</label>
-                                            <Field id="isKanban" onClick={handleCheckboxChange} type='checkbox' name='isKanban' className='h-4 ml-5 w-4 text-[#28aeeb] focus:outline outline-2 outline-offset-2 rounded-md' />
-                                        </div> */}
                                         <div className='flex'>
                                             {fields.length > 0 ?
-                                                fields.map((f) => (
-                                                    <div className=''>
-                                                        <div ><span className='font-semibold'>Field Name: </span>{f.name}</div>
-                                                        <div><span className='font-semibold'>Type: </span>{f.type.toUpperCase()}</div>
-                                                    </div>
-                                                ))
+
+                                                <div className='flex'>
+                                                    <div className='me-3'>Form Fillable:</div>
+                                                    <Tooltip placement='top' title={fields.map((f) => (`Field Name: (${f.name}) Type: (${f.type.toUpperCase()}) `))}
+                                                    >
+                                                        <button>
+                                                            <FontAwesomeIcon className='text-[#28aeeb]' icon={faFileCircleCheck} />
+                                                        </button>
+                                                    </Tooltip>
+
+                                                </div>
+
 
                                                 : null
                                             }

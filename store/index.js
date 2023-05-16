@@ -8,6 +8,7 @@ import SubCategoryReducer from './Sub-Category/Slice'
 import LabelReducer from './Label/Slice'
 import OrderReducer from './Orders/Slice'
 import DepartmentReducer from './Departments/Slice'
+import PrintShopReducer from './PrintShop/Slice'
 export const store = configureStore({
     reducer: {
         Account: AccountReducer,
@@ -16,6 +17,7 @@ export const store = configureStore({
         SubCategory: SubCategoryReducer,
         Label: LabelReducer,
         Orders: OrderReducer,
-        Department: DepartmentReducer
+        Department: DepartmentReducer,
+        PrintShop: PrintShopReducer
     }
 })
