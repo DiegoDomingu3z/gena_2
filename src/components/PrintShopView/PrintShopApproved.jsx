@@ -4,15 +4,24 @@ import { Collapse, Divider, Tooltip } from 'antd';
 import { PrinterOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
-import { printOrder } from "../../../store/PrintShop/Thunks";
+import { getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder } from "../../../store/PrintShop/Thunks";
+import { PDFDocument } from 'pdf-lib'
 import Swal from "sweetalert2";
 const { Panel } = Collapse;
 const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
+
+
+    //////////////////////////////////// VARIABLES ///////////////////////////////////
     const order = useSelector((state) => state.PrintShop.approvedOrders.orders)
     const pdf = useSelector((state) => state.PrintShop.approvedOrders.arr)
     const user = useSelector((state) => state.Account.users)
     const [orders, setOrders] = useState([])
+    const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
     const dispatch = useDispatch()
+    ///////////////////////////////////////////////////////////////////////////////////
+
+
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate();
@@ -34,6 +43,9 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     const printLabels = async (id) => {
         const token = sessionStorage.getItem('accessToken')
         dispatch(printOrder({ token, id })).then(async (res) => {
+            await dispatch(getApprovedOrders(token))
+            await dispatch(getProcessingOrder(token))
+            await dispatch(getDeliveredOrders(token))
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top',
@@ -55,6 +67,86 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         })
     }
 
+
+
+    useEffect(() => {
+        const modifyAndStorePdfDataUris = async () => {
+            try {
+                const modifiedPdfDataUris = await Promise.all(
+                    order.map(async (o, index) => {
+                        const modifiedPdfDataUrisForOrder = await Promise.all(
+                            o.labels.map(async (label, i) => {
+                                const p = pdf[index][i];
+                                const modifiedPdfDataUri = await modifyPdf(
+                                    `images/pdflabels/${p.categoryName}/${p.subCategoryName}/${p.fileName}`,
+                                    label.textToPut
+                                );
+                                return modifiedPdfDataUri;
+                            })
+                        );
+                        return modifiedPdfDataUrisForOrder;
+                    })
+                );
+                setModifiedPdfDataUris(modifiedPdfDataUris);
+                console.log(modifiedPdfDataUris, 'last')
+            } catch (error) {
+                console.error('Error modifying PDF:', error);
+            }
+        };
+
+        modifyAndStorePdfDataUris();
+    }, [pdf]);
+
+    const modifyPdf = async (path, text) => {
+        try {
+            const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());
+            const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+            const form = pdfDoc.getForm();
+            const fieldNames = form.getFields().map((field) => field.getName());
+
+            for (let i = 0; i < fieldNames.length; i++) {
+                const fieldName = fieldNames[i];
+                const fieldToFill = form.getTextField(fieldName);
+                fieldToFill.setText(text[i].text);
+            }
+
+            const modifiedPdfBytes = await pdfDoc.save();
+            const pdfDataUri = createDataUri(modifiedPdfBytes);
+
+            return pdfDataUri;
+        } catch (error) {
+            console.error('Error modifying PDF:', error);
+            throw error;
+        }
+    };
+
+    const createDataUri = (pdfBytes) => {
+        const pdfData = new Blob([pdfBytes], { type: 'application/pdf' });
+        const dataUri = URL.createObjectURL(pdfData);
+        return dataUri;
+    };
+
+
+    const seeString = (index) => {
+        const currentDir = __dirname;
+        console.log(currentDir)
+        if (modifiedPdfDataUris.length > 0) {
+            return (
+                modifiedPdfDataUris[index].map((m) => {
+                    return (
+                        <div className="">
+                            <iframe src={m} className="w-11/12"></iframe>
+                        </div>
+                    )
+                })
+            )
+        } else {
+            return (
+                <div>hello</div>
+            )
+        }
+    }
 
 
 
@@ -105,19 +197,23 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                     }
 
                                 </div>
+
                             }>
                                 <div className="grid grid-cols-3">
+                                    {seeString(index)}
+                                </div>
+                                <div className="grid grid-cols-3">
                                     {pdf && o.labels ? (
-                                        pdf[index].map((p, i) => (
-                                            <div key={i} className="mb-5 border-b">
-                                                <div className="text-center">DOCNUM: {p.docNum}</div>
-                                                <div className="flex justify-center">
-                                                    <iframe src={`images/pdflabels/${p.categoryName}/${p.subCategoryName}/${p.fileName}`} className="w-11/12"></iframe>
+                                        pdf[index].map((p, i) => {
+                                            return (
+                                                <div key={i} className="mb-5 border-b">
+                                                    <div className="text-center text-sm">DOCNUM: {p.docNum}</div>
+                                                    <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
                                                 </div>
-                                                <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
-                                            </div>
-                                        ))
+                                            )
+                                        })
                                     ) : null}
+
                                 </div>
                             </Panel>
                         </Collapse>

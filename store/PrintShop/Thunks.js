@@ -76,3 +76,23 @@ export const printOrder = createAsyncThunk(
         }
     }
 )
+
+
+export const deliverOrder = createAsyncThunk(
+    'deliver/order',
+    async ({ token, id }) => {
+        try {
+            const res = await api.put(`api/orders/${id}/deliver`, null, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

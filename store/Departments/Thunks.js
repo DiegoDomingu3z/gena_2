@@ -71,16 +71,3 @@ export const getUsersInDepartment = createAsyncThunk(
 )
 
 
-export const getAllUsers = createAsyncThunk(
-    'all/users',
-    async () => {
-        try {
-            const res = await api.get('api/department/all')
-                .then((res) => res.data)
-            return res
-        } catch (error) {
-            console.log(error)
-            throw error
-        }
-    }
-)

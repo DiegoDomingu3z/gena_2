@@ -6,7 +6,9 @@ import { PrinterOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/i
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faNoteSticky, faCheckCircle, faAdd } from '@fortawesome/free-solid-svg-icons'
+import { faNoteSticky, faCheckCircle, faAdd, faFile, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { api } from "../../../axiosService";
+import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder } from "../../../store/PrintShop/Thunks";
 
 const { Panel } = Collapse;
 const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) => {
@@ -38,9 +40,24 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
 
     const sanitizePath = (path) => {
         // MIGHT HAVE TO CHANGE IN THE FUTURE
-        let realPath = path.slice(39)
+        let realPath = path.slice(46)
+        console.log(realPath, 'yuh')
         return `${realPath}`
     }
+
+    const openFileManager = async (id) => {
+        await api.post('api/printshop/openFileManger/' + id)
+    };
+
+
+    const markOrderAsDelivered = async (id) => {
+        const token = sessionStorage.getItem('accessToken')
+        dispatch(deliverOrder({ token, id }))
+        dispatch(getApprovedOrders(token))
+        dispatch(getProcessingOrder(token))
+        dispatch(getDeliveredOrders(token))
+    }
+
 
     return (
         <div>
@@ -51,6 +68,14 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                         <Collapse size="large">
                             <Panel onClick={() => console.log(o._id)} header={`${o.creatorName} - ${o._id} - ${formatDate(o.createdOn)}`} key={o._id} extra={
                                 <div>
+                                    <Tooltip placement="top" title={`Open in File Manager?`} >
+                                        <button onClick={(event) => {
+                                            openFileManager(o._id)
+                                            event.stopPropagation();
+                                        }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
+                                            <FontAwesomeIcon icon={faFile} />
+                                        </button>
+                                    </Tooltip>
                                     {o.notes || o.notes != '' ?
                                         <Tooltip placement="top" title={o.notes}>
                                             <button className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
@@ -59,14 +84,17 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                                         </Tooltip> : null
                                     }
                                     {!deliverMultipleOrders.includes(o._id) ?
-                                        <Tooltip placement="top" title={`Deliver ${o.creatorName}'s order?`} >
+
+                                        <Tooltip placement="top" title={`Deliver ${o.creatorName}'s Order?`} >
                                             <button onClick={(event) => {
-                                                printLabels(o._id)
+                                                markOrderAsDelivered(o._id)
                                                 event.stopPropagation();
                                             }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
                                                 <FontAwesomeIcon icon={faCheckCircle} />
                                             </button>
                                         </Tooltip>
+
+
                                         : null}
                                     {!deliverMultipleOrders.includes(o._id)
                                         ?
