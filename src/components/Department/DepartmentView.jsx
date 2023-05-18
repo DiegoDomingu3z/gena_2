@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { Formik, Form, Field } from "formik";
-import { createDepartment } from "../../../store/Departments/Thunks";
-const DepartmentView = () => {
+import { createDepartment, removeDept, updateDepartmentName } from "../../../store/Departments/Thunks";
+import Swal from "sweetalert2";
+const DepartmentView = ({ triggerUseEffect, setTriggerUseEffect }) => {
     const dept = useSelector((state) => state.Department.departments)
     const router = useRouter()
     const user = useSelector((state) => state.Account)
@@ -27,6 +28,119 @@ const DepartmentView = () => {
     }
 
 
+    const updateDeptModal = async (id, name) => {
+        const token = sessionStorage.getItem('accessToken')
+        const { value: newName } = await Swal.fire({
+            title: `Update ${name}'s name?`,
+            html: `This will update everyone's account in this department with the new name`,
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            inputValue: name,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'If You are not changing the name, please press cancel'
+                }
+            },
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update'
+        })
+        if (newName) {
+            let timerInterval
+            let seconds = await Math.floor(Math.random() * 8) + 1;
+            const milliseconds = await seconds * 1000;
+            await Swal.fire({
+                title: `Updating Department: <b>${name} </b> to <b>${newName}</b>`,
+                html: 'This may take a couple of seconds, system is changing multiple account information with new data <br> <b></b>',
+                timer: milliseconds,
+                timerProgressBar: true,
+                allowOutsideClick: () => {
+                    const popup = Swal.getPopup()
+                    popup.classList.remove('swal2-show')
+                    setTimeout(() => {
+                        popup.classList.add('animate__animated', 'animate__headShake')
+                    })
+                    setTimeout(() => {
+                        popup.classList.remove('animate__animated', 'animate__headShake')
+                    }, 500)
+                    return false
+                },
+                didOpen: () => {
+                    dispatch(updateDepartmentName({ token, id, newName }))
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+
+                }
+            })
+
+            setTriggerUseEffect(!triggerUseEffect)
+        }
+
+
+    }
+
+    const deleteDepartment = async (id, name) => {
+        const token = sessionStorage.getItem('accessToken')
+        Swal.fire({
+            title: `Delete entire Department: ${name}`,
+            html: `<b>This will delete <u>ALL USERS</u> inside this department!</b> <br> 
+            If you want to keep certain users in the system please move them to other departments before performing this action`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                let timerInterval
+                let seconds = await Math.floor(Math.random() * 8) + 1;
+                const milliseconds = await seconds * 1000;
+                await Swal.fire({
+                    title: `Deleting Department: <b>${name} </b> and all users inside of it`,
+                    html: 'This may take a couple of seconds, system is deleting multiple account information<br> <b></b>',
+                    timer: milliseconds,
+                    timerProgressBar: true,
+                    allowOutsideClick: () => {
+                        const popup = Swal.getPopup()
+                        popup.classList.remove('swal2-show')
+                        setTimeout(() => {
+                            popup.classList.add('animate__animated', 'animate__headShake')
+                        })
+                        setTimeout(() => {
+                            popup.classList.remove('animate__animated', 'animate__headShake')
+                        }, 500)
+                        return false
+                    },
+                    didOpen: () => {
+                        dispatch(removeDept({ token, id }))
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                            b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+
+                    }
+                })
+                setTriggerUseEffect(!triggerUseEffect)
+            }
+        })
+    }
+
+
     return (
         <div className="flex flex-col p-20 pb-8">
             <div>
@@ -45,11 +159,18 @@ const DepartmentView = () => {
                                 <span>{d.name}</span>
                                 {user.account.privileges == 'admin' ?
 
-                                    <div className="flex gap-5">
-                                        <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                                    <div className="flex gap-2">
+                                        <button className="text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
                                             onClick={(event) => {
                                                 event.stopPropagation(); // Stop propagation here
-
+                                                updateDeptModal(d._id, d.name)
+                                            }}>
+                                            <FontAwesomeIcon icon={faPencil} />
+                                        </button>
+                                        <button className="text-[#233043] hover:bg-[#fa2222] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                                            onClick={(event) => {
+                                                deleteDepartment(d._id, d.name)
+                                                event.stopPropagation(); // Stop propagation here
                                             }}>
                                             <FontAwesomeIcon icon={faTrash} />
                                         </button>

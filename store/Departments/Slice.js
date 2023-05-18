@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createDepartment, getAllUsers, getDepartments, getLeads, getUsersInDepartment } from "./Thunks";
+import { createDepartment, getAllUsers, getDepartments, getLeads, getUsersInDepartment, removeDept } from "./Thunks";
 import { createAccount } from "../Account/thunks";
 
 
@@ -72,6 +72,19 @@ export const DepartmentSlice = createSlice({
                 state.loading = false
             })
             .addCase(createAccount.rejected, (state, action) => {
+                state.errorCodes = action.error
+                state.loading = false
+
+            })
+            // REMOVING DEPT
+            .addCase(removeDept.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(removeDept.fulfilled, (state, action) => {
+                state.departments = state.departments.filter(f => f._id != action.payload._id)
+                state.loading = false
+            })
+            .addCase(removeDept.rejected, (state, action) => {
                 state.errorCodes = action.error
                 state.loading = false
 

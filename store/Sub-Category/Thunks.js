@@ -74,3 +74,22 @@ export const removeSubCat = createAsyncThunk(
     }
 )
 
+export const updateSubCat = createAsyncThunk(
+    'subCat/update',
+    async ({ token, id, newName }) => {
+        try {
+            const data = { name: newName }
+            const res = await api.put(`api/subcategory/update/${id}`, data, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

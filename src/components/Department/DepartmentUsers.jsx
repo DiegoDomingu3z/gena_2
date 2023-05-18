@@ -6,11 +6,14 @@ import { Formik, Field, Form } from "formik"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { RingLoader } from "react-spinners"
+import { Modal } from 'antd';
 const DepartmentUsers = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const users = useSelector((state) => state.Department.users)
     const [deptName, setDeptName] = useState(null)
+    const [modal2Open, setModal2Open] = useState(false);
+    const [activeUser, setActiveUser] = useState(null)
     useEffect(() => {
         const { departmentId } = router.query
         const { name } = router.query
@@ -19,6 +22,15 @@ const DepartmentUsers = () => {
             setDeptName(name)
         }
     }, [router.query])
+
+
+
+
+
+
+
+
+
     return (
         <div>
             <div className="flex flex-col p-20 pb-8">
@@ -34,9 +46,11 @@ const DepartmentUsers = () => {
                         <div className="">Name</div>
                         <div>Department</div>
                         <div>Position</div>
-                        <div>Team Lead</div>
                         <div>Group Lead</div>
+                        <div>Team Lead</div>
                         <div>Email</div>
+                    </div>
+                    <div>
                     </div>
 
                     <div className={''}>
@@ -44,6 +58,7 @@ const DepartmentUsers = () => {
                             users.length > 0 ?
 
                                 users.map((u) => (
+
                                     <div
                                         className={'w-full grid grid-cols-6 p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer  justify-between'} key={u._id}>
                                         <span>{u.firstName} {u.lastName}</span>
@@ -75,7 +90,8 @@ const DepartmentUsers = () => {
                     </div>
                 </div>
             </div>
-        </div>
+
+        </div >
     )
 }
 
