@@ -72,3 +72,23 @@ export const getCategory = createAsyncThunk(
         }
     }
 )
+
+export const updateCategory = createAsyncThunk(
+    'update/category',
+    async ({ token, id, newName }) => {
+        try {
+            const data = { name: newName }
+            const res = await api.put(`api/category/update/${id}`, data, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

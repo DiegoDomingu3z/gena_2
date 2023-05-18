@@ -1,13 +1,13 @@
 import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, removeCategory } from "../../../store/Category/Thunk";
+import { addCategory, removeCategory, updateCategory } from "../../../store/Category/Thunk";
 import { FaMinusCircle, FaPenSquare } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { RingLoader } from "react-spinners"
-const NewCategory = () => {
+const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
     const cats = useSelector((state) => state.Category.categories)
     const dispatch = useDispatch()
     const router = useRouter()
@@ -60,12 +60,69 @@ const NewCategory = () => {
 
                     }
                 })
-
                 dispatch(removeCategory({ id, token }))
             }
         })
     }
 
+
+    const updateCat = async (id, name) => {
+        const token = sessionStorage.getItem('accessToken')
+        const { value: newName } = await Swal.fire({
+            title: `Update ${name}'s name?`,
+            html: `This will update all necessary data`,
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            inputValue: name,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'If You are not changing the name, please press cancel'
+                }
+            },
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update'
+        })
+        if (newName) {
+            let timerInterval
+            let seconds = await Math.floor(Math.random() * 8) + 1;
+            const milliseconds = await seconds * 1000;
+            await Swal.fire({
+                title: `Updating Department: <b>${name} </b> to <b>${newName}</b>`,
+                html: 'This may take a couple of seconds, system is changing multiple account information with new data <br> <b></b>',
+                timer: milliseconds,
+                timerProgressBar: true,
+                allowOutsideClick: () => {
+                    const popup = Swal.getPopup()
+                    popup.classList.remove('swal2-show')
+                    setTimeout(() => {
+                        popup.classList.add('animate__animated', 'animate__headShake')
+                    })
+                    setTimeout(() => {
+                        popup.classList.remove('animate__animated', 'animate__headShake')
+                    }, 500)
+                    return false
+                },
+                didOpen: () => {
+                    dispatch(updateCategory({ token, id, newName }))
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+
+                }
+            })
+            setTriggerFetch(!triggerFetch)
+        }
+    }
 
     const showSubCats = (id) => {
         const queryParams = {
@@ -100,7 +157,7 @@ const NewCategory = () => {
                                 <div className="flex gap-5">
                                     <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full' onClick={(event) => {
                                         event.stopPropagation(); // Stop propagation here
-
+                                        updateCat(c._id, c.name)
                                     }}><FontAwesomeIcon icon={faPencil} /></button>
                                     <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full" onClick={(event) => {
                                         event.stopPropagation(); // Stop propagation here

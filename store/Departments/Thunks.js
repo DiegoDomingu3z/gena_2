@@ -70,4 +70,44 @@ export const getUsersInDepartment = createAsyncThunk(
     }
 )
 
+export const updateDepartmentName = createAsyncThunk(
+    'update/department',
+    async ({ token, id, newName }) => {
+        try {
+            const data = { name: newName }
+            const res = await api.put(`api/department/${id}/update`, data, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+export const removeDept = createAsyncThunk(
+    'remove/department',
+    async ({ token, id }) => {
+        try {
+            console.log("GETTING CALLED")
+            const res = await api.delete(`api/department/${id}/remove`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
 
