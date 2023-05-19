@@ -12,7 +12,7 @@ const OrderCard = ({ modalState, setModalState }) => {
   // const [selectedOrder, setSelectedOrder] = useState();
   const order = useSelector((state) => state.Orders.myOrders.orders)
   const activeOrder = useSelector((state) => state.Orders.activeOrder)
-  
+
   const statusColors = {
     'waiting for approval': 'bg-[#ef5350]',
     'processing': 'bg-[#ff9800]',
@@ -20,8 +20,8 @@ const OrderCard = ({ modalState, setModalState }) => {
     'delivered': 'bg-[#63cb67]',
     'declined': 'bg-[rgb(255,23,23)]'
   }
-  
-  
+
+
   const deleteOrder = async (id) => {
     const token = sessionStorage.getItem('accessToken')
     Swal.fire({
@@ -54,7 +54,7 @@ const OrderCard = ({ modalState, setModalState }) => {
         dispatch(removeOrder({ id, token }))
       }
     })
-    
+
   }
   useEffect(() => {
     const getOrders = async () => {
@@ -62,10 +62,11 @@ const OrderCard = ({ modalState, setModalState }) => {
       await dispatch(getMyOrders(token))
       await dispatch(getOrdersToApprove(token))
     }
+    console.log("GETTING CALLED")
     getOrders()
-    
+
   }, [])
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -73,18 +74,18 @@ const OrderCard = ({ modalState, setModalState }) => {
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };
-  
+
   const handleUpdateModal = (e) => {
     setModalState(!modalState)
     const orderId = e.currentTarget.dataset.orderId
-    
+
     const singleOrder = order.filter((order) => {
       return order._id == orderId
     })
-    
+
     dispatch(setActiveOrder(singleOrder))
   }
-  
+
   return (
     <div className='p-5'>
       {order ?

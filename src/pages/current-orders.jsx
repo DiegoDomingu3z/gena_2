@@ -64,7 +64,7 @@ const CurrentOrders = () => {
                                     <h4>Actions</h4>
                                 </div>
                                 <div className='flex flex-col'>
-                                    {tab == 'my-orders' && <OrderCard />}
+                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} />}
                                 </div>
                                 <div>
                                     {tab == 'approve-order' && <LeadsOrderApproval />}
