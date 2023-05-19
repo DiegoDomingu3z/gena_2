@@ -2,9 +2,32 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
+import Swal from 'sweetalert2'
+
+
+
 const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
+
+  const toast = async () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'addToCartToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'success',
+      title: 'Added to Cart!'
+    })
+  }
 
 
 
@@ -33,10 +56,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                   finalArr.push(obj)
                 }
                 await dispatch(addToBasket({ finalArr, qty, id }))
-                await setToggleCartCanvas(!toggleCartCanvas)
-                setTimeout(async () => {
-                  await setToggleCartCanvas(false)
-                }, 1500)
+                toast()
                 document.getElementById(`${l._id}`).reset()
                 document.getElementById(`${l.docNum}`).reset()
               }}
@@ -75,7 +95,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
 
                         }
                       </div>
-                      <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-white hover:text-[#1baded] border border-[#1baded] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Add to Order</button></div>
+                      <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Add to Order</button></div>
                     </div>
                   </div>
                 </Form>

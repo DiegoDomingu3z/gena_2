@@ -44,9 +44,18 @@ body {
   z-index: 60px;
 }
 
+.updateLabelToast {
+  margin-top: 80px;
+  z-index: 60px;
+}
+
 
 @media screen and (min-width: 1200px) {
   .top-margin {
     margin-left: 120px;
+  }
+
+  .addToCartToast {
+    margin-left:120px;
   }
 }
