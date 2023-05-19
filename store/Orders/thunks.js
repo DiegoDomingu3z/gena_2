@@ -184,7 +184,7 @@ export const declineOrder = createAsyncThunk(
 
 export const setActiveOrder = createAsyncThunk(
     'order/setActiveOrder',
-    async(order) => {
+    async (order) => {
         try {
             return order
         } catch (error) {
@@ -195,9 +195,10 @@ export const setActiveOrder = createAsyncThunk(
 
 export const updateLabel = createAsyncThunk(
     'order/updateLabel',
-    async({token, orderId, labelId, valuesArray}) => {
+    async ({ token, orderId, labelId, valuesArray }) => {
         try {
             console.log(orderId)
+            console.log(labelId)
             const res = await api.put(`api/orders/update/${orderId}/label/${labelId}`, valuesArray, {
                 headers: {
                     Authorization: token

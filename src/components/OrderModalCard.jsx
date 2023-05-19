@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { searchLabel } from '../../store/Label/Thunks'
-import { updateLabel } from '../../store/Orders/thunks'
+import { getMyOrders, updateLabel } from '../../store/Orders/thunks'
 
 
 const OrderModalCard = () => {
@@ -11,48 +11,59 @@ const OrderModalCard = () => {
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr)
   const labels = activeOrder ? activeOrder.labels : []
-
+  console.log(activeOrder)
+  const [arr, setArr] = useState([])
   const activeLabels = labelsArray
-  .flatMap(innerArray => innerArray)
-  .filter((value, i) => {
-    return value.orderId == activeOrder?._id
-  })
+    .flatMap(innerArray => innerArray)
+    .filter((value, i) => {
+      return value.orderId == activeOrder?._id
+    })
 
-  
+
   const label = activeLabels.map((label, i) => {
-    const {pdf, docNum, name} = label
+    console.log(label, 'active')
+    const { pdf, docNum, name } = label
     let vals = labels[i].textToPut.reduce((acc, curr) => {
-      console.log(curr)
       acc[curr.name] = curr.text || '';
       return acc;
     }, {});
 
+    let test = labels[i].textToPut.reduce((acc, curr) => {
+      acc['name'] = curr.name,
+        acc['text'] = curr.text || ''
+
+      return acc
+    }, {})
+
     return (
-      <div key={label.labelId}>
+      <div key={label._id}>
         <Formik
           initialValues={vals}
           enableReinitialize
           onSubmit={async (values) => {
+            console.log(values)
             const valuesArray = Object.keys(values).map((key) => {
-              return {[key]: values[key]};
+              return { [key]: values[key] };
             })
             console.log(valuesArray)
             const token = sessionStorage.getItem('accessToken');
             const orderId = label.orderId
-            const labelId = label.labelId
+            const labelId = label._id
             console.log(values)
             try {
-              await dispatch(updateLabel({token, orderId, labelId, valuesArray}))
+              await dispatch(updateLabel({ token, orderId, labelId, valuesArray }))
+              await dispatch(getMyOrders(token))
             } catch (error) {
               console.log(error)
             }
-          }}
+          }
+          }
         >
-        {({ isSubmitting }) => (
+          {({ isSubmitting }) => (
             <Form id={label.labelId}>
               <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                 <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
-                <iframe src={`images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
+                  <iframe src={`images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
 
                 </div>
                 <div className='p-4'>
@@ -69,7 +80,7 @@ const OrderModalCard = () => {
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                             dark:border-gray-600 dark:placeholder-gray-400
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder={field.name} name={field.name} key={label.docNum} id={label.docNum} />
+                            placeholder={field.name} name={field.name} key={label.docNum} id={label.docNum} />
                         )
                       })
                     }
@@ -78,7 +89,7 @@ const OrderModalCard = () => {
                 </div>
               </div>
             </Form>
-        )}
+          )}
         </Formik>
       </div>
     )
