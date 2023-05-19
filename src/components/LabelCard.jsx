@@ -5,12 +5,11 @@ import { addToBasket } from '../../store/Orders/thunks';
 const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
-  const [qtyValue, setQtyValue] = useState('')
 
 
 
   return (
-    <div className=' grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
+    <div className='grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
       {labels ?
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {

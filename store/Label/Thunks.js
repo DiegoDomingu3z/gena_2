@@ -82,3 +82,26 @@ export const findLabelFields = createAsyncThunk(
         }
     }
 )
+
+// export const getLabelsToUpdate = createAsyncThunk(
+//     'labels/fetchForUpdate',
+//     async(orderId) => {
+//         try {
+//            const res = await api.get('') 
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+// )
+
+// export const updateLabel = createAsyncThunk(
+//     'update/order',
+//     async ({orderId, labelId}) => {
+//         try {
+//             console.log(order, "This is the order ID for updating")
+//             const res = await api.get(`api/update/${orderId}/label/${labelId}`)
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+// )
