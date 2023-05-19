@@ -44,8 +44,22 @@ const NewLabel = () => {
             dispatch(findLabelFields(formData)).then((res) => {
                 const labelFields = res.payload
                 if (labelFields.length > 0) {
-                    setFields(labelFields)
-                    setIsChecked(true)
+                    let check = 0
+                    for (let i = 0; i < labelFields.length; i++) {
+                        const fieldSet = labelFields[i];
+                        const fieldName = fieldSet.name.toUpperCase()
+                        if (fieldName.includes('SERIAL')) {
+                            check++
+                        }
+                    }
+                    if (check > 0) {
+                        console.log("THIS BIG WORKIN")
+                        return
+                    } else {
+                        console.log("This ain't working")
+                        setFields(labelFields)
+                        setIsChecked(true)
+                    }
                 }
             }).catch((err) => {
 
@@ -135,12 +149,19 @@ const NewLabel = () => {
 
 
     const submitLabelInfo = async (values) => {
+        let bulkFile;
+        if (files.length > 1) {
+            bulkFile = files[1].name
+        } else {
+            bulkFile = null
+        }
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
             name: values.labelName,
             docNum: docNum,
             fileName: files[0].name,
+            bulkFileName: bulkFile,
             isKanban: isChecked,
             isBulkLabel: isBulkChecked,
             unitPack: values.unitPack,

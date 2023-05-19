@@ -103,7 +103,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
         let showLabels = labels.filter(l => l._id == label.labelId)
         let labelObj = showLabels.shift()
         setBasketLabels(prevFiles => [...prevFiles, labelObj])
-
+        console.log(basket)
       }
     }
     getLabels()
