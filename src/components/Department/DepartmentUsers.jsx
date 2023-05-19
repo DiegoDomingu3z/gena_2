@@ -7,13 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { RingLoader } from "react-spinners"
 import { Modal } from 'antd';
+import DepartmentUserModal from "./DepartmentUserModal"
+
 const DepartmentUsers = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const users = useSelector((state) => state.Department.users)
     const [deptName, setDeptName] = useState(null)
-    const [modal2Open, setModal2Open] = useState(false);
     const [activeUser, setActiveUser] = useState(null)
+    const [modalState, setModalState] = useState(false);
+
+
     useEffect(() => {
         const { departmentId } = router.query
         const { name } = router.query
@@ -25,7 +29,9 @@ const DepartmentUsers = () => {
 
 
 
-
+    const openModal = () => {
+        setModalState(!modalState)
+    }
 
 
 
@@ -33,6 +39,7 @@ const DepartmentUsers = () => {
 
     return (
         <div>
+            {modalState && <DepartmentUserModal modalState={modalState} setModalState={setModalState} />}
             <div className="flex flex-col p-20 pb-8">
                 <div className={""}>
 
@@ -60,6 +67,7 @@ const DepartmentUsers = () => {
                                 users.map((u) => (
 
                                     <div
+                                        onClick={openModal}
                                         className={'w-full grid grid-cols-6 p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer  justify-between'} key={u._id}>
                                         <span>{u.firstName} {u.lastName}</span>
                                         <span>{u.department}</span>

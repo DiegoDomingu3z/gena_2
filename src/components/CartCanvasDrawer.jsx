@@ -40,7 +40,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
 
   const submitOrder = async () => {
     const token = sessionStorage.getItem('accessToken')
-    await dispatch(placeOrder({ orderNote, basket, token })).then((res) => {
+    await dispatch(placeOrder({ orderNote, basket, token }))
       setOrderNote('');
       const basketLabelsCopy = basketLabels.slice();
       basketLabelsCopy.splice(0, 1);
@@ -50,10 +50,6 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
       setTimeout(() => {
         setToggleCartCanvas(!toggleCartCanvas)
       }, 500)
-
-    }).catch((error) => {
-      console.log(error);
-    });
 
   }
 
