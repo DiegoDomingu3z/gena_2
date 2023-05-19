@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { findLabelFields, getLabels, searchLabel } from "./Thunks";
+import { findLabelFields, getLabels, searchLabel, updateLabel } from "./Thunks";
 
 
 
@@ -50,6 +50,9 @@ export const LabelSlice = createSlice({
             .addCase(findLabelFields.rejected, (state, action) => {
                 state.loading = false
             })
+            // .addCase(updateLabel.fulfilled, (state, action) => {
+            //     alert('successfully updated order')
+            // })
 
     }
 })

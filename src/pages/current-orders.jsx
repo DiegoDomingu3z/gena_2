@@ -21,7 +21,7 @@ const CurrentOrders = () => {
     const [tab, setTab] = useState('my-orders');
     const account = useSelector((state) => state.Account.account)
     const approveOrder = useSelector((state) => state.Orders.leadDepartmentOrders)
-    const order = useSelector((state) => state.Orders.myOrders)
+    const order = useSelector((state) => state.Orders.myOrders.orders)
     const pickTab = (e) => {
         setTab(e.key);
     };
@@ -82,7 +82,7 @@ const CurrentOrders = () => {
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard />
+                                <OrderCard modalState={modalState} setModalState={setModalState} />
                             </div>
                         </div>
                 }

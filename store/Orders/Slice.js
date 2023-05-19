@@ -1,4 +1,4 @@
-import { addToBasket, approveOrder, clearBasket, declineOrder, getBasketLabels, getMyOrders, getOrders, getOrdersToApprove, placeOrder, removeFromBasket, removeOrder } from "./thunks";
+import { addToBasket, approveOrder, clearBasket, declineOrder, getBasketLabels, getMyOrders, getOrders, getOrdersToApprove, placeOrder, removeFromBasket, removeOrder, setActiveOrder, updateLabel, } from "./thunks";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -7,10 +7,10 @@ export const OrdersSlice = createSlice({
     initialState: {
         labelBasket: [],
         activeNote: '',
+        activeOrder: '',
         myOrders: [],
         loading: false,
         leadDepartmentOrders: []
-
     },
     reducers: {
 
@@ -70,7 +70,7 @@ export const OrdersSlice = createSlice({
             })
             .addCase(removeOrder.fulfilled, (state, action) => {
                 state.loading = false
-                state.myOrders = state.myOrders.filter(o => o._id != action.payload._id)
+                state.myOrders = state.myOrders.orders.filter(o => o._id != action.payload._id)
 
             })
             .addCase(removeOrder.rejected, (state, action) => {
@@ -107,6 +107,18 @@ export const OrdersSlice = createSlice({
                 state.leadDepartmentOrders = state.leadDepartmentOrders.filter(o => o._id != action.payload._id)
             })
             .addCase(declineOrder.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            .addCase(setActiveOrder.fulfilled, (state, action) => {
+                state.activeOrder = action.payload
+            })
+            .addCase(setActiveOrder.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            .addCase(updateLabel.fulfilled, (state, action) => {
+                console.log(action.payload)
+            })
+            .addCase(updateLabel.rejected, (state, action) => {
                 console.log(action.error)
             })
     }
