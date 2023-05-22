@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
-import { searchLabel } from '../../store/Label/Thunks'
 import { getMyOrders, updateLabel } from '../../store/Orders/thunks'
+import Swal from 'sweetalert2'
+
 
 
 const OrderModalCard = () => {
@@ -18,6 +19,25 @@ const OrderModalCard = () => {
     .filter((value, i) => {
       return value.orderId == activeOrder?._id
     })
+
+  const toast = async () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'updateLabelToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'success',
+      title: 'Label Updated!'
+    })
+  }
 
 
   const label = activeLabels.map((label, i) => {
@@ -53,6 +73,7 @@ const OrderModalCard = () => {
             try {
               await dispatch(updateLabel({ token, orderId, labelId, valuesArray }))
               await dispatch(getMyOrders(token))
+              toast()
             } catch (error) {
               console.log(error)
             }
@@ -85,7 +106,7 @@ const OrderModalCard = () => {
                       })
                     }
                   </div>
-                  <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-white hover:text-[#1baded] border border-[#1baded] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Update Label</button></div>
+                  <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Update Label</button></div>
                 </div>
               </div>
             </Form>

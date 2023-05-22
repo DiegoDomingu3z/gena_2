@@ -27,7 +27,10 @@ module.exports = {
       },
       animation: {
         wiggle: 'wiggle .2s ease-in-out',
-      }
+      },
+      boxShadow: {
+        'inset-top': 'inset 0px 10px 20px -20px rgba(0, 0, 0, 0.5)',
+      },
     },
   },
   plugins: [],

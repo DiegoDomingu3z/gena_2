@@ -40,7 +40,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
 
   const submitOrder = async () => {
     const token = sessionStorage.getItem('accessToken')
-    await dispatch(placeOrder({ orderNote, basket, token })).then((res) => {
+    await dispatch(placeOrder({ orderNote, basket, token }))
       setOrderNote('');
       const basketLabelsCopy = basketLabels.slice();
       basketLabelsCopy.splice(0, 1);
@@ -50,10 +50,6 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
       setTimeout(() => {
         setToggleCartCanvas(!toggleCartCanvas)
       }, 500)
-
-    }).catch((error) => {
-      console.log(error);
-    });
 
   }
 
@@ -69,7 +65,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
           <textarea id="noteInput" onChange={handleNote} value={orderNote} className='rounded-lg bg-[#233042] text-white p-5 max-h-44 min-h-[6rem]' placeholder='Notes...' name="" cols="40" rows="6"></textarea>
         </div>
         <div className='w-full flex flex-col justify-center'>
-          <button onClick={() => submitOrder()} disabled={basket.length > 0 ? false : true} className='bg-[#1baded] mx-3 p-3 rounded-xl text-white hover:bg-white border border-[#1baded] hover:text-[#1baded] transition-all ease-in-out'>Submit Order</button>
+          <button onClick={() => submitOrder()} disabled={basket.length > 0 ? false : true} className='bg-[#1baded] mx-3 p-3 rounded-xl text-white hover:bg-[#16b9ff] hover:tracking-widest transition-all ease-in-out'>Submit Order</button>
         </div>
       </div>
     </div>
