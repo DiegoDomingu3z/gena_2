@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createDepartment, getAllUsers, getDepartments, getLeads, getUsersInDepartment, removeDept } from "./Thunks";
+import { createDepartment, getAllUsers, getDepartments, getGroupLead, getLeads, getUsersInDepartment, removeDept } from "./Thunks";
 import { createAccount } from "../Account/thunks";
 
 
@@ -12,7 +12,8 @@ export const DepartmentSlice = createSlice({
         departments: [],
         loading: false,
         leads: [],
-        users: []
+        users: [],
+        groupLeads: []
     },
     reducers: {
 
@@ -85,6 +86,18 @@ export const DepartmentSlice = createSlice({
                 state.loading = false
             })
             .addCase(removeDept.rejected, (state, action) => {
+                state.errorCodes = action.error
+                state.loading = false
+
+            })
+            .addCase(getGroupLead.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getGroupLead.fulfilled, (state, action) => {
+                state.groupLeads = action.payload
+                state.loading = false
+            })
+            .addCase(getGroupLead.rejected, (state, action) => {
                 state.errorCodes = action.error
                 state.loading = false
 

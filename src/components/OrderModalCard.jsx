@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { getMyOrders, updateLabel } from '../../store/Orders/thunks'
 import Swal from 'sweetalert2'
+import { PDFDocument } from 'pdf-lib'
 
 
-
-const OrderModalCard = () => {
+const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   // const [activeLabels, setActiveLabels] = useState('')
   const dispatch = useDispatch();
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
@@ -14,6 +14,7 @@ const OrderModalCard = () => {
   const labels = activeOrder ? activeOrder.labels : []
   console.log(activeOrder)
   const [arr, setArr] = useState([])
+
   const activeLabels = labelsArray
     .flatMap(innerArray => innerArray)
     .filter((value, i) => {
@@ -39,6 +40,68 @@ const OrderModalCard = () => {
     })
   }
 
+  useEffect(() => {
+    const modifyPaths = async () => {
+      setBlobs([])
+      for (let i = 0; i < activeLabels.length; i++) {
+        const label = activeLabels[i];
+        const modifiedLabel = await modifyPdf(
+          `images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`,
+          labels[i].textToPut
+        )
+        setBlobs(prev => [...prev, modifiedLabel])
+      }
+    }
+    modifyPaths()
+  }, [labels])
+
+  const modifyPdf = async (path, text) => {
+    try {
+      const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+      const form = pdfDoc.getForm();
+      const fieldNames = form.getFields().map((field) => field.getName());
+      console.log(fieldNames)
+
+      for (let i = 0; i < fieldNames.length; i++) {
+        const fieldName = fieldNames[i];
+        const fieldToFill = form.getTextField(fieldName);
+        fieldToFill.setText(text[i].text);
+      }
+
+      const modifiedPdfBytes = await pdfDoc.save();
+      const pdfDataUri = createDataUri(modifiedPdfBytes);
+
+      return pdfDataUri;
+    } catch (error) {
+      console.error('Error modifying PDF:', error);
+      throw error;
+    }
+  };
+
+  const createDataUri = (pdfBytes) => {
+    const pdfData = new Blob([pdfBytes], { type: 'application/pdf' });
+    const dataUri = URL.createObjectURL(pdfData);
+    return dataUri;
+  };
+
+
+  const seeLabels = (index) => {
+    console.log(blobs, 'blobs')
+    if (blobs.length > 0) {
+      return (
+        <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
+          <iframe src={blobs[index]} width="100%" height="100%" className='rounded-t-md'></iframe>
+        </div>
+      )
+    } else {
+      return (
+        <div>Label Algorithm to show potential print is not working. submitting order should still work, <b>Please Report this Problem</b></div>
+      )
+    }
+  }
+
 
   const label = activeLabels.map((label, i) => {
     console.log(label, 'active')
@@ -54,6 +117,10 @@ const OrderModalCard = () => {
 
       return acc
     }, {})
+
+
+
+
 
     return (
       <div key={label._id}>
@@ -83,10 +150,11 @@ const OrderModalCard = () => {
           {({ isSubmitting }) => (
             <Form id={label.labelId}>
               <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
-                <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
+                {/* <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                   <iframe src={`images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
 
-                </div>
+                </div> */}
+                {seeLabels(i)}
                 <div className='p-4'>
                   <div className='text-end text-xs'>{label.docNum}</div>
                   <div className='text-center text-md text-gray-500 mb-5'>{label.name}</div>

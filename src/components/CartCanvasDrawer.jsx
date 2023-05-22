@@ -6,11 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightLong, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { clearBasket, getBasketLabels, placeOrder, removeFromBasket } from '../../store/Orders/thunks'
 import Swal from 'sweetalert2'
-
+import { PDFDocument } from 'pdf-lib'
 const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
   const [basketLabels, setBasketLabels] = useState([])
   const [orderNote, setOrderNote] = useState('')
   const basket = useSelector((state) => state.Orders.labelBasket)
+
   const dispatch = useDispatch()
   const handleNote = (event) => {
     let note = event.target.value
@@ -41,15 +42,15 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
   const submitOrder = async () => {
     const token = sessionStorage.getItem('accessToken')
     await dispatch(placeOrder({ orderNote, basket, token }))
-      setOrderNote('');
-      const basketLabelsCopy = basketLabels.slice();
-      basketLabelsCopy.splice(0, 1);
-      setBasketLabels(basketLabelsCopy);
-      dispatch(clearBasket())
-      toast()
-      setTimeout(() => {
-        setToggleCartCanvas(!toggleCartCanvas)
-      }, 500)
+    setOrderNote('');
+    const basketLabelsCopy = basketLabels.slice();
+    basketLabelsCopy.splice(0, 1);
+    setBasketLabels(basketLabelsCopy);
+    dispatch(clearBasket())
+    toast()
+    setTimeout(() => {
+      setToggleCartCanvas(!toggleCartCanvas)
+    }, 500)
 
   }
 
@@ -80,7 +81,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
   const dispatch = useDispatch()
   const basket = useSelector((state) => state.Orders.labelBasket)
   const labels = useSelector((state) => state.Label.activeLabels)
-
+  const [blobs, setBlobs] = useState([])
 
   const removeFromOrder = (index) => {
     const basketLabelsCopy = basketLabels.slice();
@@ -99,11 +100,76 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
         let showLabels = labels.filter(l => l._id == label.labelId)
         let labelObj = showLabels.shift()
         setBasketLabels(prevFiles => [...prevFiles, labelObj])
-        console.log(basket)
+        console.log(basket, 'bs')
+        console.log(basketLabels)
       }
     }
     getLabels()
   }, [toggleCartCanvas])
+
+  useEffect(() => {
+    const modifyPaths = async () => {
+      setBlobs([])
+      for (let i = 0; i < basketLabels.length; i++) {
+        const actualLabel = basketLabels[i];
+        const modifiedPdf = await modifyPdf(
+          `images/pdflabels/${actualLabel.categoryName}/${actualLabel.subCategoryName}/${actualLabel.fileName}`,
+          basket[i].textToPut
+        )
+        console.log(modifiedPdf, 'yo')
+        setBlobs(prev => [...prev, modifiedPdf])
+
+      }
+    }
+    modifyPaths()
+
+  }, [basket, basketLabels])
+  console.log(blobs)
+  const modifyPdf = async (path, text) => {
+    try {
+      const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+      const form = pdfDoc.getForm();
+      const fieldNames = form.getFields().map((field) => field.getName());
+      console.log(fieldNames)
+
+      for (let i = 0; i < fieldNames.length; i++) {
+        const fieldName = fieldNames[i];
+        const fieldToFill = form.getTextField(fieldName);
+        fieldToFill.setText(text[i].text);
+      }
+
+      const modifiedPdfBytes = await pdfDoc.save();
+      const pdfDataUri = createDataUri(modifiedPdfBytes);
+
+      return pdfDataUri;
+    } catch (error) {
+      console.error('Error modifying PDF:', error);
+      throw error;
+    }
+  };
+
+  const createDataUri = (pdfBytes) => {
+    const pdfData = new Blob([pdfBytes], { type: 'application/pdf' });
+    const dataUri = URL.createObjectURL(pdfData);
+    return dataUri;
+  };
+
+
+  const seeLabel = (index) => {
+    if (blobs.length > 0) {
+      return (
+        <div className='flex justify-center'>
+          <iframe className='rounded' src={blobs[index]}
+            width="80%" height="50%" frameborder="0" ></iframe>
+        </div>
+      )
+    } else {
+      <div>Label Algorithm to show potential print is not working. submitting order should still work, <b>Please Report this Problem</b></div>
+    }
+  }
+
 
 
   return (
@@ -111,10 +177,11 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
       {basketLabels.length > 0 ?
         basketLabels.map((label, i) => (
           <div key={i}>
-            <div className='flex justify-center'>
+            {/* <div className='flex justify-center'>
               <iframe className='rounded' src={`images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`}
                 width="80%" height="50%" frameborder="0" ></iframe>
-            </div>
+            </div> */}
+            {seeLabel(i)}
             <div className='border-b-2 p-4 flex mb-2'>
               <div className='flex gap-24 mr-auto'>
                 <h4 className='text-gray-500'>

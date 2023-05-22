@@ -16,6 +16,7 @@ const DepartmentUsers = () => {
     const [deptName, setDeptName] = useState(null)
     const [activeUser, setActiveUser] = useState(null)
     const [modalState, setModalState] = useState(false);
+    const account = useSelector((state) => state.Account.account)
 
 
     useEffect(() => {
@@ -39,7 +40,7 @@ const DepartmentUsers = () => {
 
     return (
         <div>
-            {modalState && <DepartmentUserModal modalState={modalState} setModalState={setModalState} />}
+            {modalState && <DepartmentUserModal modalState={modalState} setModalState={setModalState} activeUser={activeUser} />}
             <div className="flex flex-col p-20 pb-8">
                 <div className={""}>
 
@@ -67,13 +68,18 @@ const DepartmentUsers = () => {
                                 users.map((u) => (
 
                                     <div
-                                        onClick={openModal}
+                                        onClick={() => {
+                                            if (account.privileges == 'admin') {
+                                                openModal()
+                                                setActiveUser(u)
+                                            }
+                                        }}
                                         className={'w-full grid grid-cols-6 p-5 border-b hover:bg-gray-100 transition-all ease-in-out cursor-pointer  justify-between'} key={u._id}>
                                         <span>{u.firstName} {u.lastName}</span>
                                         <span>{u.department}</span>
                                         <span>{u.privileges}</span>
-                                        <span>{u.teamLead != ' ' || undefined ? u.teamLead : 'N/A'}</span>
                                         <span>{u.groupLead != ' ' || undefined ? u.groupLead : 'N/A'}</span>
+                                        <span>{u.teamLead != ' ' || undefined ? u.teamLead : 'N/A'}</span>
                                         <span>{u.email ? u.email : 'N/A'}</span>
                                         {/* <div className="flex gap-5">
                                             <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"><FontAwesomeIcon icon={faPencil} /></button>

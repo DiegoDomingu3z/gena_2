@@ -47,10 +47,10 @@ const CurrentOrders = () => {
                             <div>
                                 <Menu onClick={pickTab} selectedKeys={[tab]} mode="horizontal">
                                     <Menu.Item className='absolute' key="my-orders">My Orders
-                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{order.length}</span>
+                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{order ? order.length : null}</span>
                                     </Menu.Item>
                                     <Menu.Item className='relative' key="approve-order">Orders I need to approve
-                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{approveOrder.length}</span></Menu.Item>
+                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{approveOrder ? approveOrder.length : null}</span></Menu.Item>
                                 </Menu>
                             </div>
                             <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>

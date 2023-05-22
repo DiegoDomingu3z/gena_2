@@ -75,6 +75,7 @@ const LeadsOrderApproval = () => {
     }
 
     const approveOrderNow = (id, name) => {
+        console.log(id, name)
         const token = sessionStorage.getItem('accessToken')
         dispatch(approveOrder({ token, id }))
         toast(id, name)

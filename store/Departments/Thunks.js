@@ -111,3 +111,17 @@ export const removeDept = createAsyncThunk(
 )
 
 
+export const getGroupLead = createAsyncThunk(
+    'get/groupLead',
+    async () => {
+        try {
+            const res = await api.get('api/department/group-leads')
+                .then((res) => res.data)
+            console.log(res, 'leads')
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
