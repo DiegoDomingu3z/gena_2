@@ -75,15 +75,16 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
     return `${month}/${day}/${year}`;
   };
 
-  const handleUpdateModal = (id) => {
-    setModalState(!modalState)
+  const handleUpdateModal = async (id) => {
+
     const orderId = id
 
-    const singleOrder = order.filter((order) => {
+    const singleOrder = await order.filter((order) => {
       return order._id == orderId
     })
 
-    dispatch(setActiveOrder(singleOrder))
+    await dispatch(setActiveOrder(singleOrder))
+    setModalState(!modalState)
   }
 
   return (

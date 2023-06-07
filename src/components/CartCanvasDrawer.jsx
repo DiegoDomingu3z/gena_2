@@ -52,6 +52,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
       setToggleCartCanvas(!toggleCartCanvas)
     }, 500)
 
+
   }
 
   return (
@@ -109,19 +110,25 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
 
   useEffect(() => {
     setBlobs([])
-    const modifyPaths = async () => {
-      for (let i = 0; i < basketLabels.length; i++) {
-        const actualLabel = basketLabels[i];
-        const modifiedPdf = await modifyPdf(
-          `images/pdflabels/${actualLabel.categoryName}/${actualLabel.subCategoryName}/${actualLabel.fileName}`,
-          basket[i].textToPut
-        )
-        console.log(modifiedPdf, 'yo')
-        setBlobs(prev => [...prev, modifiedPdf])
+    if (basketLabels.length < 1) {
+      console.log(blobs.length)
+      return
+    } else {
 
+      const modifyPaths = async () => {
+        for (let i = 0; i < basketLabels.length; i++) {
+          const actualLabel = basketLabels[i];
+          const modifiedPdf = await modifyPdf(
+            `images/pdflabels/${actualLabel.categoryName}/${actualLabel.subCategoryName}/${actualLabel.fileName}`,
+            basket[i]?.textToPut
+          )
+          console.log(modifiedPdf, 'yo')
+          setBlobs(prev => [...prev, modifiedPdf])
+
+        }
       }
+      modifyPaths()
     }
-    modifyPaths()
 
   }, [basket, basketLabels])
   console.log(blobs)
@@ -137,7 +144,13 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
         const fieldToFill = form.getTextField(fieldName);
-        fieldToFill.setText(text[i].text);
+        if (text === undefined) {
+          console.log(text)
+          return
+        } else {
+          console.log(text)
+          fieldToFill.setText(text[i].text);
+        }
       }
 
       const modifiedPdfBytes = await pdfDoc.save();

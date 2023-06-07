@@ -52,7 +52,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
           labels[i].textToPut
         )
         setBlobs(prev => [...prev, modifiedLabel])
-        console.log('ran')
       }
     }
     modifyPaths()
@@ -65,8 +64,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
       const form = pdfDoc.getForm();
       const fieldNames = form.getFields().map((field) => field.getName());
-      console.log(fieldNames)
-
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
         const fieldToFill = form.getTextField(fieldName);
@@ -92,7 +89,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
   const seeLabels = (index) => {
     console.log(index, 'blobs')
-    console.log(activeLabels.length, blobs)
     if (blobs.length > 0) {
       return (
         <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
@@ -101,7 +97,9 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       )
     } else {
       return (
-        <div className='text-center'><RingLoader color='#36d7b7' /></div>
+        <div className="flex items-center justify-center">
+          <RingLoader color="#36d7b7" />
+        </div>
       )
     }
   }

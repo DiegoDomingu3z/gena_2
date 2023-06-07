@@ -35,6 +35,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     }, [])
 
     const getUser = (id) => {
+
         const singleUser = user.filter(u => u._id == id).shift()
         console.log(singleUser)
         return `${singleUser.department}`
