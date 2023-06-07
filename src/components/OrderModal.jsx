@@ -5,10 +5,10 @@ import OrderModalCard from './OrderModalCard'
 import { useScrollPosition } from '~/hooks/useScrollPosition'
 import { useRef } from 'react'
 
-const OrderModal = ({ modalState, setModalState }) => {
+const OrderModal = ({ modalState, setModalState, blobs, setBlobs }) => {
   const containerRef = useRef(null);
   const scrollPosition = useScrollPosition(containerRef);
-  const [blobs, setBlobs] = useState([])
+
 
   return (
     <div className='absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>

@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik'
 import { getMyOrders, updateLabel } from '../../store/Orders/thunks'
 import Swal from 'sweetalert2'
 import { PDFDocument } from 'pdf-lib'
+import { RingLoader } from 'react-spinners'
 
 
 const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
@@ -41,6 +42,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   }
 
   useEffect(() => {
+    console.log(activeLabels, labels, 'THIS IS IT')
     const modifyPaths = async () => {
       setBlobs([])
       for (let i = 0; i < activeLabels.length; i++) {
@@ -50,10 +52,11 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
           labels[i].textToPut
         )
         setBlobs(prev => [...prev, modifiedLabel])
+        console.log('ran')
       }
     }
     modifyPaths()
-  }, [labels])
+  }, [])
 
   const modifyPdf = async (path, text) => {
     try {
@@ -88,7 +91,8 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
 
   const seeLabels = (index) => {
-    console.log(blobs, 'blobs')
+    console.log(index, 'blobs')
+    console.log(activeLabels.length, blobs)
     if (blobs.length > 0) {
       return (
         <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
@@ -97,7 +101,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       )
     } else {
       return (
-        <div>Label Algorithm to show potential print is not working. submitting order should still work, <b>Please Report this Problem</b></div>
+        <div className='text-center'><RingLoader color='#36d7b7' /></div>
       )
     }
   }

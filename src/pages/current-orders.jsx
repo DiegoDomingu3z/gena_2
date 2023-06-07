@@ -22,6 +22,7 @@ const CurrentOrders = () => {
     const account = useSelector((state) => state.Account.account)
     const approveOrder = useSelector((state) => state.Orders.leadDepartmentOrders)
     const order = useSelector((state) => state.Orders.myOrders.orders)
+    const [blobs, setBlobs] = useState([])
     const pickTab = (e) => {
         setTab(e.key);
     };
@@ -29,7 +30,7 @@ const CurrentOrders = () => {
 
     return (
         <Layout title={'Gena | Current Orders'}>
-            {modalState && <OrderModal modalState={modalState} setModalState={setModalState} />}
+            {modalState && <OrderModal modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
             <div className={"flex flex-col p-20"}>
                 <div className='flex items-end'>
                     <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1></div>
@@ -64,7 +65,7 @@ const CurrentOrders = () => {
                                     <h4>Actions</h4>
                                 </div>
                                 <div className='flex flex-col'>
-                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} />}
+                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
                                 </div>
                                 <div>
                                     {tab == 'approve-order' && <LeadsOrderApproval />}
@@ -82,7 +83,7 @@ const CurrentOrders = () => {
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard modalState={modalState} setModalState={setModalState} />
+                                <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />
                             </div>
                         </div>
                 }

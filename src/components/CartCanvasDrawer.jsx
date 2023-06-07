@@ -46,8 +46,8 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
     const basketLabelsCopy = basketLabels.slice();
     basketLabelsCopy.splice(0, 1);
     setBasketLabels(basketLabelsCopy);
-    dispatch(clearBasket())
     toast()
+    dispatch(clearBasket())
     setTimeout(() => {
       setToggleCartCanvas(!toggleCartCanvas)
     }, 500)
@@ -108,8 +108,8 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
   }, [toggleCartCanvas])
 
   useEffect(() => {
+    setBlobs([])
     const modifyPaths = async () => {
-      setBlobs([])
       for (let i = 0; i < basketLabels.length; i++) {
         const actualLabel = basketLabels[i];
         const modifiedPdf = await modifyPdf(
