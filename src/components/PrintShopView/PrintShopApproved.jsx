@@ -35,7 +35,9 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     }, [])
 
     const getUser = (id) => {
+
         const singleUser = user.filter(u => u._id == id).shift()
+        console.log(singleUser)
         return `${singleUser.department}`
     }
 
@@ -69,6 +71,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
 
 
+
     useEffect(() => {
         const modifyAndStorePdfDataUris = async () => {
             try {
@@ -88,7 +91,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                     })
                 );
                 setModifiedPdfDataUris(modifiedPdfDataUris);
-                console.log(modifiedPdfDataUris, 'last')
             } catch (error) {
                 console.error('Error modifying PDF:', error);
             }
@@ -129,8 +131,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
 
     const seeString = (index) => {
-        const currentDir = __dirname;
-        console.log(currentDir)
         if (modifiedPdfDataUris.length > 0) {
             return (
                 modifiedPdfDataUris[index].map((m) => {

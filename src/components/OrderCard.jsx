@@ -7,7 +7,7 @@ import { Tooltip } from 'antd'
 import Swal from 'sweetalert2'
 
 
-const OrderCard = ({ modalState, setModalState }) => {
+const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
   const dispatch = useDispatch();
   // const [selectedOrder, setSelectedOrder] = useState();
   const order = useSelector((state) => state.Orders.myOrders.orders)
@@ -75,15 +75,16 @@ const OrderCard = ({ modalState, setModalState }) => {
     return `${month}/${day}/${year}`;
   };
 
-  const handleUpdateModal = (e) => {
-    setModalState(!modalState)
-    const orderId = e.currentTarget.dataset.orderId
+  const handleUpdateModal = async (id) => {
 
-    const singleOrder = order.filter((order) => {
+    const orderId = id
+
+    const singleOrder = await order.filter((order) => {
       return order._id == orderId
     })
 
-    dispatch(setActiveOrder(singleOrder))
+    await dispatch(setActiveOrder(singleOrder))
+    setModalState(!modalState)
   }
 
   return (
@@ -97,7 +98,11 @@ const OrderCard = ({ modalState, setModalState }) => {
             <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center text-sm`}>{o.status}</span>
             <div className='flex gap-5 w-32'>
               <Tooltip placement='top' title="Edit Order">
-                <button onClick={handleUpdateModal} data-order-id={o._id} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
+                <button
+                  onClick={() => {
+                    setBlobs([])
+                    handleUpdateModal(o._id)
+                  }} data-order-id={o._id} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>
               <Tooltip placement='top' title="Delete Order">
                 <button onClick={() => deleteOrder(o._id)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faTrash} /></button>

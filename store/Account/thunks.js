@@ -102,3 +102,23 @@ export const getAllUsers = createAsyncThunk(
         }
     }
 )
+
+
+export const updateUser = createAsyncThunk(
+    'update/account',
+    async ({ token, id, values }) => {
+        try {
+            const res = await api.put(`api/account/${id}/update`, values, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

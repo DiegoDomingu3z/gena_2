@@ -22,6 +22,7 @@ const CurrentOrders = () => {
     const account = useSelector((state) => state.Account.account)
     const approveOrder = useSelector((state) => state.Orders.leadDepartmentOrders)
     const order = useSelector((state) => state.Orders.myOrders.orders)
+    const [blobs, setBlobs] = useState([])
     const pickTab = (e) => {
         setTab(e.key);
     };
@@ -29,7 +30,7 @@ const CurrentOrders = () => {
 
     return (
         <Layout title={'Gena | Current Orders'}>
-            {modalState && <OrderModal modalState={modalState} setModalState={setModalState} />}
+            {modalState && <OrderModal modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
             <div className={"flex flex-col p-20"}>
                 <div className='flex items-end'>
                     <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1></div>
@@ -47,10 +48,10 @@ const CurrentOrders = () => {
                             <div>
                                 <Menu onClick={pickTab} selectedKeys={[tab]} mode="horizontal">
                                     <Menu.Item className='absolute' key="my-orders">My Orders
-                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{order.length}</span>
+                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{order ? order.length : null}</span>
                                     </Menu.Item>
                                     <Menu.Item className='relative' key="approve-order">Orders I need to approve
-                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{approveOrder.length}</span></Menu.Item>
+                                        <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{approveOrder ? approveOrder.length : null}</span></Menu.Item>
                                 </Menu>
                             </div>
                             <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
@@ -64,7 +65,7 @@ const CurrentOrders = () => {
                                     <h4>Actions</h4>
                                 </div>
                                 <div className='flex flex-col'>
-                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} />}
+                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
                                 </div>
                                 <div>
                                     {tab == 'approve-order' && <LeadsOrderApproval />}
@@ -82,7 +83,7 @@ const CurrentOrders = () => {
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard modalState={modalState} setModalState={setModalState} />
+                                <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />
                             </div>
                         </div>
                 }
