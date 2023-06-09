@@ -11,9 +11,11 @@ import { useState } from 'react';
 import { getDepartments, getLeads } from '../../store/Departments/Thunks';
 import Swal from 'sweetalert2';
 import { sendCredentials } from '../../store/Emails/Thunks';
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 
 
 const Signup = () => {
+    const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch()
     const user = useSelector((state) => state.Account)
     const dept = useSelector((state) => state.Department.departments)
@@ -112,10 +114,10 @@ const Signup = () => {
                                 </div>
                                 <div className='grow'>
                                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password <span className='text-red-500'>*</span></label>
-                                    <Field type="password" name="password" id="signupPassword" placeholder="•••••••••" className="bg-gray-50 border
+                                    <div className='relative'><Field type={showPassword ? 'text' : 'password'} name="password" id="signupPassword" placeholder="•••••••••" className="bg-gray-50 border
                                      border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full 
                                      p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                      dark:focus:border-blue-500" required />
+                                      dark:focus:border-blue-500" required />{!showPassword && <FontAwesomeIcon className='absolute top-[35%] right-[6%] hover:cursor-pointer' onClick={() => setShowPassword(true)} icon={faEye} />}{showPassword && <FontAwesomeIcon className='absolute top-[35%] right-[5.9%] hover:cursor-pointer' onClick={() => setShowPassword(false)} icon={faEyeSlash} />}</div>
                                 </div>
                             </div>
                             <div className='flex justify-around gap-8'>
