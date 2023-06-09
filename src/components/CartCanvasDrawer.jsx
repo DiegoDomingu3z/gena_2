@@ -101,7 +101,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
         let showLabels = labels.filter(l => l._id == label.labelId)
         let labelObj = showLabels.shift()
         setBasketLabels(prevFiles => [...prevFiles, labelObj])
-        console.log(basket, 'bs')
+        console.log(basket, 'bsdd')
         console.log(basketLabels)
       }
     }
@@ -118,13 +118,12 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
       const modifyPaths = async () => {
         for (let i = 0; i < basketLabels.length; i++) {
           const actualLabel = basketLabels[i];
-          const modifiedPdf = await modifyPdf(
+          let modifiedPdf
+          modifiedPdf = await modifyPdf(
             `images/pdflabels/${actualLabel.categoryName}/${actualLabel.subCategoryName}/${actualLabel.fileName}`,
             basket[i]?.textToPut
           )
-          console.log(modifiedPdf, 'yo')
           setBlobs(prev => [...prev, modifiedPdf])
-
         }
       }
       modifyPaths()
@@ -143,14 +142,23 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
 
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
-        const fieldToFill = form.getTextField(fieldName);
-        if (text === undefined) {
-          console.log(text)
-          return
-        } else {
-          console.log(text)
-          fieldToFill.setText(text[i].text);
+        try {
+          const checkbox = form.getCheckBox(fieldName);
+          if (text[i].text) {
+            checkbox.check()
+          }
+        } catch (error) {
+          const fieldToFill = form.getTextField(fieldName);
+          if (!text) {
+            console.log(text)
+            return
+          } else {
+            console.log(text)
+            fieldToFill.setText(text[i].text);
+          }
         }
+
+
       }
 
       const modifiedPdfBytes = await pdfDoc.save();

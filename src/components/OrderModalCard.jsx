@@ -13,8 +13,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr)
   const labels = activeOrder ? activeOrder.labels : []
-  console.log(activeOrder)
-  const [arr, setArr] = useState([])
 
   const activeLabels = labelsArray
     .flatMap(innerArray => innerArray)
@@ -42,17 +40,21 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   }
 
   useEffect(() => {
-    console.log(activeLabels, labels, 'THIS IS IT')
+    setBlobs([])
+    const l = []
     const modifyPaths = async () => {
-      setBlobs([])
       for (let i = 0; i < activeLabels.length; i++) {
         const label = activeLabels[i];
         const modifiedLabel = await modifyPdf(
           `images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`,
           labels[i].textToPut
         )
+        // console.log("Running", i)
         setBlobs(prev => [...prev, modifiedLabel])
+        l.push(modifiedLabel)
       }
+      setBlobs(l)
+      console.log(l)
     }
     modifyPaths()
   }, [])
@@ -66,8 +68,15 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       const fieldNames = form.getFields().map((field) => field.getName());
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
-        const fieldToFill = form.getTextField(fieldName);
-        fieldToFill.setText(text[i].text);
+        try {
+          const checkbox = form.getCheckBox(fieldName);
+          if (text[i].text) {
+            checkbox.check()
+          }
+        } catch (error) {
+          const fieldToFill = form.getTextField(fieldName);
+          fieldToFill.setText(text[i].text);
+        }
       }
 
       const modifiedPdfBytes = await pdfDoc.save();
@@ -88,7 +97,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
 
   const seeLabels = (index) => {
-    console.log(index, 'blobs')
     if (blobs.length > 0) {
       return (
         <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
@@ -106,7 +114,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
 
   const label = activeLabels.map((label, i) => {
-    console.log(label, 'active')
     const { pdf, docNum, name } = label
     let vals = labels[i].textToPut.reduce((acc, curr) => {
       acc[curr.name] = curr.text || '';
@@ -130,15 +137,12 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
           initialValues={vals}
           enableReinitialize
           onSubmit={async (values) => {
-            console.log(values)
             const valuesArray = Object.keys(values).map((key) => {
               return { [key]: values[key] };
             })
-            console.log(valuesArray)
             const token = sessionStorage.getItem('accessToken');
             const orderId = label.orderId
             const labelId = label._id
-            console.log(values)
             try {
               await dispatch(updateLabel({ token, orderId, labelId, valuesArray }))
               await dispatch(getMyOrders(token))
@@ -172,6 +176,17 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                             dark:border-gray-600 dark:placeholder-gray-400
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder={field.name} name={field.name} key={label.docNum} id={label.docNum} />
+                          //   <div className={field.type === 'checkbox' ? 'grid grid-rows-1 grid-flow-col' : ''}>
+                          //     <div className='pt-1'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
+                          // sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
+                          // dark:border-gray-600 dark:placeholder-gray-400
+                          // dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={field.name} type={field.type} placeholder={field.name}
+                          //       key={label.name} id={label.docNum} required={field.type === 'checkbox' ? false : true} />
+                          //     </div>
+                          //     <div>
+                          //       {field.type === 'checkbox' ? <span className=''>{f.name.toUpperCase()}</span> : null}
+                          //     </div>
+                          //   </div>
                         )
                       })
                     }
