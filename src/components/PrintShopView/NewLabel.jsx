@@ -189,7 +189,7 @@ const NewLabel = () => {
                 <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Create A New Label</h1></div>
             </div>
             <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
-            <div className={'flex gap-10 flex-col items-center overflow-auto h-[90rem] laptop:h-[44.5rem] pb-2'}>
+            <div className={'flex gap-10 flex-col items-center overflow-auto h-[90rem] laptop:h-[44.5rem] pb-5'}>
                 <div className={'laptop:w-3/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg'}>
                     <Formik
                         initialValues={{
