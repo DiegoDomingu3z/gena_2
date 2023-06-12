@@ -33,14 +33,15 @@ const Signup = () => {
         Swal.fire({
             toast: true,
             title: `${firstName} ${lastName} is now part of the ${dep[0].name} team`,
-            position: 'top-end',
+            position: 'center',
             showConfirmButton: true,
             confirmButtonText: `Go to ${dep[0].name} team`,
             iconColor: 'white',
-            confirmButtonColor: '#1BADEDs',
+            confirmButtonColor: '#28aeeb',
             timer: 6000,
             customClass: {
                 popup: 'colored-toast',
+                container: 'addToCartToast'
             },
             timerProgressBar: true,
             icon: 'success',
@@ -117,7 +118,7 @@ const Signup = () => {
                                     <div className='relative'><Field type={showPassword ? 'text' : 'password'} name="password" id="signupPassword" placeholder="•••••••••" className="bg-gray-50 border
                                      border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full 
                                      p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                      dark:focus:border-blue-500" required />{!showPassword && <FontAwesomeIcon className='absolute top-[35%] right-[6%] hover:cursor-pointer' onClick={() => setShowPassword(true)} icon={faEye} />}{showPassword && <FontAwesomeIcon className='absolute top-[35%] right-[5.9%] hover:cursor-pointer' onClick={() => setShowPassword(false)} icon={faEyeSlash} />}</div>
+                                      dark:focus:border-blue-500" required />{!showPassword && <FontAwesomeIcon className='absolute top-[35%] right-[10%] laptop:right-[6%] hover:cursor-pointer' onClick={() => setShowPassword(true)} icon={faEye} />}{showPassword && <FontAwesomeIcon className='absolute top-[35%] right-[9.9%] laptop:right-[5.9%] hover:cursor-pointer' onClick={() => setShowPassword(false)} icon={faEyeSlash} />}</div>
                                 </div>
                             </div>
                             <div className='flex justify-around gap-8'>

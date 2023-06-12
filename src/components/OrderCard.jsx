@@ -92,11 +92,11 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
       {order ?
         order.map((o) => (
           <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2' key={o._id}>
-            <p>{o._id}</p>
+            <p className='text-sm'>{o._id}</p>
             <p className=''>{o.labels.length}</p>
             <p className=''>{formatDate(o.createdOn)}</p>
             <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center text-sm`}>{o.status}</span>
-            <div className='flex gap-5 w-32'>
+            <div className='flex gap-5 w-32 place-self-end'>
               <Tooltip placement='top' title="Edit Order">
                 <button
                   onClick={() => {

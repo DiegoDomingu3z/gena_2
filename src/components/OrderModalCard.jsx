@@ -25,11 +25,11 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   const toast = async () => {
     const Toast = Swal.mixin({
       toast: true,
-      position: 'top',
+      position: 'center',
       iconColor: 'white',
       customClass: {
         popup: 'colored-toast',
-        container: 'updateLabelToast',
+        container: 'addToCartToast',
       },
       showConfirmButton: false,
       timer: 1500,

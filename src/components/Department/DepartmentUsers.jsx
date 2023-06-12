@@ -50,7 +50,7 @@ const DepartmentUsers = () => {
                     <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
                 </div>
                 <div className='bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]'>
-                    <div className="grid grid-cols-6 p-5 text-lg font-semibold border-b">
+                    <div className="grid grid-cols-6 p-5 font-semibold border-b">
                         <div className="">Name</div>
                         <div>Department</div>
                         <div>Position</div>
