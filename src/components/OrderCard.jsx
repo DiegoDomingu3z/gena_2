@@ -18,7 +18,7 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
     'processing': 'bg-[#ff9800]',
     'approved': 'bg-[#1baded]',
     'delivered': 'bg-[#63cb67]',
-    'declined': 'bg-[rgb(255,23,23)]'
+    'declined': 'bg-[#fb3939]'
   }
 
 
