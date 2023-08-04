@@ -90,6 +90,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
             if(JSON.stringify(dataForSubmission) != JSON.stringify(values)){
               dispatch(updateUser({ token, id, values }))
               successToast()
+              setModalState(!modalState)
               return
             }
             failureToast()

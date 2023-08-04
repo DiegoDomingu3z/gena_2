@@ -26,7 +26,7 @@ const DepartmentUsers = () => {
             dispatch(getUsersInDepartment(departmentId))
             setDeptName(name)
         }
-    }, [router.query])
+    }, [router.query, modalState])
 
 
 
