@@ -123,6 +123,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         }
     };
 
+    // create blob to make new 
     const createDataUri = (pdfBytes) => {
         const pdfData = new Blob([pdfBytes], { type: 'application/pdf' });
         const dataUri = URL.createObjectURL(pdfData);
