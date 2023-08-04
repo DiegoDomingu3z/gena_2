@@ -142,19 +142,24 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
 
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
+        let check;
         try {
           const checkbox = form.getCheckBox(fieldName);
+          check = true
           if (text[i].text) {
             checkbox.check()
           }
+          console.log(check, 'checkss')
         } catch (error) {
-          const fieldToFill = form.getTextField(fieldName);
-          if (!text) {
-            console.log(text)
-            return
-          } else {
-            console.log(text)
-            fieldToFill.setText(text[i].text);
+          if (check != true) {
+            const fieldToFill = form.getTextField(fieldName);
+            if (!text) {
+              console.log(text)
+              return
+            } else {
+              console.log(text)
+              fieldToFill.setText(text[i].text);
+            }
           }
         }
 
