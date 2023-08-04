@@ -19,3 +19,20 @@ export const getMaterials = createAsyncThunk(
         }
     }
 )
+
+export const createNewMaterial = createAsyncThunk(
+    'materials/create',
+    async ({token, values}) => {
+        try {
+            console.log(values)
+            const res = await api.post('api/materials/create', values, {
+                headers: {
+                    Authorization: token
+                }
+            })
+            return res
+        } catch (error) {
+            throw error
+        }
+    }
+)
