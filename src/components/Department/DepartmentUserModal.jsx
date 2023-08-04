@@ -5,6 +5,8 @@ import { Formik, Field, Form } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDepartments, getGroupLead, getLeads } from '../../../store/Departments/Thunks'
 import { updateUser } from '../../../store/Account/thunks'
+import Swal from 'sweetalert2'
+
 
 const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const dept = useSelector((state) => state.Department.departments)
@@ -48,6 +50,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
             const token = sessionStorage.getItem("accessToken")
             const id = activeUser._id
             dispatch(updateUser({ token, id, values }))
+            setModalState(!modalState)
           }}>
           {({ isSubmitting }) => (
             <Form>
@@ -146,7 +149,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                   </Field>
                 </div>
               </div>
-              <div className='text-center mt-14'>
+              <div className='text-center mt-8 latptop:mt-14'>
                 <button className=' text-white bg-[#1baded] rounded-md py-2 px-8' type='submit' disabled={isSubmitting}>Submit</button>
               </div>
             </Form>
