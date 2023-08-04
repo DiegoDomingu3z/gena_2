@@ -11,6 +11,11 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const leads = useSelector((state) => state.Department.leads)
   const groupLeads = useSelector((state) => state.Department.groupLeads)
   const dispatch = useDispatch()
+  const cleanImg = (string) => {
+    const pattern = /\([^()]*\)/g;
+    const cleanString = string.replace(pattern, '');
+    return cleanString.trim();
+  }
   useEffect(() => {
     dispatch(getDepartments())
     dispatch(getLeads())
@@ -20,7 +25,10 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     <div className='absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
       <div className='bg-[#f7f9fc] w-4/5 laptop:w-3/5 laptop:h-[44rem] h-[88rem] rounded-lg px-10 py-5 flex flex-col'>
         <button onClick={() => setModalState(!modalState)} className='text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out'><FontAwesomeIcon icon={faXmark} /></button>
-        <h1 className='font-medium text-xl mb-12'>{activeUser.firstName} {activeUser.lastName}</h1>
+        <div className='flex mb-5'>
+          <img src={`http://internalweb/wp-content/uploads/${cleanImg(activeUser.firstName)}-${activeUser.lastName}.jpg`} alt={`Employee image`} className='h-14 ms-3 rounded-lg' />
+          <h1 className='font-medium text-xl mt-5 ms-3'>{activeUser.firstName} {activeUser.lastName}</h1>
+        </div>
 
         <Formik
           initialValues={{

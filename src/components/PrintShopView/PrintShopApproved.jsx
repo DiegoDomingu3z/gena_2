@@ -38,7 +38,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
         const singleUser = user.filter(u => u._id == id).shift()
         console.log(singleUser)
-        return `${singleUser.department}`
+        return `${singleUser?.department}`
     }
 
 
@@ -123,6 +123,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         }
     };
 
+    // create blob to make new 
     const createDataUri = (pdfBytes) => {
         const pdfData = new Blob([pdfBytes], { type: 'application/pdf' });
         const dataUri = URL.createObjectURL(pdfData);
