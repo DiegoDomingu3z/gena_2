@@ -35,7 +35,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                 await Swal.fire({
                     title: `Deleting ${name}`,
                     html: 'This may take some time <br> <b></b> Seconds left.',
-                    timer: 8000,
+                    timer: 4000,
                     timerProgressBar: true,
                     allowOutsideClick: () => {
                         const popup = Swal.getPopup()

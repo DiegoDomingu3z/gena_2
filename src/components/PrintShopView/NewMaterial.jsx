@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { createNewMaterial, getMaterials } from '../../../store/Material/Thunks';
 import { useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil } from '@fortawesome/free-solid-svg-icons'
+
 
 
 const NewMaterial = () => {
@@ -29,8 +32,9 @@ const NewMaterial = () => {
 
   const MaterialCard = ({ material }) => {
       return (
-        <div className='border-b-gray border-b mb-10'>
-            {material.name}
+        <div className='border-b-gray border-b mb-10 flex pb-1'>
+            <div className='mr-auto'>{material.name}</div>
+            <div><button className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full`}><FontAwesomeIcon icon={faPencil} /></button></div>
         </div>
     )
 }
