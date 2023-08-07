@@ -42,25 +42,25 @@ const NewLabel = () => {
             const formData = new FormData();
             formData.append("pdf", files[0])
             dispatch(findLabelFields(formData)).then((res) => {
-                const labelFields = res.payload
-                if (labelFields.length > 0) {
-                    let check = 0
-                    for (let i = 0; i < labelFields.length; i++) {
-                        const fieldSet = labelFields[i];
-                        const fieldName = fieldSet.name.toUpperCase()
-                        if (fieldName.includes('SERIAL')) {
-                            check++
-                        }
-                    }
-                    if (check > 0) {
-                        console.log("THIS BIG WORKIN")
-                        return
-                    } else {
-                        console.log("This ain't working")
-                        setFields(labelFields)
-                        setIsChecked(true)
-                    }
-                }
+                // const labelFields = res.payload
+                // if (labelFields.length > 0) {
+                //     let check = 0
+                //     for (let i = 0; i < labelFields.length; i++) {
+                //         const fieldSet = labelFields[i];
+                //         const fieldName = fieldSet.name.toUpperCase()
+                //         if (fieldName.includes('SERIAL')) {
+                //             check++
+                //         }
+                //     }
+                //     if (check > 0) {
+                //         console.log("THIS BIG WORKIN")
+                //         return
+                //     } else {
+                //         console.log("This ain't working")
+                //         setFields(labelFields)
+                //         setIsChecked(true)
+                //     }
+                // }
             }).catch((err) => {
 
             })
@@ -374,6 +374,12 @@ const NewLabel = () => {
                                                     <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Bulk Label?</label>
                                                     <Field onClick={handleBulkCheckBoxChange} type='checkbox' name='isBulkLabel' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
                                                 </div>
+                                                {isBulkChecked == true ?
+                                                    <div className='grow flex mb-5'>
+                                                        <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Serial Number Label?</label>
+                                                        <Field type='checkbox' name='serial' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
+                                                    </div>
+                                                    : null}
                                                 <iframe src={URL.createObjectURL(files[0])} frameborder="0" key={files[0]} ></iframe>
                                                 {
                                                     files.length < 2 ?
