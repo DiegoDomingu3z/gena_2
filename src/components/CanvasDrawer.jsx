@@ -64,7 +64,7 @@ export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer }) => 
             <span className='font-genaPrimary'>New Material</span>
           </button>
         </Link>
-        <Link href={'/NewCategory'} className={((user.accessToken) && (user.account.privileges == 'admin')) ? "flex items-center gap-5" : "hidden"}>
+        <Link href={'/NewCategory'} className={((user.accessToken) && (user.account.privileges == 'admin' || user.account.privileges == 'printshop')) ? "flex items-center gap-5" : "hidden"}>
           <button className={`h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${router.pathname === '/NewCategory' && "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"}`}>
             <FontAwesomeIcon className='text-slate-400' icon={faFolderPlus} />
             <span className='font-genaPrimary'>Categories</span>
@@ -93,7 +93,7 @@ export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer }) => 
 
 
 const CanvasDrawer = () => {
-    const { toggleCanvasDrawer, setToggleCanvasDrawer } = useCanvasDrawer();
+  const { toggleCanvasDrawer, setToggleCanvasDrawer } = useCanvasDrawer();
 
   return (
     <div className={toggleCanvasDrawer ? 'pt-5 top-0 left-0 w-56 bg-[#233043] drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col' : "pt-5 top-0 w-56 bg-[#233043] drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -left-full"}>

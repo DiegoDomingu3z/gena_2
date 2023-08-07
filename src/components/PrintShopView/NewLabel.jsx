@@ -205,8 +205,9 @@ const NewLabel = () => {
             isSerial: isSerialCheck,
         }
         if (isSerialCheck == true) {
-            data.currentSerialNum = startingSerial
+            data.currentSerialNum = parseInt(startingSerial)
         }
+        console.log(data)
         const formData = await pushFiles()
         dispatch(createLabelInfo({ data, formData }));
     }
