@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMaterials } from "./Thunks";
+import { getMaterials, createNewMaterial } from "./Thunks";
 
 
 
@@ -25,6 +25,17 @@ export const MaterialSlice = createSlice({
                 state.loading = false
             })
             .addCase(getMaterials.rejected, (state, action) => {
+                state.loading = false
+            })
+            .addCase(createNewMaterial.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(createNewMaterial.fulfilled, (state, action) => {
+                // state.materials.push(action.payload);
+                state.materials = action.payload
+                state.loading = false
+            })
+            .addCase(createNewMaterial.rejected, (state, action) => {
                 state.loading = false
             })
     }

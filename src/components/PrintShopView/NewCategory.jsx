@@ -138,7 +138,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
 
 
     return (
-        <div className="flex flex-col p-20 pb-8">
+        <div className="flex flex-col pt-20 pr-20 pl-20">
             <div>
 
                 <div className='flex items-end'>
