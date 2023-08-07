@@ -10,6 +10,7 @@ import { createLabelInfo, findLabelFields, uploadPdf } from '../../../store/Labe
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from 'antd'
+import Swal from 'sweetalert2'
 const NewLabel = () => {
     const dispatch = useDispatch()
     const material = useSelector((state) => state.Material)
@@ -22,6 +23,8 @@ const NewLabel = () => {
     const [fieldTypes, setFieldTypes] = useState([''])
     const [isChecked, setIsChecked] = useState(false);
     const [isBulkChecked, setBulkCheck] = useState(false);
+    const [isSerialCheck, setSerialCheck] = useState(false)
+    const [startingSerial, setSerialNum] = useState(null);
     const [files, setFiles] = useState([])
     const [docNum, setDocNum] = useState('')
     const [fields, setFields] = useState([])
@@ -81,6 +84,37 @@ const NewLabel = () => {
             setFiles(newFile)
         }
     }
+
+    const handleSerialCheckChange = () => {
+        setSerialCheck(prevSerialCheck => !prevSerialCheck)
+        setSerialNum(null)
+    }
+
+    useEffect(() => {
+        if (isSerialCheck) {
+            Swal.fire({
+                title: 'Starting Serial Number',
+                input: 'number',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                showLoaderOnConfirm: true,
+                preConfirm: (number) => {
+                    return number
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setSerialNum(result.value)
+                    console.log(result.value)
+
+                }
+            })
+        }
+    }, [isSerialCheck])
+
     const handleAddInput = () => {
         setInputValues([...inputValues, '']);
     };
@@ -167,9 +201,12 @@ const NewLabel = () => {
             unitPack: values.unitPack,
             materialTypeId: values.materialTypeId,
             categoryId: activeCategory,
-            subCategoryId: values.subCategoryId
+            subCategoryId: values.subCategoryId,
+            isSerial: isSerialCheck,
         }
-        console.log(data)
+        if (isSerialCheck == true) {
+            data.currentSerialNum = startingSerial
+        }
         const formData = await pushFiles()
         dispatch(createLabelInfo({ data, formData }));
     }
@@ -377,7 +414,9 @@ const NewLabel = () => {
                                                 {isBulkChecked == true ?
                                                     <div className='grow flex mb-5'>
                                                         <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Serial Number Label?</label>
-                                                        <Field type='checkbox' name='serial' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
+                                                        <Field onClick={handleSerialCheckChange} type='checkbox' name='isSerialChecked' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
+                                                        {startingSerial && isSerialCheck ?
+                                                            <div className='ms-3'>{startingSerial}</div> : null}
                                                     </div>
                                                     : null}
                                                 <iframe src={URL.createObjectURL(files[0])} frameborder="0" key={files[0]} ></iframe>
