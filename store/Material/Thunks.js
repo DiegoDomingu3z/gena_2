@@ -12,7 +12,7 @@ export const getMaterials = createAsyncThunk(
                 }
             })
                 .then((res) => res.data)
-            console.log(res)
+            // console.log(res)
             return res
         } catch (error) {
             throw error
@@ -24,12 +24,12 @@ export const createNewMaterial = createAsyncThunk(
     'materials/create',
     async ({token, values}) => {
         try {
-            console.log(values)
             const res = await api.post('api/materials/create', values, {
                 headers: {
                     Authorization: token
                 }
             })
+            console.log(res.data)
             return res
         } catch (error) {
             throw error

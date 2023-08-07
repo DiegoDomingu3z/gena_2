@@ -1,14 +1,36 @@
 import React from 'react'
 import { Formik, Field, Form } from 'formik'
-import { useState } from 'react';
-import { createNewMaterial } from '../../../store/Material/Thunks';
-import { useDispatch, useSelector } from 'react-redux'
+import { useState, useEffect } from 'react';
+import { createNewMaterial, getMaterials } from '../../../store/Material/Thunks';
+import { useDispatch } from 'react-redux'
 
 const NewMaterial = () => {
-  const dispatch = useDispatch();
-  const materials = useSelector((state) => state.Material)
-  console.log(materials.materials)
-  const [inputValues, setInputValues] = useState(['']);
+    const dispatch = useDispatch();
+    const [individualMatCard, setIndividualMatCard] = useState([]);
+
+    const fetchMaterials = async () => {
+        const materials = await dispatch(getMaterials());
+        const materialsArray = materials.payload;
+        const mappedMaterials = materialsArray.map((material) => {
+          return <MaterialCard key={material._id} material={material} />;
+        });
+  
+        setIndividualMatCard(mappedMaterials);
+      };
+  
+    useEffect(() => {
+      fetchMaterials();
+    }, []);
+
+  const MaterialCard = ({ material }) => {
+      return (
+        <div className='border-b-gray border-b mb-10'>
+            {material.name}
+        </div>
+    )
+}
+
+
   return (
       <div className={"flex flex-col pt-20 pr-20 pl-20"}>
       <div className='flex items-end'>
@@ -23,8 +45,8 @@ const NewMaterial = () => {
                         }}
                         onSubmit={async (values) => {
                             const token = sessionStorage.getItem('accessToken');
-                            console.log(values)
                             dispatch(createNewMaterial({token, values}))
+                            fetchMaterials();
                         }}
                     >
                         {({ isSubmitting }) => (
@@ -39,7 +61,7 @@ const NewMaterial = () => {
                                     </div>
                                     
                                 </div>
-                                <div className='w-full'><button className='bg-[#28aeeb] w-full mt-5 p-2 px-5 rounded-lg text-white' type='submit' >submit</button></div>
+                                <div className='w-full'><button className='bg-[#28aeeb] w-full transition-all ease-in-out hover:scale-[101%] mt-5 p-2 px-5 rounded-lg text-white' type='submit' >submit</button></div>
                             </Form>
                         )}
 
@@ -50,7 +72,7 @@ const NewMaterial = () => {
                         </div>
                         <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
                         <div>
-                            Put Material Card Components down here
+                            {individualMatCard}
                         </div>
                     </div>
           </div>

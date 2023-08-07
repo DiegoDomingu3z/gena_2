@@ -31,6 +31,7 @@ export const MaterialSlice = createSlice({
                 state.loading = true
             })
             .addCase(createNewMaterial.fulfilled, (state, action) => {
+                // state.materials.push(action.payload);
                 state.materials = action.payload
                 state.loading = false
             })
