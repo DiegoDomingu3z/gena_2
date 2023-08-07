@@ -83,11 +83,27 @@ export const findLabelFields = createAsyncThunk(
     }
 )
 
+export const getLabelById = createAsyncThunk(
+    'label/byId',
+    async (id) => {
+        try {
+            const res = await api.get(`api/upload/label/byId/${id}`)
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+
+        }
+    }
+)
+
+
+
+
 // export const getLabelsToUpdate = createAsyncThunk(
 //     'labels/fetchForUpdate',
 //     async(orderId) => {
 //         try {
-//            const res = await api.get('') 
+//            const res = await api.get('')
 //         } catch (error) {
 //             console.log(error)
 //         }
