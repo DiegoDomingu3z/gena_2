@@ -89,7 +89,7 @@ const successToast = async () => {
                         onSubmit={async (values, helpers) => {
                             const token = sessionStorage.getItem('accessToken');
                             console.log(materialsArray)
-                            const foundMatch = materialsArray.some(v => v.name == values.name)
+                            const foundMatch = materialsArray.some(v => v.name.toLowerCase() == values.name.toLowerCase())
                             console.log(foundMatch)
                             if(!foundMatch){
                                 dispatch(createNewMaterial({token, values}))
