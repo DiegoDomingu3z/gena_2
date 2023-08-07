@@ -13,7 +13,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr)
   const labels = activeOrder ? activeOrder.labels : []
-
+  console.log(labels)
   const activeLabels = labelsArray
     .flatMap(innerArray => innerArray)
     .filter((value, i) => {
@@ -115,11 +115,12 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
   const label = activeLabels.map((label, i) => {
     const { pdf, docNum, name } = label
+    console.log(label, 'CURRENT LABEL')
     let vals = labels[i].textToPut.reduce((acc, curr) => {
       acc[curr.name] = curr.text || '';
       return acc;
     }, {});
-
+    vals.qty = labels[i].qty
     let test = labels[i].textToPut.reduce((acc, curr) => {
       acc['name'] = curr.name,
         acc['text'] = curr.text || ''
@@ -130,7 +131,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
 
 
-
+    console.log(vals)
     return (
       <div key={label._id}>
         <Formik
@@ -168,26 +169,33 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                     <span>Pack of {label.unitPack}</span>
                   </div>
                   <div >
+                    <Field className=" bg-gray-50 ms-3.5 border border-gray-300 mt-1
+                            sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
+                            dark:border-gray-600 dark:placeholder-gray-400
+                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="qty" name="qty" key={1} type="number" />
                     {
                       labels[i].textToPut.map((field) => {
-                        return (
-                          <Field className=" bg-gray-50 ms-3.5 border border-gray-300 mt-1
+                        console.log(field, 'field')
+                        if (field.text != '') {
+                          return (
+                            <Field className=" bg-gray-50 ms-3.5 border border-gray-300 mt-1
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                             dark:border-gray-600 dark:placeholder-gray-400
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder={field.name} name={field.name} key={label.docNum} id={label.docNum} />
-                          //   <div className={field.type === 'checkbox' ? 'grid grid-rows-1 grid-flow-col' : ''}>
-                          //     <div className='pt-1'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
-                          // sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
-                          // dark:border-gray-600 dark:placeholder-gray-400
-                          // dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={field.name} type={field.type} placeholder={field.name}
-                          //       key={label.name} id={label.docNum} required={field.type === 'checkbox' ? false : true} />
-                          //     </div>
-                          //     <div>
-                          //       {field.type === 'checkbox' ? <span className=''>{f.name.toUpperCase()}</span> : null}
-                          //     </div>
-                          //   </div>
-                        )
+                              placeholder={field.name} name={field.name} key={label.docNum} id={label.docNum} />
+                            //   <div className={field.type === 'checkbox' ? 'grid grid-rows-1 grid-flow-col' : ''}>
+                            //     <div className='pt-1'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
+                            // sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
+                            // dark:border-gray-600 dark:placeholder-gray-400
+                            // dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={field.name} type={field.type} placeholder={field.name}
+                            //       key={label.name} id={label.docNum} required={field.type === 'checkbox' ? false : true} />
+                            //     </div>
+                            //     <div>
+                            //       {field.type === 'checkbox' ? <span className=''>{f.name.toUpperCase()}</span> : null}
+                            //     </div>
+                            //   </div>
+                          )
+                        }
                       })
                     }
                   </div>

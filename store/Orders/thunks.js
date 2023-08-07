@@ -197,8 +197,7 @@ export const updateLabel = createAsyncThunk(
     'order/updateLabel',
     async ({ token, orderId, labelId, valuesArray }) => {
         try {
-            console.log(orderId)
-            console.log(labelId)
+            console.log(valuesArray, 'info')
             const res = await api.put(`api/orders/update/${orderId}/label/${labelId}`, valuesArray, {
                 headers: {
                     Authorization: token
@@ -209,4 +208,5 @@ export const updateLabel = createAsyncThunk(
             console.log(error)
         }
     }
+
 )

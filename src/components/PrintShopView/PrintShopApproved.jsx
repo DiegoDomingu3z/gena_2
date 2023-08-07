@@ -118,8 +118,24 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
             return pdfDataUri;
         } catch (error) {
-            console.error('Error modifying PDF:', error);
-            throw error;
+            const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());
+            const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+            const form = pdfDoc.getForm();
+            const fieldNames = form.getFields().map((field) => field.getName());
+
+            for (let i = 0; i < fieldNames.length; i++) {
+                const fieldName = fieldNames[i];
+                const checkbox = form.getCheckBox(fieldName);
+                if (text[i].text) {
+                    checkbox.check();
+                }
+            }
+
+            const modifiedPdfBytes = await pdfDoc.save();
+            const pdfDataUri = createDataUri(modifiedPdfBytes);
+
+            return pdfDataUri;
         }
     };
 

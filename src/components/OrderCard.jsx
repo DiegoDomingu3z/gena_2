@@ -99,13 +99,18 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
             <div className='flex gap-5 w-32 place-self-end'>
               <Tooltip placement='top' title="Edit Order">
                 <button
+
                   onClick={() => {
                     setBlobs([])
                     handleUpdateModal(o._id)
-                  }} data-order-id={o._id} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faPencil} /></button>
+                  }}
+                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hover:text-white  transition-all ease-in-out w-7 h-7 rounded-full ${o.status === 'processing' && 'pointer-events-none'}`}>
+                  <FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>
               <Tooltip placement='top' title="Delete Order">
-                <button onClick={() => deleteOrder(o._id)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faTrash} /></button>
+                <button
+                  disabled={o.status === 'processing'}
+                  onClick={() => deleteOrder(o._id)} className={`text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${o.status === 'processing' && 'pointer-events-none'}`}><FontAwesomeIcon icon={faTrash} /></button>
               </Tooltip>
               {o.notes ?
                 <Tooltip placement="top" title={o.notes}>

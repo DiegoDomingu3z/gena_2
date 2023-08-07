@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useState } from 'react';
-import { getDepartments, getLeads } from '../../store/Departments/Thunks';
+import { getDepartments, getGroupLead, getLeads } from '../../store/Departments/Thunks';
 import Swal from 'sweetalert2';
 import { sendCredentials } from '../../store/Emails/Thunks';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
@@ -20,12 +20,15 @@ const Signup = () => {
     const user = useSelector((state) => state.Account)
     const dept = useSelector((state) => state.Department.departments)
     const leads = useSelector((state) => state.Department.leads)
+    const groupLeads = useSelector((state) => state.Department.groupLeads)
     const router = useRouter()
     useEffect(() => {
         dispatch(getDepartments())
         dispatch(getLeads())
+        dispatch(getGroupLead())
     }, [])
 
+    console.log(groupLeads, 'leads')
     const toast = async (firstName, lastName, departmentId) => {
         console.log(dept)
         const dep = dept.filter(d => d._id == departmentId)
@@ -165,8 +168,12 @@ const Signup = () => {
                                     w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                                      dark:focus:border-blue-500">
                                         <option value="" selected >Select Group Lead</option>
+                                        {groupLeads ?
+                                            groupLeads.map((g) => (
+                                                <option key={g._id} value={g._id}>{g.firstName} {g.lastName}</option>
+                                            )) : null
 
-
+                                        }
                                     </Field>
                                 </div>
                             </div>
