@@ -7,10 +7,10 @@ import { Tooltip } from 'antd'
 import Swal from 'sweetalert2'
 
 
-const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
+const OrderCard = ({ modalState, setModalState, blobs, setBlobs, toggleSort }) => {
   const dispatch = useDispatch();
   // const [selectedOrder, setSelectedOrder] = useState();
-  const order = useSelector((state) => state.Orders.myOrders.orders)
+  let order = useSelector((state) => state.Orders.myOrders.orders)
   const activeOrder = useSelector((state) => state.Orders.activeOrder)
 
   const statusColors = {
@@ -64,7 +64,6 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
     }
     console.log("GETTING CALLED")
     getOrders()
-
   }, [])
 
   const formatDate = (dateString) => {
@@ -90,8 +89,10 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
   return (
     <div className='p-5'>
       {order ?
-        order.map((o) => (
-          <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2' key={o._id}>
+        (toggleSort === 'newest' ? [...order].sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)) : order).map((o) => {
+          return(
+
+            <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2' key={o._id}>
             <p className='text-sm'>{o._id}</p>
             <p className=''>{o.labels.length}</p>
             <p className=''>{formatDate(o.createdOn)}</p>
@@ -104,12 +105,11 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
                     setBlobs([])
                     handleUpdateModal(o._id)
                   }}
-                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hover:text-white  transition-all ease-in-out w-7 h-7 rounded-full ${o.status === 'processing' && 'pointer-events-none'}`}>
+                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${o.status === 'processing' && 'pointer-events-none'}`}>
                   <FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>
               <Tooltip placement='top' title="Delete Order">
                 <button
-                  disabled={o.status === 'processing'}
                   onClick={() => deleteOrder(o._id)} className={`text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${o.status === 'processing' && 'pointer-events-none'}`}><FontAwesomeIcon icon={faTrash} /></button>
               </Tooltip>
               {o.notes ?
@@ -123,7 +123,8 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs }) => {
             </div>
 
           </div>
-        ))
+              )
+})
 
         : null
 

@@ -19,6 +19,7 @@ const CurrentOrders = () => {
     const scrollPosition = useScrollPosition(containerRef);
     const [modalState, setModalState] = useState(false);
     const [tab, setTab] = useState('my-orders');
+    const [toggleSort, setToggleSort] = useState('newest');
     const account = useSelector((state) => state.Account.account)
     const approveOrder = useSelector((state) => state.Orders.leadDepartmentOrders)
     const order = useSelector((state) => state.Orders.myOrders.orders)
@@ -33,18 +34,17 @@ const CurrentOrders = () => {
             {modalState && <OrderModal modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
             <div className={"flex flex-col pt-20 pr-20 pl-20"}>
                 <div className='flex items-end'>
-                    <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1></div>
-                    {/* <div className='flex justify-end items-end gap-5 w-2/5'>
-                        <FontAwesomeIcon className='p-3 rounded-full drop-shadow-sm bg-[#233042] text-white w-4' icon={faMagnifyingGlass} />
-                        <input name='orderSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type order # here' />
-                    </div> */}
+                    <div className='mr-auto'>
+                        <h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1>
+                    </div>
+                    <button onClick={() => toggleSort === 'newest' ? setToggleSort('oldest') : setToggleSort('newest')} className='bg-[#28aeeb] text-white flex justify-between min-w-[10rem] py-1 px-4 rounded-md transition-all ease-in-out hover:scale-105'>Sort Date: <span className='text-black'>{toggleSort}</span></button>
                 </div>
 
                 <div className='mb-10 mt-5 border-t border-gray-300 rounded-full' />
 
                 {
                     account.privileges == 'team-lead' || account.privileges == 'group-lead' ?
-                        <div>
+                    <div>
                             <div>
                                 <Menu onClick={pickTab} selectedKeys={[tab]} mode="horizontal">
                                     <Menu.Item className='absolute' key="my-orders">My Orders
@@ -83,7 +83,7 @@ const CurrentOrders = () => {
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />
+                                <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} />
                             </div>
                         </div>
                 }
