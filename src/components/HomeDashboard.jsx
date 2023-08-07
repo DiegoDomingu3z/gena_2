@@ -16,7 +16,7 @@ const HomeDashboard = () => {
 
 
   return (
-    <div className={"flex flex-col p-20"}>
+    <div className={"flex flex-col pt-20 pr-20 pl-20"}>
       <div className='flex items-end'>
         <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>{account && account.firstName}'s Dashboard</h1></div>
         <span className='rounded bg-[#1baded] text-white py-1 px-4'>Today: {date}</span>

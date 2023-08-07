@@ -5,6 +5,8 @@ import { Formik, Field, Form } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDepartments, getGroupLead, getLeads } from '../../../store/Departments/Thunks'
 import { updateUser } from '../../../store/Account/thunks'
+import Swal from 'sweetalert2'
+
 
 const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const dept = useSelector((state) => state.Department.departments)
@@ -21,6 +23,55 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     dispatch(getLeads())
     dispatch(getGroupLead())
   }, [])
+
+  const dataForSubmission = {
+    firstName: activeUser.firstName,
+    lastName: activeUser.lastName,
+    userName: activeUser.userName,
+    password: '',
+    departmentId: activeUser.departmentId,
+    email: activeUser.email,
+    privileges: activeUser.privileges,
+    groupLeadId: activeUser.groupLeadId,
+    teamLeadId: activeUser.teamLeadId
+  }
+
+  const successToast = async () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'addToCartToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'success',
+      title: 'User Updated!'
+    })
+  }
+  const failureToast = async () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      iconColor: 'orange',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'addToCartToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'warning',
+      title: 'No Data Changed!'
+    })
+  }
   return (
     <div className='absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
       <div className='bg-[#f7f9fc] w-4/5 laptop:w-3/5 laptop:h-[44rem] h-[88rem] rounded-lg px-10 py-5 flex flex-col'>
@@ -31,23 +82,18 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
         </div>
 
         <Formik
-          initialValues={{
-            firstName: activeUser.firstName,
-            lastName: activeUser.lastName,
-            userName: activeUser.userName,
-            password: '',
-            departmentId: activeUser.departmentId,
-            email: activeUser.email,
-            privileges: activeUser.privileges,
-            groupLeadId: activeUser.groupLeadId,
-            teamLeadId: activeUser.teamLeadId
-
-          }}
+          initialValues={dataForSubmission}
 
           onSubmit={async (values) => {
             const token = sessionStorage.getItem("accessToken")
             const id = activeUser._id
-            dispatch(updateUser({ token, id, values }))
+            if(JSON.stringify(dataForSubmission) != JSON.stringify(values)){
+              dispatch(updateUser({ token, id, values }))
+              successToast()
+              setModalState(!modalState)
+              return
+            }
+            failureToast()
           }}>
           {({ isSubmitting }) => (
             <Form>
@@ -146,7 +192,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                   </Field>
                 </div>
               </div>
-              <div className='text-center mt-14'>
+              <div className='text-center mt-8 latptop:mt-14'>
                 <button className=' text-white bg-[#1baded] rounded-md py-2 px-8' type='submit' disabled={isSubmitting}>Submit</button>
               </div>
             </Form>
