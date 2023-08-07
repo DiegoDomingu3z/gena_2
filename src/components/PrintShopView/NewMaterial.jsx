@@ -43,10 +43,11 @@ const NewMaterial = () => {
                         initialValues={{
                             name: ''
                         }}
-                        onSubmit={async (values) => {
+                        onSubmit={async (values, helpers) => {
                             const token = sessionStorage.getItem('accessToken');
                             dispatch(createNewMaterial({token, values}))
                             fetchMaterials();
+                            helpers.resetForm();
                         }}
                     >
                         {({ isSubmitting }) => (
