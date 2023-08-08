@@ -37,39 +37,74 @@ const NewLabel = () => {
     }, [files])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
     useEffect(() => {
-        console.log(files.length)
         if (files.length > 0 && files.length < 2) {
-            console.log(files)
+            nameGeneratorForLabel(files[0].name, material.materials)
             let docNum = files[0].name.slice(files[0].name.length - 11, files[0].name.length - 4);
             setDocNum(docNum)
             const formData = new FormData();
             formData.append("pdf", files[0])
             dispatch(findLabelFields(formData)).then((res) => {
-                // const labelFields = res.payload
-                // if (labelFields.length > 0) {
-                //     let check = 0
-                //     for (let i = 0; i < labelFields.length; i++) {
-                //         const fieldSet = labelFields[i];
-                //         const fieldName = fieldSet.name.toUpperCase()
-                //         if (fieldName.includes('SERIAL')) {
-                //             check++
-                //         }
-                //     }
-                //     if (check > 0) {
-                //         console.log("THIS BIG WORKIN")
-                //         return
-                //     } else {
-                //         console.log("This ain't working")
-                //         setFields(labelFields)
-                //         setIsChecked(true)
-                //     }
-                // }
+                const labelFields = res.payload
+                if (labelFields.length > 0) {
+                    let check = 0
+                    for (let i = 0; i < labelFields.length; i++) {
+                        const fieldSet = labelFields[i];
+                        const fieldName = fieldSet.name.toUpperCase()
+                        if (fieldName.includes('SERIAL')) {
+                            check++
+                        }
+                    }
+                    if (check > 0) {
+                        return
+                    } else {
+                        setFields(labelFields)
+                        setIsChecked(true)
+                    }
+                }
             }).catch((err) => {
 
             })
 
         }
     }, [files])
+
+
+    const nameGeneratorForLabel = (inputString, materialArrr) => {
+        const mainName = inputString.slice(0, -11);  // Remove the last 11 characters
+        const mainNameWithoutHyphens = mainName.replace(/-/g, ' ');  // Remove hyphens
+
+        // Convert excluded substrings to lowercase
+        const lowercaseExcluded = materialArrr.map(substring => substring.name.toLowerCase());
+
+        // Generate two different options for the main name
+        const options = [];
+        for (let i = 0; i < 3; i++) {
+            let check = checkString(mainNameWithoutHyphens.toLowerCase(), lowercaseExcluded, i)
+            options.push(check)
+        }
+        console.log(options)
+        return options;
+    }
+
+    const checkString = (inputString, substringArray, i) => {
+        let modifiedString = inputString;
+
+        substringArray.forEach(substring => {
+            if (modifiedString.includes(substring)) {
+                modifiedString = modifiedString.replace(new RegExp(substring, 'gi'), '');
+            }
+        });
+        if (i == 1) {
+            const words = modifiedString.split(' ');
+            words.shift(); // Remove the first word
+            modifiedString = words.join(' ');
+            let trimmedString = modifiedString.replace(/\s+$/, '')
+            return trimmedString;
+        }
+        let trimmedString = modifiedString.replace(/\s+$/, '')
+        return trimmedString;
+    }
+
 
 
     const handleCheckboxChange = () => {
