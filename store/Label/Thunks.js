@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../axiosService";
 import { useSelector } from "react-redux";
+import { headers } from "../../next.config";
 
 
 
@@ -91,7 +92,24 @@ export const getLabelById = createAsyncThunk(
                 .then((res) => res.data)
             return res
         } catch (error) {
+            console.log(error)
+        }
+    }
+)
 
+export const removeLabel = createAsyncThunk(
+    'label/remove',
+    async ({ id, token }) => {
+        try {
+            const res = await api.delete(`api/upload/label/delete/${id}`, {
+                headers: {
+                    Authorization: token,
+                }
+            })
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
         }
     }
 )
