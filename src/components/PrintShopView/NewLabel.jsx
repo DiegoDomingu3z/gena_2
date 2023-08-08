@@ -10,6 +10,7 @@ import { createLabelInfo, findLabelFields, uploadPdf } from '../../../store/Labe
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { Tooltip } from 'antd'
+import Swal from 'sweetalert2'
 const NewLabel = () => {
     const dispatch = useDispatch()
     const material = useSelector((state) => state.Material)
@@ -22,6 +23,8 @@ const NewLabel = () => {
     const [fieldTypes, setFieldTypes] = useState([''])
     const [isChecked, setIsChecked] = useState(false);
     const [isBulkChecked, setBulkCheck] = useState(false);
+    const [isSerialCheck, setSerialCheck] = useState(false)
+    const [startingSerial, setSerialNum] = useState(null);
     const [files, setFiles] = useState([])
     const [docNum, setDocNum] = useState('')
     const [fields, setFields] = useState([])
@@ -42,25 +45,25 @@ const NewLabel = () => {
             const formData = new FormData();
             formData.append("pdf", files[0])
             dispatch(findLabelFields(formData)).then((res) => {
-                const labelFields = res.payload
-                if (labelFields.length > 0) {
-                    let check = 0
-                    for (let i = 0; i < labelFields.length; i++) {
-                        const fieldSet = labelFields[i];
-                        const fieldName = fieldSet.name.toUpperCase()
-                        if (fieldName.includes('SERIAL')) {
-                            check++
-                        }
-                    }
-                    if (check > 0) {
-                        console.log("THIS BIG WORKIN")
-                        return
-                    } else {
-                        console.log("This ain't working")
-                        setFields(labelFields)
-                        setIsChecked(true)
-                    }
-                }
+                // const labelFields = res.payload
+                // if (labelFields.length > 0) {
+                //     let check = 0
+                //     for (let i = 0; i < labelFields.length; i++) {
+                //         const fieldSet = labelFields[i];
+                //         const fieldName = fieldSet.name.toUpperCase()
+                //         if (fieldName.includes('SERIAL')) {
+                //             check++
+                //         }
+                //     }
+                //     if (check > 0) {
+                //         console.log("THIS BIG WORKIN")
+                //         return
+                //     } else {
+                //         console.log("This ain't working")
+                //         setFields(labelFields)
+                //         setIsChecked(true)
+                //     }
+                // }
             }).catch((err) => {
 
             })
@@ -81,6 +84,37 @@ const NewLabel = () => {
             setFiles(newFile)
         }
     }
+
+    const handleSerialCheckChange = () => {
+        setSerialCheck(prevSerialCheck => !prevSerialCheck)
+        setSerialNum(null)
+    }
+
+    useEffect(() => {
+        if (isSerialCheck) {
+            Swal.fire({
+                title: 'Starting Serial Number',
+                input: 'number',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                showLoaderOnConfirm: true,
+                preConfirm: (number) => {
+                    return number
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setSerialNum(result.value)
+                    console.log(result.value)
+
+                }
+            })
+        }
+    }, [isSerialCheck])
+
     const handleAddInput = () => {
         setInputValues([...inputValues, '']);
     };
@@ -167,7 +201,11 @@ const NewLabel = () => {
             unitPack: values.unitPack,
             materialTypeId: values.materialTypeId,
             categoryId: activeCategory,
-            subCategoryId: values.subCategoryId
+            subCategoryId: values.subCategoryId,
+            isSerial: isSerialCheck,
+        }
+        if (isSerialCheck == true) {
+            data.currentSerialNum = parseInt(startingSerial)
         }
         console.log(data)
         const formData = await pushFiles()
@@ -374,6 +412,14 @@ const NewLabel = () => {
                                                     <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Bulk Label?</label>
                                                     <Field onClick={handleBulkCheckBoxChange} type='checkbox' name='isBulkLabel' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
                                                 </div>
+                                                {isBulkChecked == true ?
+                                                    <div className='grow flex mb-5'>
+                                                        <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Serial Number Label?</label>
+                                                        <Field onClick={handleSerialCheckChange} type='checkbox' name='isSerialChecked' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
+                                                        {startingSerial && isSerialCheck ?
+                                                            <div className='ms-3'>{startingSerial}</div> : null}
+                                                    </div>
+                                                    : null}
                                                 <iframe src={URL.createObjectURL(files[0])} frameborder="0" key={files[0]} ></iframe>
                                                 {
                                                     files.length < 2 ?
