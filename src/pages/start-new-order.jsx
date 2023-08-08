@@ -23,7 +23,7 @@ const startNewOrder = () => {
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null)
   const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
-
+  const account = useSelector((state) => state.Account.account)
   const filterSubCats = (event) => {
     let id = event.target.value
     let cat = cats.filter(c => c._id == id)
@@ -90,9 +90,14 @@ const startNewOrder = () => {
                                         dark:focus:border-blue-500'>
                 <option selected disabled value=''>Select Category</option>
                 {cats ?
-                  cats.map((c) => (
-                    <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
-                  )) : null
+                  cats.map((c) => {
+                    let departmentId = account.departmentId
+                    if (c.visibility.includes(departmentId.toString())) {
+                      return (
+                        <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
+                        )
+                      }
+}) : null
                 }
               </Field>
               <Field onChange={singleSubCat} value={activeSubCategoryId} type="text" component="select" name="subCategoryId" className='bg-gray-50 border border-gray-300
