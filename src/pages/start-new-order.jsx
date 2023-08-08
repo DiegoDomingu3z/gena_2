@@ -23,6 +23,7 @@ const startNewOrder = () => {
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null)
   const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   const account = useSelector((state) => state.Account.account)
   const filterSubCats = (event) => {
     let id = event.target.value
@@ -35,6 +36,7 @@ const startNewOrder = () => {
   const handleSearch = (event) => {
     let data = event.target.value
     dispatch(searchLabel(data))
+    setSearchInput(data)
   }
 
   const singleSubCat = (event) => {
@@ -116,7 +118,7 @@ const startNewOrder = () => {
           </Formik>
         </div>
         <div className=''>
-          <LabelCard setToggleCartCanvas={setToggleCartCanvas} toggleCartCanvas={toggleCartCanvas} />
+          {(activeCategory || searchInput) && <LabelCard setToggleCartCanvas={setToggleCartCanvas} toggleCartCanvas={toggleCartCanvas} />}
         </div>
       </div>
     </Layout>
