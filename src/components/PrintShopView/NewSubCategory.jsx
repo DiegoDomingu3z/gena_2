@@ -32,7 +32,7 @@ const NewSubCategory = () => {
                 await Swal.fire({
                     title: `Deleting ${name}`,
                     html: 'This make take some time <br> <b></b> Seconds left.',
-                    timer: 8000,
+                    timer: 4000,
                     timerProgressBar: true,
                     didOpen: () => {
                         Swal.showLoading()

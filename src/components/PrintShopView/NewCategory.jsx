@@ -3,16 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCategory, removeCategory, updateCategory } from "../../../store/Category/Thunk";
 import { FaMinusCircle, FaPenSquare } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faTrash, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { RingLoader } from "react-spinners"
+import { useState } from "react";
+import { getDepartments } from "../../../store/Departments/Thunks";
+import { useEffect } from "react";
 const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
-    const cats = useSelector((state) => state.Category.categories)
+    const [newCatName, setNewCatName] = useState('');
+    const [togglePopup, setTogglePopup] = useState(false);
+    const [departmentList, setDepartmentList] = useState([]);
+    const unsortedCats = useSelector((state) => state.Category.categories)
+    const cats = unsortedCats.slice().sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+      
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
     const dispatch = useDispatch()
     const router = useRouter()
     const user = useSelector((state) => state.Account)
-
 
     const addCat = async (values) => {
         const token = await sessionStorage.getItem('accessToken')
@@ -35,7 +52,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                 await Swal.fire({
                     title: `Deleting ${name}`,
                     html: 'This may take some time <br> <b></b> Seconds left.',
-                    timer: 8000,
+                    timer: 4000,
                     timerProgressBar: true,
                     allowOutsideClick: () => {
                         const popup = Swal.getPopup()
@@ -133,11 +150,139 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
             query: queryParams,
         });
     }
+    const successToast = async () => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'center',
+          iconColor: 'white',
+          customClass: {
+            popup: 'colored-toast',
+            container: 'addToCartToast',
+          },
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true
+        })
+        await Toast.fire({
+          icon: 'success',
+          title: 'Material Added!'
+        })
+      }
+      const failureToast = async () => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'center',
+          iconColor: 'orange',
+          customClass: {
+            popup: 'colored-toast',
+            container: 'addToCartToast',
+          },
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true
+        })
+        await Toast.fire({
+          icon: 'warning',
+          title: 'Material Already Exists!'
+        })
+      }
+    
+      const dataForSubmission = {
+        name: ''
+      }
 
-
-
+    const DepartmentPopup = () => {
+        const [selectedDepartments, setSelectedDepartments] = useState([]);
+        const [departmentList, setDepartmentList] = useState([]);
+        const dispatch = useDispatch();
+    
+        useEffect(() => {
+            async function fetchDepartments() {
+                const departments = await dispatch(getDepartments());
+                setDepartmentList(departments.payload);
+            }
+            fetchDepartments();
+        }, []);
+    
+        return (
+            <div className="absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
+                <div className="bg-[#f7f9fc] w-4/5 laptop:w-2/5 laptop:h-[44rem] h-[88rem] rounded-lg px-10 py-5 flex flex-col overflow-y-auto">
+                    <button className="text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out" onClick={() => setTogglePopup(!togglePopup)}><FontAwesomeIcon icon={faXmark} /></button>
+                    <Formik
+                        initialValues={{
+                            visibility: selectedDepartments,
+                            name: newCatName
+                        }}
+                        onSubmit={async (values, helpers) => {
+                            const foundMatch = cats.some(v => v.name.toLowerCase() == values.name.toLowerCase())
+                            if(!foundMatch){
+                                addCat(values)
+                                setTogglePopup(!togglePopup)
+                                helpers.resetForm();
+                                successToast();
+                                return
+                            }
+                            failureToast();
+                        }}
+                    >
+                        {({ isSubmitting, values, setFieldValue }) => (
+                            <Form className="mt-10">
+                                <div>
+                                    <h2 className="text-lg font-semibold">Select departments that should be able to access '{newCatName}'</h2>
+                                </div>
+                                <div className="flex flex-col gap-3 mt-10">
+                                <label>
+                    <Field
+                        className="mr-5 border"
+                        type="checkbox"
+                        name="selectAll"
+                        checked={values.visibility.length === departmentList.length}
+                        onChange={(e) => {
+                            const checked = e.target.checked;
+                            if (checked) {
+                                const allDepartmentIds = departmentList.map(department => department._id);
+                                setFieldValue('visibility', allDepartmentIds);
+                            } else {
+                                setFieldValue('visibility', []);
+                            }
+                        }}
+                    />
+                    <span className="font-bold">Select All</span>
+                </label>
+                                {departmentList.map((department) => (
+                                    <div key={department._id}>
+                                        <label>
+                                            <Field
+                                                className="mr-5 border"
+                                                type="checkbox"
+                                                name="visibility"
+                                                value={department._id}
+                                            />
+                                            {department.name}
+                                        </label>
+                                    </div>
+                                ))}
+                                </div>
+                                <div className="flex justify-center mt-10">
+                                    <button
+                                        type="submit"
+                                        className="text-white bg-[#1baded] transition-all ease-in-out hover:scale-[102%] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-full"
+                                        disabled={isSubmitting}
+                                    >
+                                        submit
+                                    </button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            </div>
+        );
+    };
 
     return (
+        <>
+            {togglePopup && <DepartmentPopup />}
         <div className="flex flex-col pt-20 pr-20 pl-20">
             <div>
 
@@ -175,14 +320,20 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                 }
 
             </div>
-            <div className={(user.accessToken) && (user.account.privileges == 'admin') ? "flex flex-col mt-3" : "hidden"}>
+            <div className={(user.accessToken) && (user.account.privileges == 'admin') ? "flex flex-col mt-3 relative" : "hidden"}>
                 <Formik
                     initialValues={{
                         name: ''
                     }}
-                    onSubmit={async (values) => {
-                        addCat(values)
-                        document.getElementById('catForm').reset()
+                    onSubmit={async (values, helpers) => {
+                        const foundMatch = cats.some(v => v.name.toLowerCase() == values.name.toLowerCase())
+                        if(!foundMatch){
+                            setNewCatName(values.name)
+                            setTogglePopup(!togglePopup);
+                            helpers.resetForm();
+                            return
+                        }
+                        failureToast();
                     }}>
                     {({ isSubmitting }) => (
                         <Form id="catForm">
@@ -196,8 +347,10 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                         </Form>
                     )}
                 </Formik>
+                
             </div>
         </div>
+        </>
     )
 }
 

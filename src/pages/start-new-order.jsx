@@ -23,7 +23,7 @@ const startNewOrder = () => {
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeSubCategoryId, setActiveSubCategoryId] = useState(null)
   const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
-
+  const account = useSelector((state) => state.Account.account)
   const filterSubCats = (event) => {
     let id = event.target.value
     let cat = cats.filter(c => c._id == id)
@@ -62,8 +62,8 @@ const startNewOrder = () => {
         <div className='flex items-end '>
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
           <div className='flex justify-end items-end gap-5 w-2/5'>
-            <FontAwesomeIcon className='p-3 rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} />
-            <input onChange={handleSearch} name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
+            <label htmlFor='labelSearch'><FontAwesomeIcon className='p-3 cursor-pointer rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} /></label>
+            <input onChange={handleSearch} id='labelSearch' name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
              outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
             <div className='relative '>
               <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
@@ -90,9 +90,14 @@ const startNewOrder = () => {
                                         dark:focus:border-blue-500'>
                 <option selected disabled value=''>Select Category</option>
                 {cats ?
-                  cats.map((c) => (
-                    <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
-                  )) : null
+                  cats.map((c) => {
+                    let departmentId = account.departmentId
+                    if (c.visibility.includes(departmentId.toString())) {
+                      return (
+                        <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
+                        )
+                      }
+}) : null
                 }
               </Field>
               <Field onChange={singleSubCat} value={activeSubCategoryId} type="text" component="select" name="subCategoryId" className='bg-gray-50 border border-gray-300
