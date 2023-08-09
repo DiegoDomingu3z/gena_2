@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCirclePlus, faSuitcase, faHouse, faList, faTag, faFolderPlus, faUser, faUsers, faPrint } from '@fortawesome/free-solid-svg-icons'
+import { faCirclePlus, faSuitcase, faHouse, faList, faTag, faFolderPlus, faUser, faUsers, faPrint, faReceipt } from '@fortawesome/free-solid-svg-icons'
 import { faFlag } from '@fortawesome/free-regular-svg-icons'
 import { useLoginInput } from '~/Contexts/LoginContext'
 import { useEffect } from 'react';
@@ -86,15 +86,15 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
       </div>
       <div className='w-full h-16 relative'>
         <div className='group'>
-          <span className='opacity-0 text-white absolute text-sm -top-20 left-12 bg-gray-600 py-1 px-3 rounded-tl-full rounded-tr-full rounded-br-full group-hover:opacity-100 transition-all ease-in-out'>
+          <span className='opacity-0 text-white pointer-events-none absolute text-sm -top-20 left-12 bg-gray-600 py-1 px-3 rounded-tl-full rounded-tr-full rounded-br-full group-hover:opacity-100 transition-all ease-in-out'>
             Report An Issue
           </span>
           {user.accessToken && <button
             onClick={() => setTicketModal(!ticketModal)}
             id="reportBtn"
-            className='text-white mb-5 absolute bottom-14 left-4 bg-yellow-600 px-2 py-1 rounded-full transition-all ease-in-out transform-gpu group-hover:scale-110'
+            className='text-white mb-5 absolute bottom-14 left-4 bg-yellow-600 px-3 py-1 rounded-full transition-all ease-in-out transform-gpu group-hover:scale-110'
           >
-            <FontAwesomeIcon icon={faFlag} />
+            <FontAwesomeIcon icon={faReceipt} />
           </button>}
         </div>
         {<div className='text-white bg-[#1e2a38] w-full h-full flex justify-center items-center'>

@@ -57,7 +57,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                     container: 'top-margin',
                 },
                 showConfirmButton: false,
-                timer: 1500,
+                timer: 2000,
                 timerProgressBar: true
             })
             await Toast.fire({

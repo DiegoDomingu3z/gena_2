@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder } from "./Thunks";
+import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder, deleteDeliveredOrder } from "./Thunks";
 
 
 
@@ -62,6 +62,20 @@ export const PrintShopSlice = createSlice({
             })
             .addCase(printOrder.rejected, (state, action) => {
                 console.log(action.error)
+            })
+            .addCase(deleteDeliveredOrder.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(deleteDeliveredOrder.fulfilled, (state, action) => {
+                state.loading = false
+                state.deliveredOrders.orders = state.deliveredOrders.orders.filter(o => o._id != action.payload._id)
+            })
+            .addCase(deleteDeliveredOrder.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            .addCase(deliverOrder.fulfilled, (state, action) => {
+                state.loading = false
+                state.processingOrders.orders = state.processingOrders.orders.filter(o => o._id != action.payload._id)
             })
     }
 })

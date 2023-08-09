@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faNoteSticky, faCheckCircle, faAdd, faFile, faCircle } from '@fortawesome/free-solid-svg-icons'
 import { api } from "../../../axiosService";
 import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder } from "../../../store/PrintShop/Thunks";
+import Swal from "sweetalert2";
 
 const { Panel } = Collapse;
 const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) => {
@@ -52,10 +53,26 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
 
     const markOrderAsDelivered = async (id) => {
         const token = sessionStorage.getItem('accessToken')
-        dispatch(deliverOrder({ token, id }))
-        dispatch(getApprovedOrders(token))
-        dispatch(getProcessingOrder(token))
-        dispatch(getDeliveredOrders(token))
+        await dispatch(deliverOrder({ token, id }))
+        await dispatch(getApprovedOrders(token))
+        await dispatch(getProcessingOrder(token))
+        await dispatch(getDeliveredOrders(token))
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+                container: 'top-margin',
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+        })
+        await Toast.fire({
+            icon: 'success',
+            title: `Delivered Order ID: ${id}`
+        })
     }
 
 
