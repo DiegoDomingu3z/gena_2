@@ -95,7 +95,7 @@ export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer, ticke
             Report An Issue
           </span>
           {user.accessToken && <button
-            onClick={() => setTicketModal(!ticketModal)}
+            onClick={toggleTicketModal}
             id="reportBtn"
             className='text-white mb-5 absolute bottom-14 left-4 bg-yellow-600 px-2 py-1 rounded-full transition-all ease-in-out transform-gpu group-hover:scale-110'
           >
