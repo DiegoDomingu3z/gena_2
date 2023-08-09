@@ -165,7 +165,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
         })
         await Toast.fire({
           icon: 'success',
-          title: 'Material Added!'
+          title: 'Category Added!'
         })
       }
       const failureToast = async () => {
@@ -183,7 +183,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
         })
         await Toast.fire({
           icon: 'warning',
-          title: 'Material Already Exists!'
+          title: 'Category Already Exists!'
         })
       }
     
