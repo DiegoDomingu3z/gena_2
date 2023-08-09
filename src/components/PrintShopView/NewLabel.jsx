@@ -28,6 +28,9 @@ const NewLabel = () => {
     const [files, setFiles] = useState([])
     const [docNum, setDocNum] = useState('')
     const [fields, setFields] = useState([])
+    const [name, setName] = useState('')
+    const [customName, setCustomName] = useState('')
+    const [labelName, setLabelNames] = useState([])
     const token = useSelector((state) => state.Account.accessToken)
 
     const onDrop = useCallback(acceptedFiles => {
@@ -37,33 +40,30 @@ const NewLabel = () => {
     }, [files])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
     useEffect(() => {
-        console.log(files.length)
         if (files.length > 0 && files.length < 2) {
-            console.log(files)
+            nameGeneratorForLabel(files[0].name, material.materials)
             let docNum = files[0].name.slice(files[0].name.length - 11, files[0].name.length - 4);
             setDocNum(docNum)
             const formData = new FormData();
             formData.append("pdf", files[0])
             dispatch(findLabelFields(formData)).then((res) => {
-                // const labelFields = res.payload
-                // if (labelFields.length > 0) {
-                //     let check = 0
-                //     for (let i = 0; i < labelFields.length; i++) {
-                //         const fieldSet = labelFields[i];
-                //         const fieldName = fieldSet.name.toUpperCase()
-                //         if (fieldName.includes('SERIAL')) {
-                //             check++
-                //         }
-                //     }
-                //     if (check > 0) {
-                //         console.log("THIS BIG WORKIN")
-                //         return
-                //     } else {
-                //         console.log("This ain't working")
-                //         setFields(labelFields)
-                //         setIsChecked(true)
-                //     }
-                // }
+                const labelFields = res.payload
+                if (labelFields.length > 0) {
+                    let check = 0
+                    for (let i = 0; i < labelFields.length; i++) {
+                        const fieldSet = labelFields[i];
+                        const fieldName = fieldSet.name.toUpperCase()
+                        if (fieldName.includes('SERIAL')) {
+                            check++
+                        }
+                    }
+                    if (check > 0) {
+                        return
+                    } else {
+                        setFields(labelFields)
+                        setIsChecked(true)
+                    }
+                }
             }).catch((err) => {
 
             })
@@ -72,9 +72,41 @@ const NewLabel = () => {
     }, [files])
 
 
-    const handleCheckboxChange = () => {
-        setIsChecked(!isChecked);
-    };
+    const nameGeneratorForLabel = (inputString, materialArrr) => {
+        const mainName = inputString.slice(0, -11);  // Remove the last 11 characters
+        const mainNameWithoutHyphens = mainName.replace(/-/g, ' ');  // Remove hyphens
+
+        // Convert excluded substrings to lowercase
+        const lowercaseExcluded = materialArrr.map(substring => substring.name.toLowerCase());
+
+        // Generate two different options for the main name
+        const options = [];
+        for (let i = 0; i < 2; i++) {
+            let check = checkString(mainNameWithoutHyphens.toLowerCase(), lowercaseExcluded, i)
+            options.push(check)
+        }
+        setLabelNames(options)
+    }
+
+    const checkString = (inputString, substringArray, i) => {
+        let modifiedString = inputString;
+
+        substringArray.forEach(substring => {
+            if (modifiedString.includes(substring)) {
+                modifiedString = modifiedString.replace(new RegExp(substring, 'gi'), '');
+            }
+        });
+        if (i == 0) {
+            const words = modifiedString.split(' ');
+            words.shift(); // Remove the first word
+            modifiedString = words.join(' ');
+            let trimmedString = modifiedString.replace(/\s+$/, '')
+            return trimmedString;
+        }
+        let trimmedString = modifiedString.replace(/\s+$/, '')
+        return trimmedString;
+    }
+
 
     const handleBulkCheckBoxChange = () => {
         setBulkCheck(!isBulkChecked)
@@ -115,26 +147,15 @@ const NewLabel = () => {
         }
     }, [isSerialCheck])
 
-    const handleAddInput = () => {
-        setInputValues([...inputValues, '']);
-    };
-
-    const handleDeleteInput = (index) => {
-        setInputValues(prev => prev.filter((_, i) => i !== index));
+    const handleNameChange = (e) => {
+        setCustomName('')
+        setName(e)
     }
 
-
-    const handleFieldType = (index, value) => {
-        const newFieldTypes = [...fieldTypes]
-        newFieldTypes[index] = value
-        setFieldTypes(newFieldTypes)
+    const handleCustomNameChange = (e) => {
+        setCustomName(e)
     }
 
-    const handleInputChange = (index, value) => {
-        const newInputValues = [...inputValues];
-        newInputValues[index] = value;
-        setInputValues(newInputValues);
-    };
 
 
     const filterSubCats = (event) => {
@@ -146,27 +167,14 @@ const NewLabel = () => {
     }
 
     const deleteLabels = () => {
+        setLabelNames([])
+        setName('')
+        setCustomName('')
+        document.getElementById('newLabelForm').reset()
         setFiles([])
         setBulkCheck(false)
         setFields([])
         setDocNum('')
-    }
-
-    const configureFields = () => {
-        return new Promise((resolve) => {
-            let newFields = [];
-            for (let i = 0; i < inputValues.length; i++) {
-                const fieldName = inputValues[i];
-                const fieldType = fieldTypes[i]
-                let obj = {
-                    name: fieldName,
-                    type: fieldType
-                }
-                newFields.push(obj)
-            }
-            resolve(newFields)
-        }
-        )
     }
 
 
@@ -192,7 +200,7 @@ const NewLabel = () => {
         let data = {
             fields: fields,
             maxOrderQty: values.maxOrderQty,
-            name: values.labelName,
+            name: customName == '' ? name : customName,
             docNum: docNum,
             fileName: files[0].name,
             bulkFileName: bulkFile,
@@ -241,7 +249,8 @@ const NewLabel = () => {
                             unitPack: 1,
                             materialTypeId: '',
                             categoryId: '',
-                            subCategoryId: ''
+                            subCategoryId: '',
+                            customName: ''
                         }}
                         onSubmit={async (values) => {
                             submitLabelInfo(values)
@@ -254,15 +263,32 @@ const NewLabel = () => {
                             setBulkCheck(false)
                         }}
                     >
-                        {({ isSubmitting }) => (
+                        {({ isSubmitting, values, setFieldValue }) => (
                             <Form id='newLabelForm'>
                                 <div className='flex justify-around gap-8'>
                                     <div className='grow'>
                                         <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Label Name <span className='text-red-500'>*</span></label>
-                                        <Field type="text" name="labelName" id="labelName" className="bg-gray-50 border border-gray-300
+                                        <Field value={name} name="labelName" onChange={(e) => handleNameChange(e.target.value)} type="text" component="select" id="labelName" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                        dark:focus:border-blue-500" placeholder="Label Name" required />
+                                        dark:focus:border-blue-500" placeholder="Label Name" required >
+                                            {labelName.length > 0 ?
+                                                labelName.map((l) => (
+                                                    <option value={l}>{l}</option>
+                                                )) : null}
+                                            {files.length > 0 ?
+                                                <option value="custom" className='text-gray-500'>Input Custom Name</option>
+                                                :
+                                                <option>INSERT LABEL</option>
+                                            }
+                                        </Field>
+                                        {name == 'custom' && (
+                                            <Field value={customName} onChange={(e) => handleCustomNameChange(e.target.value)} name="customName" type="text"
+                                                className=" mt-3 bg-gray-50 border border-gray-300
+                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
+                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
+                                        dark:focus:border-blue-500" placeholder="Custom Name" />
+                                        )}
                                     </div>
                                     <div className='grow'>
                                         <label htmlFor="docNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Document Number <span className='text-red-500'>*</span></label>
@@ -291,7 +317,7 @@ const NewLabel = () => {
                                         <label htmlFor="materialTypeId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Type <span className='text-red-500'>*</span></label>
                                         <Field component='select' name="materialTypeId" id="materialTypeId" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700
-                                        dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" required="" >
+                                        dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" required >
                                             <option className='text-gray-600' selected>SELECT MATERIAL</option>
                                             {material.materials ?
                                                 material.materials.map((m) => (

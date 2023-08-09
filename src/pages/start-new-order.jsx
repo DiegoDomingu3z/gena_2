@@ -11,6 +11,8 @@ import { getAllSubCats } from '../../store/Sub-Category/Thunks'
 import { getLabels, searchLabel } from '../../store/Label/Thunks'
 import { useCanvasDrawer } from '~/Contexts/canvasDrawerContext'
 import CartCanvasDrawer from '~/components/CartCanvasDrawer'
+import { useRouter } from 'next/router'
+import { getAccount } from '../../store/Account/thunks'
 
 
 
@@ -25,6 +27,7 @@ const startNewOrder = () => {
   const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const account = useSelector((state) => state.Account.account)
+
   const filterSubCats = (event) => {
     let id = event.target.value
     let cat = cats.filter(c => c._id == id)
@@ -35,19 +38,21 @@ const startNewOrder = () => {
 
   const handleSearch = (event) => {
     let data = event.target.value
-    dispatch(searchLabel(data))
+    let token = account.departmentId
+    dispatch(searchLabel({ data, token }))
     setSearchInput(data)
   }
 
   const singleSubCat = (event) => {
     let id = event.target.value
-    console.log(id)
     setActiveSubCategoryId(id)
   }
 
   useEffect(() => {
+    const token = sessionStorage.getItem('accessToken')
     dispatch(getCategories())
     dispatch(getAllSubCats())
+    dispatch(getAccount(token))
   }, [])
 
   useEffect(() => {
@@ -97,9 +102,9 @@ const startNewOrder = () => {
                     if (c.visibility.includes(departmentId.toString())) {
                       return (
                         <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
-                        )
-                      }
-}) : null
+                      )
+                    }
+                  }) : null
                 }
               </Field>
               <Field onChange={singleSubCat} value={activeSubCategoryId} type="text" component="select" name="subCategoryId" className='bg-gray-50 border border-gray-300
