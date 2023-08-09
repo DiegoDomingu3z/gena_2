@@ -12,12 +12,15 @@ import { useRouter } from 'next/router';
 import { logout } from '../../store/Account/thunks';
 import { useEffect } from 'react';
 import CartCanvasDrawer from './CartCanvasDrawer';
+import TicketModal from './TicketModal';
+import { useState } from 'react';
 
 
 const Layout = ({ children, title }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const user = useSelector((state) => state.Account)
+  const [ticketModal, setTicketModal] = useState(false);
   let token;
 
   useEffect(() => {
@@ -34,9 +37,10 @@ const Layout = ({ children, title }) => {
       </Head>
       <div className='flex'>
         <CanvasProvider>
-          <SideNav />
+          {ticketModal && <TicketModal ticketModal={ticketModal} setTicketModal={setTicketModal} />}
+          <SideNav ticketModal={ticketModal} setTicketModal={setTicketModal} />
           <Navbar />
-          <CanvasDrawer />
+          <CanvasDrawer ticketModal={ticketModal} setTicketModal={setTicketModal} />
           {user.accessToken && <button onClick={() => dispatch(logout(user.accessToken))} className='text-black p-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
           <main className="min-h-screen w-full">{children}</main>
         </CanvasProvider>

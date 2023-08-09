@@ -5,14 +5,20 @@ import { useRouter } from 'next/router'
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus, faSuitcase, faHouse, faList, faTag, faFolderPlus, faArrowLeftLong, faUser, faUsers, faPrint } from '@fortawesome/free-solid-svg-icons'
+import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { faSquarePiedPiper } from '@fortawesome/free-brands-svg-icons';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAccount } from '../../store/Account/thunks';
 
-export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer }) => {
+export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer, ticketModal, setTicketModal }) => {
   const user = useSelector((state) => state.Account)
   const dispatch = useDispatch()
+
+  const toggleTicketModal = () => {
+    setTicketModal(!ticketModal)
+    setToggleCanvasDrawer(!toggleCanvasDrawer)
+  }
 
 
   useEffect(() => {
@@ -83,16 +89,29 @@ export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer }) => 
           </button>
         </Link>
       </div>
-      <div className='w-full h-16'>
-        {/* <button className='text-white mb-5'>Report Issue</button> */}
-        {<div className='text-white bg-[#1e2a38] w-full h-full flex justify-center items-center'>{user.accessToken ? `${user.account.firstName} ${user.account.lastName}` : "Welcome to GENA!"}</div>}
+      <div className='w-full h-16 relative'>
+        <div className='group'>
+          <span className='opacity-0 text-white absolute text-sm -top-20 left-12 bg-gray-600 py-1 px-3 rounded-tl-full rounded-tr-full rounded-br-full group-hover:opacity-100 transition-all ease-in-out'>
+            Report An Issue
+          </span>
+          {user.accessToken && <button
+            onClick={() => setTicketModal(!ticketModal)}
+            id="reportBtn"
+            className='text-white mb-5 absolute bottom-14 left-4 bg-yellow-600 px-2 py-1 rounded-full transition-all ease-in-out transform-gpu group-hover:scale-110'
+          >
+            <FontAwesomeIcon icon={faFlag} />
+          </button>}
+        </div>
+        {<div className='text-white bg-[#1e2a38] w-full h-full flex justify-center items-center'>
+          {user.accessToken ? `${user.account.firstName} ${user.account.lastName}` : "Welcome to GENA!"}
+        </div>}
       </div>
     </>
   )
 }
 
 
-const CanvasDrawer = () => {
+const CanvasDrawer = ({ ticketModal, setTicketModal }) => {
   const { toggleCanvasDrawer, setToggleCanvasDrawer } = useCanvasDrawer();
 
   return (
@@ -100,7 +119,7 @@ const CanvasDrawer = () => {
       <div className='w-full flex justify-center mb-20'>
         <Image src="/images/GENA-Logo.png" width={60} height={60} alt="GENA Image" />
       </div>
-      <CanvasButtons setToggleCanvasDrawer={setToggleCanvasDrawer} toggleCanvasDrawer={toggleCanvasDrawer} />
+      <CanvasButtons setToggleCanvasDrawer={setToggleCanvasDrawer} toggleCanvasDrawer={toggleCanvasDrawer} ticketModal={ticketModal} setTicketModal={setTicketModal} />
     </div>
   )
 }
