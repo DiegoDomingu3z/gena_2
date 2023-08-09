@@ -17,7 +17,7 @@ const DepartmentUsers = () => {
     const [activeUser, setActiveUser] = useState(null)
     const [modalState, setModalState] = useState(false);
     const account = useSelector((state) => state.Account.account)
-
+console.log(account)
 
     useEffect(() => {
         const { departmentId } = router.query
@@ -69,7 +69,7 @@ const DepartmentUsers = () => {
 
                                     <div
                                         onClick={() => {
-                                            if (account.privileges == 'admin') {
+                                            if (account.privileges == 'admin' || (account.privileges == 'group-lead' && deptName == account.department)) {
                                                 openModal()
                                                 setActiveUser(u)
                                             }
