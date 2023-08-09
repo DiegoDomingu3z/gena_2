@@ -40,6 +40,7 @@ const startNewOrder = () => {
     let data = event.target.value
     let token = account.departmentId
     dispatch(searchLabel({ data, token }))
+    setSearchInput(data)
   }
 
   const singleSubCat = (event) => {
