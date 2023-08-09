@@ -59,6 +59,24 @@ export const getDeliveredOrders = createAsyncThunk(
     }
 )
 
+export const deleteDeliveredOrder = createAsyncThunk(
+    'deleteOlderOrder/order',
+    async ({ id, token }) => {
+        try {
+            const res = await api.delete(`api/orders/delete/${id}`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
 export const printOrder = createAsyncThunk(
     'orders/print',
     async ({ token, id }) => {
