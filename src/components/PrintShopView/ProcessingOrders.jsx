@@ -128,6 +128,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                                                     <iframe src={sanitizePath(o.finalOrderPaths[i])} className="w-11/12"></iframe>
                                                 </div>
                                                 <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
+                                                <div className="text-center mb-3 mt-1">{p.material}</div>
                                             </div>
                                         ))
                                     ) : null}

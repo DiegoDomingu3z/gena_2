@@ -7,6 +7,7 @@ import { getAllUsers } from "../../../store/Account/thunks";
 import { getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder } from "../../../store/PrintShop/Thunks";
 import { PDFDocument } from 'pdf-lib'
 import Swal from "sweetalert2";
+import { getMaterials } from "../../../store/Material/Thunks";
 const { Panel } = Collapse;
 const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
@@ -15,6 +16,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     const order = useSelector((state) => state.PrintShop.approvedOrders.orders)
     const pdf = useSelector((state) => state.PrintShop.approvedOrders.arr)
     const user = useSelector((state) => state.Account.users)
+    const materials = useSelector((state) => state.Material.materials)
     const [orders, setOrders] = useState([])
     const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
     const dispatch = useDispatch()
@@ -31,7 +33,9 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     }
 
     useEffect(() => {
+        const token = sessionStorage.getItem('accessToken')
         dispatch(getAllUsers())
+        dispatch(getMaterials(token))
     }, [])
 
     const getUser = (id) => {
@@ -160,9 +164,14 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
             )
         } else {
             return (
-                <div>hello</div>
+                <div>"SYSTEM DOWN"</div>
             )
         }
+    }
+
+    const seeMaterialType = (id) => {
+        console.log(id, 'idss')
+        console.log(materials)
     }
 
 
@@ -225,7 +234,8 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                             return (
                                                 <div key={i} className="mb-5 border-b">
                                                     <div className="text-center text-sm">DOCNUM: {p.docNum}</div>
-                                                    <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
+                                                    <div className="text-center mb-3 mt-1">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
+                                                    <div className="text-center">Material Type: {p.material}</div>
                                                 </div>
                                             )
                                         })

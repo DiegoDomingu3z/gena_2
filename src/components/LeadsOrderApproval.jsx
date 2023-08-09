@@ -1,10 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { approveOrder, declineOrder, getOrdersToApprove } from "../../store/Orders/thunks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faXmarkCircle, faNoteSticky } from '@fortawesome/free-solid-svg-icons'
-import { Tooltip } from 'antd'
+import { Collapse, Divider, Tooltip } from 'antd';
+const { Panel } = Collapse;
 import Swal from "sweetalert2"
+import { useScrollPosition } from "~/hooks/useScrollPosition"
 
 const LeadsOrderApproval = () => {
     const dispatch = useDispatch()
@@ -80,35 +82,79 @@ const LeadsOrderApproval = () => {
         dispatch(approveOrder({ token, id }))
         toast(id, name)
     }
+    console.log(order)
 
     return (
-        <div >
+        <div>
+            <div className={`grid grid-cols-4 justify-items-center font-medium h-10 sticky top-0 bg-white items-center  transition-all ease-in-out duration-500`}>
+                <h4>Name</h4>
+                {/* <h4>Labels</h4> */}
+                <h4>Date</h4>
+                <h4>Status</h4>
+                <h4>Actions</h4>
+            </div>
             {order.length > 0 ?
-                order.map((o) => (
-                    <div className='grid grid-cols-6 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100' key={o._id}>
-                        <p>{o.creatorName}</p>
-                        <p>{o._id}</p>
-                        <p className=''>{o.labels.length}</p>
-                        <p className=''>{formatDate(o.createdOn)}</p>
-                        <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
-                        <div className='flex gap-5'>
-                            <Tooltip placement="top" title='Approve Order'>
-                                <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
-                                    <FontAwesomeIcon icon={faCheckCircle} /></button>
-                            </Tooltip>
-                            <Tooltip placement="top" title="Decline Order">
-                                <button onClick={() => stopOrder(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
-                            ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
-                            </Tooltip>
-                            {o.notes ?
-                                <Tooltip placement="top" title={o.notes}>
-                                    <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
-                                        <FontAwesomeIcon icon={faNoteSticky} />
-                                    </button>
-                                </Tooltip>
-                                : null
-                            }
-                        </div>
+                order.map((o, index) => (
+                    // <div className='grid grid-cols-6 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100' key={o._id}>
+                    //     <p>{o.creatorName}</p>
+                    //     <p>{o._id}</p>
+                    //     <p className=''>{o.labels.length}</p>
+                    //     <p className=''>{formatDate(o.createdOn)}</p>
+                    //     <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
+                    //     <div className='flex gap-5'>
+                    //         <Tooltip placement="top" title='Approve Order'>
+                    //             <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                    //                 <FontAwesomeIcon icon={faCheckCircle} /></button>
+                    //         </Tooltip>
+                    //         <Tooltip placement="top" title="Decline Order">
+                    //             <button onClick={() => stopOrder(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
+                    //         ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
+                    //         </Tooltip>
+                    //         {o.notes ?
+                    //             <Tooltip placement="top" title={o.notes}>
+                    //                 <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                    //                     <FontAwesomeIcon icon={faNoteSticky} />
+                    //                 </button>
+                    //             </Tooltip>
+                    //             : null
+                    //         }
+                    //     </div>
+                    // </div>
+                    <div className="border-t">
+                        <Collapse size="large" bordered={false} className=" hover:bg-slate-100 ">
+                            <Panel showArrow={false} header={
+                                <div className='grid grid-cols-4 justify-items-center justify-between' key={o._id}>
+                                    <p>{o.creatorName}</p>
+                                    {/* <p>{o._id}</p> */}
+                                    {/* <p className=''>{o.labels.length}</p> */}
+                                    <p className=''>{formatDate(o.createdOn)}</p>
+                                    <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
+                                    <div className='flex gap-5'>
+                                        <Tooltip placement="top" title='Approve Order'>
+                                            <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                                                <FontAwesomeIcon icon={faCheckCircle} /></button>
+                                        </Tooltip>
+                                        <Tooltip placement="top" title="Decline Order">
+                                            <button onClick={() => stopOrder(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
+                             ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
+                                        </Tooltip>
+                                        {o.notes ?
+                                            <Tooltip placement="top" title={o.notes}>
+                                                <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                                                    <FontAwesomeIcon icon={faNoteSticky} />
+                                                </button>
+                                            </Tooltip>
+                                            : null
+                                        }
+                                    </div>
+                                </div>
+                            }>
+                                <div className="grid grid-cols-3">
+
+                                </div>
+
+                            </Panel>
+                        </Collapse>
                     </div>
 
                 ))
