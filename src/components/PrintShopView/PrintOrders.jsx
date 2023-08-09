@@ -6,16 +6,18 @@ import PrintShopApproved from './PrintShopApproved';
 import { useSelector } from 'react-redux';
 import { PrinterOutlined } from '@ant-design/icons';
 import ProcessingOrders from './ProcessingOrders';
+import DeliveredOrders from './DeliveredOrders';
 const PrintOrders = () => {
     const approvedOrders = useSelector((state) => state.PrintShop.approvedOrders.orders)
     const processingOrders = useSelector((state) => state.PrintShop.processingOrders.orders)
-    const deliveredOrders = useSelector((state) => state.PrintShop.deliveredOrders)
+    const deliveredOrders = useSelector((state) => state.PrintShop.deliveredOrders.orders)
     const [multipleOrders, setMultipleOrders] = useState([])
     const [deliverMultipleOrders, setDeliverMultipleOrders] = useState([])
     const [tab, setTab] = useState('approved-orders');
     const pickTab = (e) => {
         setTab(e.key);
     };
+    console.log(deliveredOrders)
 
     return (
         <div className={"flex flex-col pt-20 pr-20 pl-20"}>
@@ -38,7 +40,7 @@ const PrintOrders = () => {
                     }
                 </Menu.Item>
                 <Menu.Item className='relative' key="delivered-orders">Delivered Orders
-                    {deliveredOrders.length > 0 ?
+                    {deliveredOrders ?
                         <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{deliveredOrders.length}</span>
                         : null
                     }
@@ -48,6 +50,8 @@ const PrintOrders = () => {
                 {tab == 'approved-orders' && <PrintShopApproved multipleOrders={multipleOrders} setMultipleOrders={setMultipleOrders} />}
 
                 {tab == 'processing-orders' && <ProcessingOrders deliverMultipleOrders={deliverMultipleOrders} setDeliverMultipleOrders={setDeliverMultipleOrders} />}
+
+                {tab == 'delivered-orders' && <DeliveredOrders deliverMultipleOrders={deliverMultipleOrders} setDeliverMultipleOrders={setDeliverMultipleOrders} />}
             </div>
         </div>
 
