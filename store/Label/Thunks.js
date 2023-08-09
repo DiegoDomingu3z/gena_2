@@ -54,10 +54,14 @@ export const getLabels = createAsyncThunk(
 
 export const searchLabel = createAsyncThunk(
     'label/search',
-    async (data) => {
+    async ({ data, token }) => {
         try {
             console.log(data, 'search by')
-            const res = await api.get(`/api/upload/search?q=${data}`,)
+            const res = await api.get(`/api/upload/search?q=${data}`, {
+                headers: {
+                    Authorization: token
+                }
+            })
                 .then((res) => res.data)
             console.log(res)
             return res

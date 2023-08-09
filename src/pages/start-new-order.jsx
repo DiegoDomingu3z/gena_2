@@ -12,6 +12,7 @@ import { getLabels, searchLabel } from '../../store/Label/Thunks'
 import { useCanvasDrawer } from '~/Contexts/canvasDrawerContext'
 import CartCanvasDrawer from '~/components/CartCanvasDrawer'
 import { useRouter } from 'next/router'
+import { getAccount } from '../../store/Account/thunks'
 
 
 
@@ -36,18 +37,20 @@ const startNewOrder = () => {
 
   const handleSearch = (event) => {
     let data = event.target.value
-    dispatch(searchLabel(data))
+    let token = account.departmentId
+    dispatch(searchLabel({ data, token }))
   }
 
   const singleSubCat = (event) => {
     let id = event.target.value
-    console.log(id)
     setActiveSubCategoryId(id)
   }
 
   useEffect(() => {
+    const token = sessionStorage.getItem('accessToken')
     dispatch(getCategories())
     dispatch(getAllSubCats())
+    dispatch(getAccount(token))
   }, [])
 
   useEffect(() => {
