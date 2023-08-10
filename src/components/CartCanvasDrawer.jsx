@@ -106,7 +106,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
       }
     }
     getLabels()
-  }, [toggleCartCanvas])
+  }, [toggleCartCanvas, basket])
 
   useEffect(() => {
     setBlobs([])
