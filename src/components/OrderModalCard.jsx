@@ -38,6 +38,24 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       title: 'Label Updated!'
     })
   }
+  const qtyTooHighToast = async (qty) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      iconColor: 'orange',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'addToCartToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'warning',
+      title: `Exceeds Max Quantity of ${qty}`
+    })
+  }
 
   useEffect(() => {
     setBlobs([])
@@ -145,9 +163,13 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
             const orderId = label.orderId
             const labelId = label._id
             try {
-              await dispatch(updateLabel({ token, orderId, labelId, valuesArray }))
-              await dispatch(getMyOrders(token))
-              toast()
+              if(values.qty <= label.maxOrderQty){
+                await dispatch(updateLabel({ token, orderId, labelId, valuesArray }))
+                await dispatch(getMyOrders(token))
+                toast()
+                return
+              }
+              qtyTooHighToast(label.maxOrderQty)
             } catch (error) {
               console.log(error)
             }
