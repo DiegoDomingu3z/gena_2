@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Layout from '~/components/Layout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -9,13 +9,15 @@ import OrderModal from '~/components/OrderModal'
 import orders from '~/testDB'
 import { Menu } from 'antd';
 import LeadsOrderApproval from '~/components/LeadsOrderApproval'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useScrollPosition } from '~/hooks/useScrollPosition'
+import { getMyOrders } from '../../store/Orders/thunks'
 
 
 
 const CurrentOrders = () => {
     const containerRef = useRef(null);
+    const dispatch = useDispatch();
     const scrollPosition = useScrollPosition(containerRef);
     const [modalState, setModalState] = useState(false);
     const [tab, setTab] = useState('my-orders');
@@ -27,6 +29,12 @@ const CurrentOrders = () => {
     const pickTab = (e) => {
         setTab(e.key);
     };
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('accessToken')
+        dispatch(getMyOrders(token))
+        console.log('hi')
+    }, [order])
 
 
     return (
