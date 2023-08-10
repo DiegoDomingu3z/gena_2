@@ -169,11 +169,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         }
     }
 
-    const seeMaterialType = (id) => {
-        console.log(id, 'idss')
-        console.log(materials)
-    }
-
 
 
 

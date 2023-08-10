@@ -1,4 +1,4 @@
-import { addToBasket, approveOrder, clearBasket, declineOrder, getBasketLabels, getMyOrders, getOrders, getOrdersToApprove, placeOrder, removeFromBasket, removeOrder, setActiveOrder, updateLabel, } from "./thunks";
+import { addToBasket, approveOrder, clearBasket, declineOrder, getBasketLabels, getGroupLeadOrderApproveLabels, getMyOrders, getOrders, getOrdersToApprove, placeOrder, removeFromBasket, removeOrder, setActiveOrder, updateLabel, } from "./thunks";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -10,7 +10,8 @@ export const OrdersSlice = createSlice({
         activeOrder: '',
         myOrders: [],
         loading: false,
-        leadDepartmentOrders: []
+        leadDepartmentOrders: [],
+        labelsToApprove: []
     },
     reducers: {
 
@@ -118,6 +119,16 @@ export const OrdersSlice = createSlice({
             })
             .addCase(updateLabel.rejected, (state, action) => {
                 console.log(action.error)
+            })
+            .addCase(getGroupLeadOrderApproveLabels.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getGroupLeadOrderApproveLabels.fulfilled, (state, action) => {
+                state.labelsToApprove = action.payload
+                state.loading = false
+            })
+            .addCase(getGroupLeadOrderApproveLabels.rejected, (state, action) => {
+                console.log(error)
             })
     }
 })

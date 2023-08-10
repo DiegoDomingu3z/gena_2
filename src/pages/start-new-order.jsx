@@ -99,7 +99,7 @@ const startNewOrder = () => {
                 {cats ?
                   cats.map((c) => {
                     let departmentId = account.departmentId
-                    if (c.visibility.includes(departmentId.toString())) {
+                    if (c.visibility.includes(departmentId)) {
                       return (
                         <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
                       )
