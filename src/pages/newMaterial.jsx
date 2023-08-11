@@ -109,7 +109,7 @@ const materials = () => {
         <button onClick={() => {
           setModal(!modal)
         }} className='text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out'><FontAwesomeIcon icon={faXmark} /></button>
-        <h1 className='font-medium mb-12'>Update Material '{activeCategory}'</h1>
+        <h1 className='font-medium mb-12'>Update Material '<span className='text-orange-400'>{activeCategory}</span>'</h1>
         <div className='flex flex-col gap-5 items-center w-full'>
           <h2>New Name:</h2>
           <Formik
@@ -122,8 +122,8 @@ const materials = () => {
               const foundMatch = materialsArray.some(v => v.name.toLowerCase() == values.name.toLowerCase())
               if(!foundMatch){
                 dispatch(updateMaterial({token, values}))
-                toggleModal(!modal);
                 fetchMaterials();
+                toggleModal(!modal);
                 successToast()
                 helpers.resetForm();
                 return
