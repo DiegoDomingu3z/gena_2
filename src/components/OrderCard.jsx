@@ -7,7 +7,7 @@ import { Tooltip } from 'antd'
 import Swal from 'sweetalert2'
 
 
-const OrderCard = ({ modalState, setModalState, blobs, setBlobs, toggleSort }) => {
+const OrderCard = ({ deleted, setDeleted, modalState, setModalState, blobs, setBlobs, toggleSort }) => {
   const dispatch = useDispatch();
   // const [selectedOrder, setSelectedOrder] = useState();
   let order = useSelector((state) => state.Orders.myOrders.orders)
@@ -52,6 +52,7 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs, toggleSort }) =
           }
         })
         dispatch(removeOrder({ id, token }))
+        setDeleted(!deleted)
       }
     })
 
@@ -105,7 +106,7 @@ const OrderCard = ({ modalState, setModalState, blobs, setBlobs, toggleSort }) =
                     setBlobs([])
                     handleUpdateModal(o._id)
                   }}
-                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${o.status === 'processing' && 'pointer-events-none'}`}>
+                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${(o.status === 'processing' || o.status === 'delivered') && 'pointer-events-none'}`}>
                   <FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>
               <Tooltip placement='top' title="Delete Order">

@@ -131,7 +131,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
             for (let i = 0; i < fieldNames.length; i++) {
                 const fieldName = fieldNames[i];
                 const checkbox = form.getCheckBox(fieldName);
-                if (text[i].text) {
+                if (text[i].text == 'true') {
                     checkbox.check();
                 }
             }

@@ -2,10 +2,12 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Formik, Form, Field } from 'formik'
+import useEasterEgg from '~/hooks/useEasterEgg'
 
 const TicketModal = ({setTicketModal, ticketModal}) => {
+  useEasterEgg();
   return (
-    <div className='absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
+    <div className='fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
       <div className='bg-[#f7f9fc] w-3/5 laptop:w-2/5 laptop:h-[44rem] h-[44rem] rounded-lg px-10 py-5 flex flex-col'>
       <button onClick={() => setTicketModal(!ticketModal)} className='text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out'><FontAwesomeIcon icon={faXmark} /></button>
         <h1 className='font-semibold text-lg'>Submit A Support Ticket</h1>

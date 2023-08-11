@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Layout from '~/components/Layout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -9,13 +9,15 @@ import OrderModal from '~/components/OrderModal'
 import orders from '~/testDB'
 import { Menu } from 'antd';
 import LeadsOrderApproval from '~/components/LeadsOrderApproval'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useScrollPosition } from '~/hooks/useScrollPosition'
+import { getMyOrders } from '../../store/Orders/thunks'
 
 
 
 const CurrentOrders = () => {
     const containerRef = useRef(null);
+    const dispatch = useDispatch();
     const scrollPosition = useScrollPosition(containerRef);
     const [modalState, setModalState] = useState(false);
     const [tab, setTab] = useState('my-orders');
@@ -24,9 +26,15 @@ const CurrentOrders = () => {
     const approveOrder = useSelector((state) => state.Orders.leadDepartmentOrders)
     const order = useSelector((state) => state.Orders.myOrders.orders)
     const [blobs, setBlobs] = useState([])
+    const [deleted, setDeleted] = useState(false)
     const pickTab = (e) => {
         setTab(e.key);
     };
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('accessToken')
+        dispatch(getMyOrders(token))
+    }, [deleted])
 
 
     return (
@@ -55,7 +63,7 @@ const CurrentOrders = () => {
                                 </Menu>
                             </div>
                             <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
-                                <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approval'}</h1>
+                                <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approve'}</h1>
                                 <div className={tab == 'my-orders' ? `grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500` : `grid grid-cols-6 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
                                     {/* {tab == 'approve-order' ? <h4>Name</h4> : null} */}
                                     {tab == 'my-orders' ? <h4>Order ID</h4> : null}
@@ -66,7 +74,7 @@ const CurrentOrders = () => {
 
                                 </div>
                                 <div className='flex flex-col'>
-                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
+                                    {tab == 'my-orders' && <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
                                 </div>
                                 <div>
                                     {tab == 'approve-order' && <LeadsOrderApproval />}
@@ -84,7 +92,7 @@ const CurrentOrders = () => {
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} />
+                                <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} />
                             </div>
                         </div>
                 }

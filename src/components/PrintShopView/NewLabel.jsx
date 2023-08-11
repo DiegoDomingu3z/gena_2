@@ -159,11 +159,13 @@ const NewLabel = () => {
 
 
     const filterSubCats = (event) => {
+        setActiveSubCats('')
         let id = event.target.value
         let cat = category.categories.filter(c => c._id == id)
         setActiveCategory(cat[0]._id)
         let filteredSubCats = subCategory.subCats.filter(c => c.categoryId == id)
-        setActiveSubCats(filteredSubCats)
+        console.log(filteredSubCats, activeSubCats)
+        filteredSubCats ? setActiveSubCats(filteredSubCats) : setActiveSubCats('')
     }
 
     const deleteLabels = () => {
@@ -350,7 +352,7 @@ const NewLabel = () => {
                                     </div>
                                     <div className=''>
                                         <label htmlFor='unitPack' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-Category Name<span className='text-red-500'>*</span></label>
-                                        <Field component='select' name="subCategoryId" id="subCategoryId" className="bg-gray-50 border border-gray-300
+                                        <Field component='select' disabled={activeSubCats.length == 0 && true} name="subCategoryId" id="subCategoryId" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" required >
                                             <option className='text-gray-600'  >SELECT SUB-CATEGORY</option>
@@ -361,12 +363,9 @@ const NewLabel = () => {
                                                     </option>
 
                                                 )) :
-
-                                                subCategory.subCats.map((s) => (
-                                                    <option value={s._id} key={s._id}>
-                                                        {s.name}
+                                                    <option value="Select Sub-Category">
+                                                        Select Category First
                                                     </option>
-                                                ))
                                             }
 
 

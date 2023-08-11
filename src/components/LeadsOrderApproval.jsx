@@ -30,7 +30,7 @@ const LeadsOrderApproval = () => {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${month}/${day}/${year}`;
     };
 
     const toast = async (id, name) => {
@@ -198,14 +198,14 @@ const LeadsOrderApproval = () => {
                                     {/* <p className=''>{o.labels.length}</p> */}
                                     <p className=''>{formatDate(o.createdOn)}</p>
                                     <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
-                                    <div className='flex gap-5'>
+                                    <div className='flex gap-5 w-32 place-self-end'>
                                         <Tooltip placement="top" title='Approve Order'>
                                             <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
                                                 <FontAwesomeIcon icon={faCheckCircle} /></button>
                                         </Tooltip>
                                         <Tooltip placement="top" title="Decline Order">
                                             <button onClick={() => stopOrder(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
-                             ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
+                            ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
                                         </Tooltip>
                                         {o.notes ?
                                             <Tooltip placement="top" title={o.notes}>
