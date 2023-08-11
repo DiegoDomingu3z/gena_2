@@ -107,7 +107,7 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
 
 const SideNav = ({ ticketModal, setTicketModal }) => {
   return (
-    <div className='bg-[#233043] w-44 md:w-[300px] h-screen hidden laptop:flex flex-col items-center shadow-lg pt-5'>
+    <div className='bg-[#233043] w-44 md:w-[300px] h-screen hidden laptop:flex flex-col items-center sticky top-0 left-0 shadow-lg pt-5'>
       <div className='w-full flex justify-center mb-20'>
         <Image src="/images/GENA-Logo.png" width={60} height={60} alt="GENA Image" />
       </div>

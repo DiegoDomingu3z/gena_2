@@ -63,7 +63,7 @@ const CurrentOrders = () => {
                                 </Menu>
                             </div>
                             <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
-                                <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approval'}</h1>
+                                <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approve'}</h1>
                                 <div className={tab == 'my-orders' ? `grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500` : `grid grid-cols-6 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
                                     {tab == 'approve-order' ? <h4>Name</h4> : null}
                                     <h4>Order ID</h4>

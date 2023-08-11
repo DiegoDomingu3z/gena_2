@@ -22,7 +22,7 @@ const LeadsOrderApproval = () => {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${month}/${day}/${year}`;
     };
 
     const toast = async (id, name) => {
@@ -82,7 +82,7 @@ const LeadsOrderApproval = () => {
     }
 
     return (
-        <div >
+        <div className='p-5'>
             {order.length > 0 ?
                 order.map((o) => (
                     <div className='grid grid-cols-6 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100' key={o._id}>
@@ -91,7 +91,7 @@ const LeadsOrderApproval = () => {
                         <p className=''>{o.labels.length}</p>
                         <p className=''>{formatDate(o.createdOn)}</p>
                         <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
-                        <div className='flex gap-5'>
+                        <div className='flex gap-5 w-32 place-self-end'>
                             <Tooltip placement="top" title='Approve Order'>
                                 <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
                                     <FontAwesomeIcon icon={faCheckCircle} /></button>
