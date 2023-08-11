@@ -104,7 +104,7 @@ const materials = () => {
 
   const MaterialModal = () => {
     return (
-      <div className='absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
+      <div className='fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
         <div className='bg-[#f7f9fc] w-3/5 laptop:w-2/5 h-[35rem] rounded-lg px-10 py-5 flex flex-col'>
         <button onClick={() => {
           setModal(!modal)
