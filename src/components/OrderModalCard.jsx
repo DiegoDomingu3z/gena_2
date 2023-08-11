@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Formik, Form, Field } from 'formik'
 import { getMyOrders, updateLabel } from '../../store/Orders/thunks'
 import Swal from 'sweetalert2'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument, fill } from 'pdf-lib'
 import { RingLoader } from 'react-spinners'
 
 
@@ -87,13 +87,15 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
         try {
-          const checkbox = form.getCheckBox(fieldName);
-          if (text[i].text) {
-            checkbox.check()
-          }
-        } catch (error) {
           const fieldToFill = form.getTextField(fieldName);
           fieldToFill.setText(text[i].text);
+
+        } catch (error) {
+          const checkbox = form.getCheckBox(fieldName);
+          console.log(text[i])
+          if (text[i].text == 'true') {
+            checkbox.check()
+          }
         }
       }
 

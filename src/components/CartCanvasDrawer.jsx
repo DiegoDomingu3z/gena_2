@@ -7,17 +7,16 @@ import { faArrowRightLong, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { clearBasket, getBasketLabels, placeOrder, removeFromBasket } from '../../store/Orders/thunks'
 import Swal from 'sweetalert2'
 import { PDFDocument } from 'pdf-lib'
-const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
+const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas, render }) => {
   const [basketLabels, setBasketLabels] = useState([])
   const [orderNote, setOrderNote] = useState('')
   const basket = useSelector((state) => state.Orders.labelBasket)
-
   const dispatch = useDispatch()
   const handleNote = (event) => {
     let note = event.target.value
     setOrderNote(note)
-    console.log(orderNote)
   }
+
 
 
   const toast = async () => {
@@ -51,8 +50,6 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
     setTimeout(() => {
       setToggleCartCanvas(!toggleCartCanvas)
     }, 500)
-
-
   }
 
   return (
@@ -61,7 +58,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas }) => {
         <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}
           className='border transition-all ease-in-out duration-300 hover:scale-110 bg-[#233043] hover:bg-white hover:text-inherit w-3/4 self-center rounded-md h-10 text-white text flex items-center justify-center gap-5'><FontAwesomeIcon className='text-xl' icon={faArrowRightLong} /> Close</button>
       </div>
-      <CartCanvasLabelCard toggleCartCanvas={toggleCartCanvas} basketLabels={basketLabels} setBasketLabels={setBasketLabels} />
+      <CartCanvasLabelCard toggleCartCanvas={toggleCartCanvas} basketLabels={basketLabels} setBasketLabels={setBasketLabels} render={render} />
       <div className='absolute bottom-8 w-full flex flex-col items-center'>
         <div className='mb-1 text-center rounded-lg w-full h-48'>
           <textarea id="noteInput" onChange={handleNote} value={orderNote} className='rounded-lg bg-[#233042] text-white p-5 max-h-44 min-h-[6rem]' placeholder='Notes...' name="" cols="40" rows="6"></textarea>
@@ -78,7 +75,7 @@ export default CartCanvasDrawer
 
 
 
-const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }) => {
+const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, render }) => {
   const dispatch = useDispatch()
   const basket = useSelector((state) => state.Orders.labelBasket)
   const labels = useSelector((state) => state.Label.activeLabels)
@@ -86,7 +83,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
 
   const removeFromOrder = (index) => {
     const basketLabelsCopy = basketLabels.slice();
-    basketLabelsCopy.splice(0, 1);
+    basketLabelsCopy.splice(index, 1);
     setBasketLabels(basketLabelsCopy)
     dispatch(removeFromBasket(index))
   }
@@ -106,7 +103,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
       }
     }
     getLabels()
-  }, [toggleCartCanvas, basket])
+  }, [toggleCartCanvas, render])
 
   useEffect(() => {
     setBlobs([])
@@ -129,8 +126,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels }
       modifyPaths()
     }
 
-  }, [basket, basketLabels])
-  console.log(blobs)
+  }, [basketLabels])
   const modifyPdf = async (path, text) => {
     try {
       const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());

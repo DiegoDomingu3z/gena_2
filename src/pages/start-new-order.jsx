@@ -27,6 +27,7 @@ const startNewOrder = () => {
   const [toggleCartCanvas, setToggleCartCanvas] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const account = useSelector((state) => state.Account.account)
+  const [render, setRender] = useState(false)
 
   const filterSubCats = (event) => {
     let id = event.target.value
@@ -64,7 +65,7 @@ const startNewOrder = () => {
 
   return (
     <Layout title={"Gena | New Order"}>
-      <CartCanvasDrawer toggleCartCanvas={toggleCartCanvas} setToggleCartCanvas={setToggleCartCanvas} />
+      <CartCanvasDrawer toggleCartCanvas={toggleCartCanvas} setToggleCartCanvas={setToggleCartCanvas} render={render} />
       <div className={"flex flex-col pt-20 pr-20 pl-20"}>
         <div className='flex items-end '>
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
@@ -99,7 +100,7 @@ const startNewOrder = () => {
                 {cats ?
                   cats.map((c) => {
                     let departmentId = account.departmentId
-                    if (c.visibility.includes(departmentId.toString())) {
+                    if (c.visibility.includes(departmentId)) {
                       return (
                         <option id={c._id} key={c._id} value={c._id}>{c.name}</option>
                       )
@@ -123,7 +124,7 @@ const startNewOrder = () => {
           </Formik>
         </div>
         <div className=''>
-          {(activeCategory || searchInput) && <LabelCard setToggleCartCanvas={setToggleCartCanvas} toggleCartCanvas={toggleCartCanvas} />}
+          {(activeCategory || searchInput) && <LabelCard setToggleCartCanvas={setToggleCartCanvas} toggleCartCanvas={toggleCartCanvas} setRender={setRender} render={render} />}
         </div>
       </div>
     </Layout>

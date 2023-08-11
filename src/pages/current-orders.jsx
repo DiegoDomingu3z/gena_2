@@ -52,7 +52,7 @@ const CurrentOrders = () => {
 
                 {
                     account.privileges == 'team-lead' || account.privileges == 'group-lead' ?
-                    <div>
+                        <div>
                             <div>
                                 <Menu onClick={pickTab} selectedKeys={[tab]} mode="horizontal">
                                     <Menu.Item className='absolute' key="my-orders">My Orders
@@ -65,12 +65,13 @@ const CurrentOrders = () => {
                             <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
                                 <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approve'}</h1>
                                 <div className={tab == 'my-orders' ? `grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500` : `grid grid-cols-6 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
-                                    {tab == 'approve-order' ? <h4>Name</h4> : null}
-                                    <h4>Order ID</h4>
-                                    <h4>Labels</h4>
-                                    <h4>Date</h4>
-                                    <h4>Status</h4>
-                                    <h4>Actions</h4>
+                                    {/* {tab == 'approve-order' ? <h4>Name</h4> : null} */}
+                                    {tab == 'my-orders' ? <h4>Order ID</h4> : null}
+                                    {tab == 'my-orders' ? <h4>Labels</h4> : null}
+                                    {tab == 'my-orders' ? <h4>Date</h4> : null}
+                                    {tab == 'my-orders' ? <h4>Status</h4> : null}
+                                    {tab == 'my-orders' ? <h4>Actions</h4> : null}
+
                                 </div>
                                 <div className='flex flex-col'>
                                     {tab == 'my-orders' && <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
