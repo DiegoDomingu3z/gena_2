@@ -46,7 +46,7 @@ const UpdateLabels = () => {
             <div className="grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10">
                 {labels.length > 0 ?
                     labels.map((l) => (
-                        <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary' key={l._id}>
+                        <div className='bg-white w-full h-76 laptop:h-[26rem] rounded-lg drop-shadow-md font-genaPrimary' key={l._id}>
                             <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                                 <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
 
@@ -62,7 +62,7 @@ const UpdateLabels = () => {
                                         if (account.privileges == 'admin' || account.privileges == 'printshop') {
                                             deleteLabel(l.name, l._id)
                                         }
-                                    }} className='bg-[#e73b3b] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#c04343] hover:scale-110 hover:shadow-md transition-all
+                                    }} className='bg-[#e73b3b] px-3 py-1 rounded-lg w-full text-white mt-2 hover:bg-[#c04343] hover:scale-105 hover:shadow-md transition-all
                                      ease-in-out' >Delete Label</button></div>
                             </div>
                         </div>
