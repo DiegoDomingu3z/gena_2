@@ -26,6 +26,7 @@ const CurrentOrders = () => {
     const approveOrder = useSelector((state) => state.Orders.leadDepartmentOrders)
     const order = useSelector((state) => state.Orders.myOrders.orders)
     const [blobs, setBlobs] = useState([])
+    const [deleted, setDeleted] = useState(false)
     const pickTab = (e) => {
         setTab(e.key);
     };
@@ -33,8 +34,7 @@ const CurrentOrders = () => {
     useEffect(() => {
         const token = sessionStorage.getItem('accessToken')
         dispatch(getMyOrders(token))
-        console.log('hi')
-    }, [order])
+    }, [deleted])
 
 
     return (
@@ -73,7 +73,7 @@ const CurrentOrders = () => {
                                     <h4>Actions</h4>
                                 </div>
                                 <div className='flex flex-col'>
-                                    {tab == 'my-orders' && <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
+                                    {tab == 'my-orders' && <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
                                 </div>
                                 <div>
                                     {tab == 'approve-order' && <LeadsOrderApproval />}
@@ -91,7 +91,7 @@ const CurrentOrders = () => {
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} />
+                                <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} />
                             </div>
                         </div>
                 }
