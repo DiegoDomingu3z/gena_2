@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 
 
 
-const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
+const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
 
@@ -55,14 +55,16 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas }) => {
                   }
                   finalArr.push(obj)
                 }
+                console.log(finalArr)
                 await dispatch(addToBasket({ finalArr, qty, id }))
+                setRender(!render)
                 toast()
                 document.getElementById(`${l._id}`).reset()
                 document.getElementById(`${l.docNum}`).reset()
               }}
             >
               {({ isSubmitting }) => (
-                <Form id={l._id}>
+                <Form id={l._id} key={index}>
                   <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
                       <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>

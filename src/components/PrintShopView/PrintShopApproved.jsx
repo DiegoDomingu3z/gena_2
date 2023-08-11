@@ -235,7 +235,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                             )
                                         })
                                     ) : null}
-
                                 </div>
                             </Panel>
                         </Collapse>

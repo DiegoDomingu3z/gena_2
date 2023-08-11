@@ -126,7 +126,7 @@ const LeadsOrderApproval = () => {
         };
 
         modifyAndStorePdfDataUris();
-    }, [order])
+    }, [labels, order])
 
 
     const modifyPdf = async (path, text) => {
@@ -157,7 +157,7 @@ const LeadsOrderApproval = () => {
             for (let i = 0; i < fieldNames.length; i++) {
                 const fieldName = fieldNames[i];
                 const checkbox = form.getCheckBox(fieldName);
-                if (text[i].text) {
+                if (text[i].text == 'true') {
                     checkbox.check();
                 }
             }
@@ -221,9 +221,26 @@ const LeadsOrderApproval = () => {
                                 <div className="grid grid-cols-3 pt-3 border-t">
                                     {modifiedPdfDataUris.length > 0 ?
                                         modifiedPdfDataUris[index].map((d) => (
-                                            <div key={d}>
-                                                <iframe src={d} className="w-11/12"></iframe>
+                                            <div className="mx-2 text-center" key={d}>
+                                                <iframe src={d} className="w-full"></iframe>
+                                                <div>yo</div>
                                             </div>
+                                        )) : null}
+                                </div>
+                                <div className="grid grid-cols-3 pt-3">
+                                    {labels.length > 0 ?
+                                        labels[index].map((l, i) => (
+                                            <div key={i} className="text-center mx-2 ">
+                                                <div className=" bg-gray-200 rounded-md">
+                                                    <b>
+                                                        Printing QTY: {o.labels[i].qty * l.unitPack}
+                                                    </b>
+                                                </div>
+                                                <div className=" bg-gray-200 rounded-md mt-2">
+                                                    <b>DOC: {l.docNum}</b>
+                                                </div>
+                                            </div>
+
                                         )) : null}
                                 </div>
 

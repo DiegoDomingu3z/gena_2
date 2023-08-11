@@ -33,7 +33,7 @@ export const OrdersSlice = createSlice({
             .addCase(removeFromBasket.fulfilled, (state, action) => {
                 state.loading = false
                 const basketLabelsCopy = state.labelBasket.slice();
-                basketLabelsCopy.splice(0, 1);
+                basketLabelsCopy.splice(action.payload, 1);
                 state.labelBasket = basketLabelsCopy
                 console.log(state.labelBasket)
             })
