@@ -231,6 +231,25 @@ const NewLabel = () => {
 
     }, [null])
 
+    const successToast = async () => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'center',
+          iconColor: 'white',
+          customClass: {
+            popup: 'colored-toast',
+            container: 'addToCartToast',
+          },
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true
+        })
+        await Toast.fire({
+          icon: 'success',
+          title: 'Label Added!'
+        })
+      }
+
     return (
         <div className={"flex flex-col p-20"}>
             <div className='flex items-end'>
@@ -263,6 +282,7 @@ const NewLabel = () => {
                             setInputValues([''])
                             setIsChecked(false)
                             setBulkCheck(false)
+                            successToast();
                         }}
                     >
                         {({ isSubmitting, values, setFieldValue }) => (
