@@ -208,5 +208,18 @@ export const updateLabel = createAsyncThunk(
             console.log(error)
         }
     }
+)
 
+export const getGroupLeadOrderApproveLabels = createAsyncThunk(
+    'order/labels/to-approve',
+    async (orderArr) => {
+        try {
+            const res = await api.post('api/orders/group-lead/labels/to-see', orderArr)
+                .then((res) => res.data)
+            console.log(res)
+            return res
+        } catch (error) {
+            console.log(error)
+        }
+    }
 )

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus, faSuitcase, faHouse, faList, faTag, faFolderPlus, faUser, faUsers, faPrint, faReceipt } from '@fortawesome/free-solid-svg-icons'
 import { faFlag } from '@fortawesome/free-regular-svg-icons'
 import { useLoginInput } from '~/Contexts/LoginContext'
+import { Avatar, Space } from 'antd';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAccount } from '../../store/Account/thunks';
@@ -15,6 +16,11 @@ import { faSquarePiedPiper } from '@fortawesome/free-brands-svg-icons';
 export const NavButtons = ({ ticketModal, setTicketModal }) => {
   const user = useSelector((state) => state.Account)
   const dispatch = useDispatch()
+  const cleanImg = (string) => {
+    const pattern = /\([^()]*\)/g;
+    const cleanString = string.replace(pattern, '');
+    return cleanString.trim();
+  }
 
 
   useEffect(() => {
@@ -97,8 +103,12 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
             <FontAwesomeIcon icon={faReceipt} />
           </button>}
         </div>
-        {<div className='text-white bg-[#1e2a38] w-full h-full flex justify-center items-center'>
-          {user.accessToken ? `${user.account.firstName} ${user.account.lastName}` : "Welcome to GENA!"}
+        {<div className='text-white bg-[#1e2a38] w-full h-full flex justify-center items-center text-md'>
+          {user.accessToken ? <Space>
+            <Avatar src={`http://internalweb/wp-content/uploads/${cleanImg(user.account.firstName)}-${user.account.lastName}.jpg`} />
+            {user.account.firstName}{user.account.lastName}
+          </Space>
+            : "Welcome to GENA!"}
         </div>}
       </div>
     </>
