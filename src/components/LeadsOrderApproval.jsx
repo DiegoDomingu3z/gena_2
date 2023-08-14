@@ -79,7 +79,6 @@ const LeadsOrderApproval = () => {
 
     const stopOrder = async (id, name, index) => {
         const token = sessionStorage.getItem('accessToken')
-
         Swal.fire({
             title: `Decline ${name}'s Order?`,
             text: "You will not be able to revert this",
@@ -110,9 +109,10 @@ const LeadsOrderApproval = () => {
         })
     }
 
-    const approveOrderNow = (id, name) => {
+    const approveOrderNow = async (id, name, index) => {
         const token = sessionStorage.getItem('accessToken')
-        dispatch(approveOrder({ token, id }))
+        await dispatch(approveOrder({ token, id }))
+        await handleOrderDeletion(index);
         toast(id, name)
     }
 
@@ -141,7 +141,7 @@ const LeadsOrderApproval = () => {
         };
 
         modifyAndStorePdfDataUris();
-    }, [labels, order, decline])
+    }, [labels, order])
 
 
     const modifyPdf = async (path, text) => {
@@ -184,6 +184,7 @@ const LeadsOrderApproval = () => {
         }
     };
     console.log(order)
+    console.log(modifiedPdfDataUris)
 
     const createDataUri = async (pdfBytes) => {
         const pdfData = await new Blob([pdfBytes], { type: 'application/pdf' });
@@ -216,7 +217,7 @@ const LeadsOrderApproval = () => {
                                     <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
                                     <div className='flex gap-5 w-32 place-self-end'>
                                         <Tooltip placement="top" title='Approve Order'>
-                                            <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                                            <button onClick={() => approveOrderNow(o._id, o.creatorName, index)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
                                                 <FontAwesomeIcon icon={faCheckCircle} /></button>
                                         </Tooltip>
                                         <Tooltip placement="top" title="Decline Order">
