@@ -13,6 +13,7 @@ import { render } from "react-dom"
 
 const LeadsOrderApproval = () => {
     const dispatch = useDispatch()
+    const [decline, setDecline] = useState(false)
     const order = useSelector((state) => state.Orders.leadDepartmentOrders)
     const account = useSelector((state) => state.Account.account)
     const labels = useSelector((state) => state.Orders.labelsToApprove)
@@ -54,7 +55,31 @@ const LeadsOrderApproval = () => {
         })
     }
 
-    const stopOrder = (id, name) => {
+    const getLabels = () => {
+        let arr = []
+        for (let i = 0; i < order.length; i++) {
+            const ord = order[i];
+            arr.push(ord._id)
+        }
+        dispatch(getGroupLeadOrderApproveLabels(arr))
+    }
+
+    useEffect(() => {
+        getLabels()
+    }, [])
+
+    const handleOrderDeletion = (orderId) => {
+        setModifiedPdfDataUris(prevModifiedPdfDataUris => {
+            const updatedModifiedPdfDataUris = prevModifiedPdfDataUris.filter((_, index) => index !== orderId);
+            console.log(updatedModifiedPdfDataUris)
+            return updatedModifiedPdfDataUris;
+        });
+        getLabels()
+    };
+
+    const stopOrder = async (id, name, index) => {
+        const token = sessionStorage.getItem('accessToken')
+
         Swal.fire({
             title: `Decline ${name}'s Order?`,
             text: "You will not be able to revert this",
@@ -78,8 +103,9 @@ const LeadsOrderApproval = () => {
                         clearInterval(timerInterval)
                     }
                 })
-                const token = sessionStorage.getItem('accessToken')
-                dispatch(declineOrder({ token, id }))
+                await dispatch(declineOrder({ token, id }))
+                handleOrderDeletion(index);
+                setDecline(!decline)
             }
         })
     }
@@ -90,19 +116,6 @@ const LeadsOrderApproval = () => {
         toast(id, name)
     }
 
-
-    const getLabels = () => {
-        let arr = []
-        for (let i = 0; i < order.length; i++) {
-            const ord = order[i];
-            arr.push(ord._id)
-        }
-        dispatch(getGroupLeadOrderApproveLabels(arr))
-    }
-
-    useEffect(() => {
-        getLabels()
-    }, [])
 
 
     useEffect(() => {
@@ -128,7 +141,7 @@ const LeadsOrderApproval = () => {
         };
 
         modifyAndStorePdfDataUris();
-    }, [labels, order])
+    }, [labels, order, decline])
 
 
     const modifyPdf = async (path, text) => {
@@ -207,7 +220,7 @@ const LeadsOrderApproval = () => {
                                                 <FontAwesomeIcon icon={faCheckCircle} /></button>
                                         </Tooltip>
                                         <Tooltip placement="top" title="Decline Order">
-                                            <button onClick={() => stopOrder(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
+                                            <button onClick={() => stopOrder(o._id, o.creatorName, index)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
                             ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
                                         </Tooltip>
                                         {o.notes ?
@@ -224,8 +237,8 @@ const LeadsOrderApproval = () => {
                                 <div className="grid grid-cols-3 pt-3 border-t">
                                     {modifiedPdfDataUris.length > 0 ?
                                         modifiedPdfDataUris[index].map((d) => (
-                                            <div>
-                                                <div className="mx-2 mb-3 text-center" key={d}>
+                                            <div key={d}>
+                                                <div className="mx-2 mb-3 text-center">
                                                     <iframe src={d} className="w-full"></iframe>
                                                 </div>
                                                 <div>
