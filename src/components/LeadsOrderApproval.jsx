@@ -13,11 +13,14 @@ import { render } from "react-dom"
 
 const LeadsOrderApproval = () => {
     const dispatch = useDispatch()
+    const [decline, setDecline] = useState(false)
     const order = useSelector((state) => state.Orders.leadDepartmentOrders)
     const account = useSelector((state) => state.Account.account)
     const labels = useSelector((state) => state.Orders.labelsToApprove)
     const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
     const [orderCollapse, setOrderCollapse] = useState(false)
+    const containerRef = useRef(null);
+    const scrollPosition = useScrollPosition(containerRef);
     const statusColors = {
         'waiting for approval': 'bg-[#ef5350]',
         'processing': 'bg-[#ff9800]',
@@ -52,7 +55,30 @@ const LeadsOrderApproval = () => {
         })
     }
 
-    const stopOrder = (id, name) => {
+    const getLabels = () => {
+        let arr = []
+        for (let i = 0; i < order.length; i++) {
+            const ord = order[i];
+            arr.push(ord._id)
+        }
+        dispatch(getGroupLeadOrderApproveLabels(arr))
+    }
+
+    useEffect(() => {
+        getLabels()
+    }, [])
+
+    const handleOrderDeletion = (orderId) => {
+        setModifiedPdfDataUris(prevModifiedPdfDataUris => {
+            const updatedModifiedPdfDataUris = prevModifiedPdfDataUris.filter((_, index) => index !== orderId);
+            console.log(updatedModifiedPdfDataUris)
+            return updatedModifiedPdfDataUris;
+        });
+        getLabels()
+    };
+
+    const stopOrder = async (id, name, index) => {
+        const token = sessionStorage.getItem('accessToken')
         Swal.fire({
             title: `Decline ${name}'s Order?`,
             text: "You will not be able to revert this",
@@ -76,31 +102,20 @@ const LeadsOrderApproval = () => {
                         clearInterval(timerInterval)
                     }
                 })
-                const token = sessionStorage.getItem('accessToken')
-                dispatch(declineOrder({ token, id }))
+                await dispatch(declineOrder({ token, id }))
+                handleOrderDeletion(index);
+                setDecline(!decline)
             }
         })
     }
 
-    const approveOrderNow = (id, name) => {
+    const approveOrderNow = async (id, name, index) => {
         const token = sessionStorage.getItem('accessToken')
-        dispatch(approveOrder({ token, id }))
+        await dispatch(approveOrder({ token, id }))
+        await handleOrderDeletion(index);
         toast(id, name)
     }
 
-
-    const getLabels = () => {
-        let arr = []
-        for (let i = 0; i < order.length; i++) {
-            const ord = order[i];
-            arr.push(ord._id)
-        }
-        dispatch(getGroupLeadOrderApproveLabels(arr))
-    }
-
-    useEffect(() => {
-        getLabels()
-    }, [])
 
 
     useEffect(() => {
@@ -168,6 +183,8 @@ const LeadsOrderApproval = () => {
             return pdfDataUri;
         }
     };
+    console.log(order)
+    console.log(modifiedPdfDataUris)
 
     const createDataUri = async (pdfBytes) => {
         const pdfData = await new Blob([pdfBytes], { type: 'application/pdf' });
@@ -176,8 +193,8 @@ const LeadsOrderApproval = () => {
     };
 
     return (
-        <div>
-            <div className={`grid grid-cols-4 justify-items-center font-medium h-10 sticky top-0 bg-white items-center  transition-all ease-in-out duration-500`}>
+        <div ref={containerRef}>
+            <div className={`grid grid-cols-4 z-10 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} shadow-none transition-all ease-in-out duration-500`}>
                 <h4>Name</h4>
                 {/* <h4>Labels</h4> */}
                 <h4>Date</h4>
@@ -200,11 +217,11 @@ const LeadsOrderApproval = () => {
                                     <span className={`px-5 ${statusColors[o.status]} text-white rounded-lg max-h-8 flex items-center`}>{o.status}</span>
                                     <div className='flex gap-5 w-32 place-self-end'>
                                         <Tooltip placement="top" title='Approve Order'>
-                                            <button onClick={() => approveOrderNow(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
+                                            <button onClick={() => approveOrderNow(o._id, o.creatorName, index)} className='text-[#233043] hover:bg-[#25d125] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full'>
                                                 <FontAwesomeIcon icon={faCheckCircle} /></button>
                                         </Tooltip>
                                         <Tooltip placement="top" title="Decline Order">
-                                            <button onClick={() => stopOrder(o._id, o.creatorName)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
+                                            <button onClick={() => stopOrder(o._id, o.creatorName, index)} className='text-[#233043] hover:bg-[#ff1b1b] hover:text-white transition-all 
                             ease-in-out w-7 h-7 rounded-full'><FontAwesomeIcon icon={faXmarkCircle} /></button>
                                         </Tooltip>
                                         {o.notes ?
@@ -221,27 +238,33 @@ const LeadsOrderApproval = () => {
                                 <div className="grid grid-cols-3 pt-3 border-t">
                                     {modifiedPdfDataUris.length > 0 ?
                                         modifiedPdfDataUris[index].map((d) => (
-                                            <div className="mx-2 text-center" key={d}>
-                                                <iframe src={d} className="w-full"></iframe>
-                                                <div>yo</div>
+                                            <div key={d}>
+                                                <div className="mx-2 mb-3 text-center">
+                                                    <iframe src={d} className="w-full"></iframe>
+                                                </div>
+                                                <div>
+                                                    {o.labels[0].qty}
+                                                </div>
                                             </div>
                                         )) : null}
                                 </div>
                                 <div className="grid grid-cols-3 pt-3">
-                                    {labels.length > 0 ?
-                                        labels[index].map((l, i) => (
-                                            <div key={i} className="text-center mx-2 ">
-                                                <div className=" bg-gray-200 rounded-md">
-                                                    <b>
-                                                        Printing QTY: {o.labels[i].qty * l.unitPack}
-                                                    </b>
-                                                </div>
-                                                <div className=" bg-gray-200 rounded-md mt-2">
-                                                    <b>DOC: {l.docNum}</b>
-                                                </div>
+                                {labels.length > 0 && order.length > 0 ? (
+                                    labels[index].map((l, i) => (
+                                        <div key={i} className="text-center mx-2 ">
+                                            <div className=" bg-gray-200 rounded-md">
+                                                {o.labels && o.labels[i] && o.labels[i].qty !== undefined ? (
+                                                    <b>Printing QTY: {o.labels[i].qty * l.unitPack}</b>
+                                                ) : (
+                                                    <b>Printing QTY: N/A</b>
+                                                )}
                                             </div>
-
-                                        )) : null}
+                                            <div className=" bg-gray-200 rounded-md mt-2">
+                                                <b>DOC: {l.docNum}</b>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : null}
                                 </div>
 
                             </Panel>
