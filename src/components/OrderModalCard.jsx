@@ -9,13 +9,11 @@ import { RingLoader } from 'react-spinners'
 
 const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   // const [activeLabels, setActiveLabels] = useState('')
-  const [forceRender, setForceRender] = useState(false)
   const [submit, setSubmit] = useState(false);
   const dispatch = useDispatch();
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr)
   const labels = activeOrder ? activeOrder.labels : []
-  console.log(labels)
   const activeLabels = labelsArray
     .flatMap(innerArray => innerArray)
     .filter((value, i) => {
@@ -231,7 +229,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                       })
                     }
                   </div>
-                  <div onClick={() => setForceRender(!forceRender)} className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Update Label</button></div>
+                  <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Update Label</button></div>
                 </div>
               </div>
             </Form>
