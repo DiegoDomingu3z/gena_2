@@ -23,6 +23,7 @@
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "formik": "^2.2.9",
+    "js-cookie": "^3.0.5",
     "next": "13.3.0",
     "pdf-lib": "^1.17.1",
     "pdf-parser": "^1.0.5",
