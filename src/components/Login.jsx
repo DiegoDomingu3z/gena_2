@@ -16,7 +16,7 @@ const Login = () => {
 
     useEffect(() => {
         const token = sessionStorage.getItem('accessToken')
-        token && router.push('/home')
+        token && router.push('/start-new-order')
     }, [user])
 
 

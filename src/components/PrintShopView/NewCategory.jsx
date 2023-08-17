@@ -283,7 +283,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
     return (
         <>
             {togglePopup && <DepartmentPopup />}
-        <div className="flex flex-col p-20">
+        <div className="flex flex-col pl-20 pr-20 pt-20">
             <div>
 
                 <div className='flex items-end'>
