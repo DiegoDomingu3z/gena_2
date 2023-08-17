@@ -20,7 +20,7 @@ const PrintOrders = () => {
     console.log(deliveredOrders)
 
     return (
-        <div className={"flex flex-col p-20"}>
+        <div className={"flex flex-col pl-20 pr-20 pt-20"}>
             <div className='flex justify-between'>
                 <div className='mr-auto flex'><h1 className='text-3xl font-medium font-genaPrimary'>Print Orders</h1></div>
                 {multipleOrders.length > 0 ? <div><button className='bg-[#1baded] text-white px-4 py-1 rounded-full'>Print Bulk <PrinterOutlined className='' /> </button></div> : null}
