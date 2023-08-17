@@ -132,7 +132,7 @@ const NewSubCategory = () => {
 
     return (
         <div>
-            <div className="flex flex-col p-20">
+            <div className="flex flex-col pl-20 pr-20 pt-20">
                 <div className={""}>
 
                     <div className='flex items-end'>
