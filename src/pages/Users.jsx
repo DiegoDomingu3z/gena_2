@@ -13,7 +13,7 @@ const Users = () => {
     const router = useRouter()
     useEffect(() => {
         if (account.privileges != 'admin') {
-            router.push('/home')
+            router.push('/start-new-order')
         }
     })
     return (

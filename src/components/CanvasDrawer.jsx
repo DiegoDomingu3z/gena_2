@@ -34,12 +34,12 @@ export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer, ticke
     <>
       <div className='w-full flex flex-col justify-center mb-auto'>
         <button onClick={() => setToggleCanvasDrawer(!toggleCanvasDrawer)} className='border transition-all ease-in-out duration-300 hover:scale-110 hover:bg-white hover:text-inherit mb-10 w-3/4 self-center rounded-md h-10 text-white text flex items-center justify-center gap-5'><FontAwesomeIcon className='text-xl' icon={faArrowLeftLong} /> Close</button>
-        <Link href={'/home'} className={user.accessToken ? `mb-5 flex items-center gap-5` : "hidden"}>
+        {/* <Link href={'/home'} className={user.accessToken ? `mb-5 flex items-center gap-5` : "hidden"}>
           <button className={`h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${router.pathname === '/home' && "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"}`}>
             <FontAwesomeIcon className='text-[#28aeeb]' icon={faHouse} />
             <span className='font-genaPrimary'>Home</span>
           </button>
-        </Link>
+        </Link> */}
         <Link href={'/PrintShop'} className={(user.accessToken && user.account.privileges == 'printshop') ? "flex items-center gap-5" : "hidden"}>
           <button className={`h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${router.pathname === '/PrintShop' && "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"}`}>
             <FontAwesomeIcon className='text-slate-400' icon={faPrint} />

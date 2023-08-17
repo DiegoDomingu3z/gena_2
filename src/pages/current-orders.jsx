@@ -40,7 +40,7 @@ const CurrentOrders = () => {
     return (
         <Layout title={'Gena | Current Orders'}>
             {modalState && <OrderModal modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
-            <div className={"flex flex-col p-20"}>
+            <div className={"flex flex-col pl-20 pr-20 pt-20"}>
                 <div className='flex items-end'>
                     <div className='mr-auto'>
                         <h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1>
