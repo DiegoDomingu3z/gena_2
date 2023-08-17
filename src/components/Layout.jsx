@@ -41,7 +41,7 @@ const Layout = ({ children, title }) => {
           <SideNav ticketModal={ticketModal} setTicketModal={setTicketModal} />
           <Navbar />
           <CanvasDrawer ticketModal={ticketModal} setTicketModal={setTicketModal} />
-          {user.accessToken && <button onClick={() => dispatch(logout(user.accessToken))} className='text-black p-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
+          {user.accessToken && <button onClick={() => dispatch(logout(user.accessToken))} className='text-black mr-5 mt-5 absolute right-5'><FontAwesomeIcon icon={faPowerOff} /> Logout</button>}
           <main className="min-h-screen w-full">{children}</main>
         </CanvasProvider>
       </div>
