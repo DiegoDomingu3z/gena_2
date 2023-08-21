@@ -205,7 +205,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
         }, []);
     
         return (
-            <div className="absolute left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
+            <div className="fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
                 <div className="bg-[#f7f9fc] w-4/5 laptop:w-2/5 laptop:h-[44rem] h-[88rem] rounded-lg px-10 py-5 flex flex-col overflow-y-auto">
                     <button className="text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out" onClick={() => setTogglePopup(!togglePopup)}><FontAwesomeIcon icon={faXmark} /></button>
                     <Formik
@@ -228,7 +228,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                         {({ isSubmitting, values, setFieldValue }) => (
                             <Form className="mt-10">
                                 <div>
-                                    <h2 className="text-lg font-semibold">Select departments that should be able to access '{newCatName}'</h2>
+                                    <h2 className="text-lg font-semibold">Select departments that should be able to access '<span className="text-orange-500">{newCatName}</span>'</h2>
                                 </div>
                                 <div className="flex flex-col gap-3 mt-10">
                                 <label>
@@ -283,7 +283,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
     return (
         <>
             {togglePopup && <DepartmentPopup />}
-        <div className="flex flex-col pl-20 pr-20 pt-20">
+        <div className="flex flex-col pl-20 pr-20 pt-20 pb-4">
             <div>
 
                 <div className='flex items-end'>
