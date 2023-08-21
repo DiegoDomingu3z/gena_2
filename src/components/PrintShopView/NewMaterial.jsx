@@ -56,7 +56,7 @@ const successToast = async () => {
   }
 
   return (
-      <div className={"flex flex-col pl-20 pr-20 pt-20"}>
+      <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
       <div className='flex items-end'>
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Create A New Material</h1></div>
       </div>
@@ -67,10 +67,12 @@ const successToast = async () => {
                         initialValues={dataForSubmission}
                         onSubmit={async (values, helpers) => {
                             const token = sessionStorage.getItem('accessToken');
-                            const foundMatch = materialsArray.some(v => v.name.toLowerCase() == values.name.toLowerCase())
+                            const foundMatch = materialsArray.some((v) => v.name.toLowerCase() == values.name.toLowerCase())
+                            console.log(foundMatch)
+                            console.log(materialsArray)
                             if(!foundMatch){
-                                dispatch(createNewMaterial({token, values}))
-                                fetchMaterials();
+                                await dispatch(createNewMaterial({token, values}))
+                                await fetchMaterials();
                                 successToast()
                                 helpers.resetForm();
                                 return
@@ -86,7 +88,7 @@ const successToast = async () => {
                                         <Field type="text" name="name" id="materialName" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                        dark:focus:border-blue-500" placeholder='e.g. "Plutonium"' required />
+                                        dark:focus:border-blue-500" placeholder='e.g. "REG"' required />
                                     </div>
                                     
                                 </div>

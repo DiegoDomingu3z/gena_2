@@ -251,7 +251,7 @@ const NewLabel = () => {
     }
 
     return (
-        <div className={"flex flex-col pl-20 pr-20 pt-20"}>
+        <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
             <div className='flex items-end'>
                 <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Create A New Label</h1></div>
             </div>

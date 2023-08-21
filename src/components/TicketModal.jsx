@@ -38,7 +38,7 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
               </Field>
               <label htmlFor="importance" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Importance</label>
               <Field component="select" name="importance" id="importance" required="" className='bg-gray-50 border border-gray-300
-              text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[50%] p-2.5 mb-10'>
+              text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[60%] lg:w-[50%] p-2.5 mb-10'>
                 <option className='text-gray-500' selected>What is the business impact?</option>
                 <option value="low">Low</option>
                 <option value="high">High</option>

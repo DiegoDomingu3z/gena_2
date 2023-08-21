@@ -20,6 +20,7 @@ const CurrentOrders = () => {
     const dispatch = useDispatch();
     const scrollPosition = useScrollPosition(containerRef);
     const [modalState, setModalState] = useState(false);
+    const [openAction, setOpenAction] = useState(false);
     const [tab, setTab] = useState('my-orders');
     const [toggleSort, setToggleSort] = useState('newest');
     const account = useSelector((state) => state.Account.account)
@@ -40,7 +41,7 @@ const CurrentOrders = () => {
     return (
         <Layout title={'Gena | Current Orders'}>
             {modalState && <OrderModal modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
-            <div className={"flex flex-col pl-20 pr-20 pt-20"}>
+            <div onClick={openAction ? () => setOpenAction(false) : null} className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
                 <div className='flex items-end'>
                     <div className='mr-auto'>
                         <h1 className='text-3xl font-medium font-genaPrimary'>Current Orders</h1>
@@ -62,9 +63,9 @@ const CurrentOrders = () => {
                                         <span className='bg-red-500 p-1 rounded-full px-2 text-xs text-white absolute top-0'>{approveOrder ? approveOrder.length : null}</span></Menu.Item>
                                 </Menu>
                             </div>
-                            <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
+                            <div className='bg-white rounded-md shadow-md overflow-auto h-[52rem] lg:h-[90rem] laptop:h-[44rem]' ref={containerRef}>
                                 <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>{tab == 'my-orders' ? 'My Orders' : 'Orders I need to Approve'}</h1>
-                                <div className={tab == 'my-orders' ? `grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500` : `grid grid-cols-6 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
+                                <div className={tab == 'my-orders' ? `grid grid-cols-5 py-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500` : `grid grid-cols-6 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
                                     {/* {tab == 'approve-order' ? <h4>Name</h4> : null} */}
                                     {tab == 'my-orders' ? <h4>Order ID</h4> : null}
                                     {tab == 'my-orders' ? <h4>Labels</h4> : null}
@@ -74,7 +75,7 @@ const CurrentOrders = () => {
 
                                 </div>
                                 <div className='flex flex-col'>
-                                    {tab == 'my-orders' && <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} />}
+                                    {tab == 'my-orders' && <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} openAction={openAction} setOpenAction={setOpenAction} />}
                                 </div>
                                 <div>
                                     {tab == 'approve-order' && <LeadsOrderApproval />}
@@ -83,16 +84,16 @@ const CurrentOrders = () => {
                         </div>
                         :
                         <div>
-                            <div className='bg-white rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]' ref={containerRef}>
+                            <div className='bg-white rounded-md shadow-md overflow-auto h-[52rem] lg:h-[90rem] laptop:h-[44rem]' ref={containerRef}>
                                 <h1 className='text-xl font-medium mb-10 pl-5 pt-5'>My Orders</h1>
-                                <div className={`grid grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
+                                <div className={`grid px-5 grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${scrollPosition > 88 && "shadow-md"} transition-all ease-in-out duration-500`}>
                                     <h4>Order ID</h4>
                                     <h4>Labels</h4>
                                     <h4>Date</h4>
                                     <h4>Status</h4>
                                     <h4>Actions</h4>
                                 </div>
-                                <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} />
+                                <OrderCard deleted={deleted} setDeleted={setDeleted} modalState={modalState} setModalState={setModalState} blobs={blobs} setBlobs={setBlobs} toggleSort={toggleSort} openAction={openAction} setOpenAction={setOpenAction} />
                             </div>
                         </div>
                 }

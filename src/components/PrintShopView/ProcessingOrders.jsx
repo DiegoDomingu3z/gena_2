@@ -113,7 +113,9 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
 
 
                                         : null}
-                                    {!deliverMultipleOrders.includes(o._id)
+
+                                        
+                                    {/* {!deliverMultipleOrders.includes(o._id)
                                         ?
                                         <Tooltip placement="top" title={`Add to Deliver multiple?`} >
                                             <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full py-1 '>
@@ -132,7 +134,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                                                 />
                                             </button>
                                         </Tooltip>
-                                    }
+                                    } */}
 
                                 </div>
                             }>
