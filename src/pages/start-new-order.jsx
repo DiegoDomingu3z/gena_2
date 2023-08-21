@@ -66,10 +66,10 @@ const startNewOrder = () => {
   return (
     <Layout title={"Gena | New Order"}>
       <CartCanvasDrawer toggleCartCanvas={toggleCartCanvas} setToggleCartCanvas={setToggleCartCanvas} render={render} />
-      <div className={"flex flex-col pl-20 pr-20 pt-20"}>
+      <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
         <div className='flex items-end '>
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
-          <div className='flex justify-end items-end gap-5 w-2/5'>
+          <div className='flex justify-end items-end gap-5 md:w-3/5 lg:w-2/5'>
             <label htmlFor='labelSearch'><FontAwesomeIcon className='p-3 cursor-pointer rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} /></label>
             <input onChange={handleSearch} id='labelSearch' name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
              outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
@@ -93,7 +93,7 @@ const startNewOrder = () => {
           >
             <div className='flex items-center justify-around mb-20 laptop:mb-10'>
               <Field onChange={filterSubCats} value={activeCategory} type="text" component="select" name="categoryId" className='bg-gray-50 border border-gray-300
-                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/5 p-2.5
+                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-2/5 lg:w-1/5 p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                                         dark:focus:border-blue-500'>
                 <option selected disabled value=''>Select Category</option>
@@ -109,7 +109,7 @@ const startNewOrder = () => {
                 }
               </Field>
               <Field onChange={singleSubCat} value={activeSubCategoryId} type="text" component="select" name="subCategoryId" className='bg-gray-50 border border-gray-300
-                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/5 p-2.5
+                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-2/5 lg:w-1/5 p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                                         dark:focus:border-blue-500'>
                 <option selected disabled value=''>Select Sub-Category</option>

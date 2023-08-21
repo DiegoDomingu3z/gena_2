@@ -191,7 +191,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                             </button>
                                         </Tooltip>
                                         : null}
-                                    {!multipleOrders.includes(o._id)
+                                    {/* {!multipleOrders.includes(o._id)
                                         ?
                                         <Tooltip placement="top" title={`Add to process multiple?`} >
                                             <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full pb-2'>
@@ -215,7 +215,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                                 />
                                             </button>
                                         </Tooltip>
-                                    }
+                                    } */}
 
                                 </div>
 

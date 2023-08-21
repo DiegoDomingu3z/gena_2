@@ -11,8 +11,8 @@ const OrderModal = ({ modalState, setModalState, blobs, setBlobs }) => {
 
 
   return (
-    <div className='fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
-      <div className='bg-[#f7f9fc] w-4/5 laptop:w-3/5 laptop:h-[44rem] h-[88rem] rounded-lg px-10 py-5 flex flex-col'>
+    <div className='fixed left-0 w-screen h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
+      <div className='bg-[#f7f9fc] w-4/5 laptop:w-3/5 h-[50rem] laptop:h-[44rem] lg:h-[88rem] rounded-lg px-10 py-5 flex flex-col'>
         <button onClick={() => {
           setModalState(!modalState)
           setBlobs([])
