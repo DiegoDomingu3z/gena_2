@@ -74,13 +74,15 @@ export const logout = createAsyncThunk(
 
 export const deleteAccount = createAsyncThunk(
     'account/delete',
-    async (id, token) => {
+    async ({ id, token }) => {
+        console.log(token)
         try {
-            const res = await api.delete(`api/account/delete-user/${id}`, null, {
+            const res = await api.delete(`api/account/delete-user/${id}`, {
                 headers: {
                     Authorization: token
                 }
-            })
+            }).then((res) => res.data)
+            console.log(res, "THIS IS THE RES BRO")
             return res
         } catch (error) {
             throw error
