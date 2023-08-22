@@ -164,7 +164,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
             )
         } else {
             return (
-                <div>"SYSTEM DOWN"</div>
+                <div>&quot;SYSTEM DOWN&quot;</div>
             )
         }
     }

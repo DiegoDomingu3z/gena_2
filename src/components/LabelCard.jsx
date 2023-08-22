@@ -42,6 +42,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
           vals['qty'] = '';
           return (
             <Formik
+              key={l._id}
               initialValues={vals}
               onSubmit={async (values) => {
                 const { qty, ...newValues } = values;
@@ -85,7 +86,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                         {l.isKanban ?
                           l.fields.map((f) => {
                             return (
-                              <div className={f.type === 'checkbox' ? 'flex gap-5' : ''}>
+                              <div key={f._id} className={f.type === 'checkbox' ? 'flex gap-5' : ''}>
                                 <div className='pt-1'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
                             sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                             dark:border-gray-600 dark:placeholder-gray-400

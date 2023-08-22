@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Formik, Form, Field } from "formik";
 import { createDepartment, removeDept, updateDepartmentName } from "../../../store/Departments/Thunks";
 import Swal from "sweetalert2";
+import { RingLoader } from "react-spinners";
 const DepartmentView = ({ triggerUseEffect, setTriggerUseEffect }) => {
     const dept = useSelector((state) => state.Department.departments)
     const router = useRouter()

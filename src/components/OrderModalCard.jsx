@@ -217,7 +217,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                       labels[i].textToPut.map((field) => {
                         if (field.text != '') {
                           return (
-                            <div>
+                            <div key={label.docNum}>
                               <Field className=" bg-gray-50 ms-3.5 border border-gray-300 mt-1
                               sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                               dark:border-gray-600 dark:placeholder-gray-400

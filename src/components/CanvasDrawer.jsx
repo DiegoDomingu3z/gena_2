@@ -24,6 +24,7 @@ export const CanvasButtons = ({ toggleCanvasDrawer, setToggleCanvasDrawer, ticke
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     dispatch(getAccount(token))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

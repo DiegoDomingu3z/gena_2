@@ -121,7 +121,7 @@ const OrderCard = ({ deleted, setDeleted, modalState, setModalState, blobs, setB
         <div className='bg-[#f7f9fc] w-4/5 laptop:w-3/5 h-[20rem] laptop:h-[44rem] lg:h-[88rem] rounded-lg px-10 py-5 flex flex-col'>
           <button onClick={() => setNotesModal(!notesModal)} className='text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out'><FontAwesomeIcon icon={faXmark} /></button>
           <div>
-            <span className='font-semibold'>Notes for Order '<span className='text-orange-500'>{notes.orderNumber}</span>'</span>
+            <span className='font-semibold'>Notes for Order &apos;<span className='text-orange-500'>{notes.orderNumber}</span>&apos;</span>
           </div>
           <div className='mt-12'>
             <span>{notes.notes}</span>

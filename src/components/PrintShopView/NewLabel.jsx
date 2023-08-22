@@ -297,7 +297,7 @@ const NewLabel = () => {
                                             <option value="">Select Label Name</option>
                                             {labelName.length > 0 ?
                                                 labelName.map((l) => (
-                                                    <option value={l}>{l}</option>
+                                                    <option key={l._id} value={l}>{l}</option>
                                                 )) : null}
                                             {files.length > 0 ?
                                                 <option value="custom" className='text-gray-500'>Input Custom Name</option>
