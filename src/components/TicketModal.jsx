@@ -5,10 +5,31 @@ import { Formik, Form, Field } from 'formik'
 import useEasterEgg from '~/hooks/useEasterEgg'
 import { useDispatch } from 'react-redux'
 import { reportTicket } from '../../store/Emails/Thunks'
+import Swal from 'sweetalert2'
 
 const TicketModal = ({ setTicketModal, ticketModal }) => {
   useEasterEgg();
   const dispatch = useDispatch()
+
+  const successToast = async () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'addToCartToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'success',
+      title: 'Ticket Submitted!'
+    })
+  }
+
   return (
     <div className='fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
       <div className='bg-[#f7f9fc] w-3/5 laptop:w-2/5 laptop:h-[44rem] h-[44rem] rounded-lg px-10 py-5 flex flex-col'>
@@ -20,10 +41,14 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
             description: '',
             importance: ''
           }}
-          onSubmit={async (values) => {
+          onSubmit={async (values, helpers) => {
+            console.log(values)
             var data = values
             const token = sessionStorage.getItem('accessToken')
-            dispatch(reportTicket({ data, token }))
+            await dispatch(reportTicket({ data, token }))
+            helpers.resetForm();
+            setTicketModal(!ticketModal)
+            successToast();
           }}
         >
           <Form>
