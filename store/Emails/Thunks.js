@@ -24,3 +24,22 @@ export const sendCredentials = createAsyncThunk(
         }
     }
 )
+
+
+
+export const reportTicket = createAsyncThunk(
+    'ticket',
+    async ({ data, token }) => {
+        try {
+            await api.post('api/email/ticket', data, {
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)

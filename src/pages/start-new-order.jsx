@@ -112,7 +112,7 @@ const startNewOrder = () => {
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-2/5 lg:w-1/5 p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                                         dark:focus:border-blue-500'>
-                <option selected disabled value=''>Select Sub-Category</option>
+                <option selected value=''>Select Sub-Category</option>
                 {activeSubCats ?
                   activeSubCats.map((a) => (
                     <option key={a._id} value={a._id} id={a._id}>{a.name}</option>

@@ -233,22 +233,22 @@ const NewLabel = () => {
 
     const successToast = async () => {
         const Toast = Swal.mixin({
-          toast: true,
-          position: 'center',
-          iconColor: 'white',
-          customClass: {
-            popup: 'colored-toast',
-            container: 'addToCartToast',
-          },
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true
+            toast: true,
+            position: 'center',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+                container: 'addToCartToast',
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
         })
         await Toast.fire({
-          icon: 'success',
-          title: 'Label Added!'
+            icon: 'success',
+            title: 'Label Added!'
         })
-      }
+    }
 
     return (
         <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
@@ -294,6 +294,7 @@ const NewLabel = () => {
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                                         dark:focus:border-blue-500" placeholder="Label Name" required >
+                                            <option value="">Select Label Name</option>
                                             {labelName.length > 0 ?
                                                 labelName.map((l) => (
                                                     <option value={l}>{l}</option>
@@ -383,9 +384,9 @@ const NewLabel = () => {
                                                     </option>
 
                                                 )) :
-                                                    <option value="Select Sub-Category">
-                                                        Select Category First
-                                                    </option>
+                                                <option value="Select Sub-Category">
+                                                    Select Category First
+                                                </option>
                                             }
 
 

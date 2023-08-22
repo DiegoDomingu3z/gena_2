@@ -11,24 +11,6 @@ import { store } from "../../store";
 
 
 export default function Home() {
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const accessToken = sessionStorage.getItem('accessToken');
-
-  //     if (accessToken) {
-  //       const auth = await api.get("", {
-  //         headers: {
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       });
-  //       console.log(auth)
-  //     }
-  //   })
-  // }, []);
-
-  const router = useRouter;
-
   return (
     <Provider store={store}>
       <LoginProvider>

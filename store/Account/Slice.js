@@ -41,6 +41,7 @@ export const AccountSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.account = action.payload
                 state.accessToken = action.payload.accessToken
+                localStorage.setItem("token", action.payload.accessToken);
                 state.loading = false
             })
             .addCase(login.rejected, (state, action) => {

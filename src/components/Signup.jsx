@@ -28,6 +28,8 @@ const Signup = () => {
         dispatch(getGroupLead())
     }, [])
 
+
+
     console.log(groupLeads, 'leads')
     const toast = async (firstName, lastName, departmentId) => {
         console.log(dept)

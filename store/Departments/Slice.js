@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createDepartment, getAllUsers, getDepartments, getGroupLead, getLeads, getUsersInDepartment, removeDept } from "./Thunks";
-import { createAccount } from "../Account/thunks";
+import { createAccount, deleteAccount } from "../Account/thunks";
 
 
 
@@ -40,7 +40,6 @@ export const DepartmentSlice = createSlice({
                 state.loading = false
             })
             .addCase(getLeads.rejected, (state, action) => {
-
                 state.loading = false
             })
             // create department
@@ -101,6 +100,17 @@ export const DepartmentSlice = createSlice({
                 state.errorCodes = action.error
                 state.loading = false
 
+            })
+            .addCase(deleteAccount.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(deleteAccount.fulfilled, (state, action) => {
+                // console.log(state.departments, 'MY SCLICE')
+                // state.departments.users = state.departments.users.filter(a => a._id != action.payload._id)
+                state.loading = false
+            })
+            .addCase(deleteAccount.rejected, (state, action) => {
+                state.loading = false
             })
 
     }

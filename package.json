@@ -2,6 +2,7 @@
   "name": "gena-2",
   "version": "0.1.0",
   "private": true,
+  "author": "Diego Dominguez, Jacob Pixler",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -23,6 +24,7 @@
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "formik": "^2.2.9",
+    "js-cookie": "^3.0.5",
     "next": "13.3.0",
     "pdf-lib": "^1.17.1",
     "pdf-parser": "^1.0.5",

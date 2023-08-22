@@ -4,7 +4,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Formik, Field, Form } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDepartments, getGroupLead, getLeads } from '../../../store/Departments/Thunks'
-import { updateUser } from '../../../store/Account/thunks'
+import { deleteAccount, updateUser } from '../../../store/Account/thunks'
 import Swal from 'sweetalert2'
 
 
@@ -12,6 +12,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const dept = useSelector((state) => state.Department.departments)
   const leads = useSelector((state) => state.Department.leads)
   const groupLeads = useSelector((state) => state.Department.groupLeads)
+  const account = useSelector((state) => state.Account.account)
   const dispatch = useDispatch()
   const cleanImg = (string) => {
     const pattern = /\([^()]*\)/g;
@@ -23,6 +24,30 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     dispatch(getLeads())
     dispatch(getGroupLead())
   }, [])
+
+
+  const removeUser = (id) => {
+    const token = sessionStorage.getItem('accessToken')
+    Swal.fire({
+      title: `Remove ${activeUser.firstName} from Gena?`,
+      text: "You won't be able to revert this!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Remove'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          `${activeUser.firstName} was removed from the Gena`,
+          'success'
+        )
+        dispatch(deleteAccount({ id, token }))
+        setModalState(!modalState)
+      }
+    })
+  }
 
   const dataForSubmission = {
     firstName: activeUser.firstName,
@@ -87,7 +112,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
           onSubmit={async (values) => {
             const token = sessionStorage.getItem("accessToken")
             const id = activeUser._id
-            if(JSON.stringify(dataForSubmission) != JSON.stringify(values)){
+            if (JSON.stringify(dataForSubmission) != JSON.stringify(values)) {
               dispatch(updateUser({ token, id, values }))
               successToast()
               setModalState(!modalState)
@@ -198,7 +223,10 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
             </Form>
           )}
         </Formik>
-
+        {account.privileges == 'admin' ?
+          <div><button id={activeUser._id} className='text-red-500' onClick={() => removeUser(activeUser._id)}>Remove User</button></div>
+          : null
+        }
       </div>
     </div>
   )
