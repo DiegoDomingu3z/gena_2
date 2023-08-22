@@ -242,29 +242,26 @@ const LeadsOrderApproval = () => {
                                                 <div className="mx-2 mb-3 text-center">
                                                     <iframe src={d} className="w-full"></iframe>
                                                 </div>
-                                                <div>
-                                                    {o.labels[0].qty}
-                                                </div>
                                             </div>
                                         )) : null}
                                 </div>
                                 <div className="grid grid-cols-3 pt-3">
-                                {labels.length > 0 && order.length > 0 ? (
-                                    labels[index].map((l, i) => (
-                                        <div key={i} className="text-center mx-2 ">
-                                            <div className=" bg-gray-200 rounded-md">
-                                                {o.labels && o.labels[i] && o.labels[i].qty !== undefined ? (
-                                                    <b>Printing QTY: {o.labels[i].qty * l.unitPack}</b>
-                                                ) : (
-                                                    <b>Printing QTY: N/A</b>
-                                                )}
+                                    {labels.length > 0 && order.length > 0 ? (
+                                        labels[index].map((l, i) => (
+                                            <div key={i} className="text-center mx-2 ">
+                                                <div className=" bg-gray-200 rounded-md">
+                                                    {o.labels && o.labels[i] && o.labels[i].qty !== undefined ? (
+                                                        <b>Printing QTY: {o.labels[i].qty * l.unitPack}</b>
+                                                    ) : (
+                                                        <b>Printing QTY: N/A</b>
+                                                    )}
+                                                </div>
+                                                <div className=" bg-gray-200 rounded-md mt-2">
+                                                    <b>DOC: {l.docNum}</b>
+                                                </div>
                                             </div>
-                                            <div className=" bg-gray-200 rounded-md mt-2">
-                                                <b>DOC: {l.docNum}</b>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : null}
+                                        ))
+                                    ) : null}
                                 </div>
 
                             </Panel>

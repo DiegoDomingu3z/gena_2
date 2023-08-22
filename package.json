@@ -2,6 +2,7 @@
   "name": "gena-2",
   "version": "0.1.0",
   "private": true,
+  "author": "Diego Dominguez, Jacob Pixler",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
