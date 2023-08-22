@@ -4,7 +4,7 @@ import { LoginProvider } from "~/Contexts/LoginContext";
 import Layout from '~/components/Layout'
 import NewCategory from "~/components/PrintShopView/NewCategory";
 import { getCategories } from "../../store/Category/Thunk";
-const newCategory = () => {
+const NewCategory = () => {
     const dispatch = useDispatch()
     const cats = useSelector((state) => state.Category.categories)
     const [triggerFetch, setTriggerFetch] = useState(false)
@@ -21,4 +21,4 @@ const newCategory = () => {
     )
 }
 
-export default newCategory;
+export default NewCategory;
