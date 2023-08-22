@@ -6,7 +6,7 @@ import NewLabel from '~/components/PrintShopView/NewLabel'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 
-const NewLabel = () => {
+const NewLabelPage = () => {
   const account = useSelector((state) => state.Account.account)
   const router = useRouter()
   useEffect(() => {
@@ -23,4 +23,4 @@ const NewLabel = () => {
   )
 }
 
-export default NewLabel
+export default NewLabelPage
