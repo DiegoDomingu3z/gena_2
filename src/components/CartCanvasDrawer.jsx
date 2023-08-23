@@ -103,6 +103,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
       }
     }
     getLabels()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toggleCartCanvas, render])
 
   useEffect(() => {
@@ -125,7 +126,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
       }
       modifyPaths()
     }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basketLabels])
   const modifyPdf = async (path, text) => {
     try {

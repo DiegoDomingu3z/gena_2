@@ -156,7 +156,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
             return (
                 modifiedPdfDataUris[index].map((m) => {
                     return (
-                        <div className="">
+                        <div key={m} className="">
                             <iframe src={m} className="w-11/12"></iframe>
                         </div>
                     )
@@ -164,7 +164,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
             )
         } else {
             return (
-                <div>"SYSTEM DOWN"</div>
+                <div>&quot;SYSTEM DOWN&quot;</div>
             )
         }
     }

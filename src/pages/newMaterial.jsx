@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 
 
 
-const materials = () => {
+const Materials = () => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.Account.account)
   const router = useRouter()
@@ -109,7 +109,7 @@ const materials = () => {
         <button onClick={() => {
           setModal(!modal)
         }} className='text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out'><FontAwesomeIcon icon={faXmark} /></button>
-        <h1 className='font-medium mb-12'>Update Material '<span className='text-orange-500'>{activeCategory}</span>'</h1>
+        <h1 className='font-medium mb-12'>Update Material &apos;<span className='text-orange-500'>{activeCategory}</span>&apos;</h1>
         <div className='flex flex-col gap-5 items-center w-full'>
           <h2>New Name:</h2>
           <Formik
@@ -153,4 +153,4 @@ const materials = () => {
   )
 }
 
-export default materials
+export default Materials

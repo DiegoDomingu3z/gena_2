@@ -16,7 +16,7 @@ import { getAccount } from '../../store/Account/thunks'
 
 
 
-const startNewOrder = () => {
+const StartNewOrder = () => {
   const dispatch = useDispatch()
   const cats = useSelector((state) => state.Category.categories)
   const subCats = useSelector((state) => state.SubCategory.subCats)
@@ -131,4 +131,4 @@ const startNewOrder = () => {
   )
 }
 
-export default startNewOrder
+export default StartNewOrder

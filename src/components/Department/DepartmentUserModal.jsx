@@ -23,6 +23,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     dispatch(getDepartments())
     dispatch(getLeads())
     dispatch(getGroupLead())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

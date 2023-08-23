@@ -228,7 +228,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                         {({ isSubmitting, values, setFieldValue }) => (
                             <Form className="mt-10">
                                 <div>
-                                    <h2 className="text-lg font-semibold">Select departments that should be able to access '<span className="text-orange-500">{newCatName}</span>'</h2>
+                                    <h2 className="text-lg font-semibold">Select departments that should be able to access &apos;<span className="text-orange-500">{newCatName}</span>&apos;</h2>
                                 </div>
                                 <div className="flex flex-col gap-3 mt-10">
                                 <label>

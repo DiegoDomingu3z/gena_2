@@ -31,7 +31,7 @@ export const reportTicket = createAsyncThunk(
     'ticket',
     async ({ data, token }) => {
         try {
-            await api.post('api/email/ticket', data, {
+            const res = await api.post('api/email/ticket', data, {
                 headers: {
                     Authorization: token
                 }
