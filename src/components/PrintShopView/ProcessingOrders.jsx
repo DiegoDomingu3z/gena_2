@@ -41,8 +41,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
 
     const sanitizePath = (path) => {
         // MIGHT HAVE TO CHANGE IN THE FUTURE
-        let realPath = path.slice(46)
-        console.log('%cProcessingOrders.jsx line:45 realPath', 'color: #26bfa5;', realPath);
+        let realPath = path.slice(60)
         return `${realPath}`
     }
 
@@ -142,9 +141,10 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                                     {pdf && o.labels ? (
                                         pdf[index].map((p, i) => (
                                             <div key={i} className="mb-5 border-b">
+                                                {console.log(sanitizePath(o.finalOrderPaths[i]))}
                                                 <div className="text-center">DOCNUM: {p.docNum}</div>
                                                 <div className="flex justify-center">
-                                                    <iframe src={sanitizePath(o.finalOrderPaths[i])} className="w-11/12"></iframe>
+                                                    <iframe src={`/api/getOrders?filePath=${sanitizePath(o.finalOrderPaths[i])}`} className="w-11/12"></iframe>
                                                 </div>
                                                 <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
                                                 <div className="text-center mb-3 mt-1">{p.material}</div>
