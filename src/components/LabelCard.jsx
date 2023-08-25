@@ -68,7 +68,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                 <Form id={l._id} key={index}>
                   <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
-                      <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
+                      <iframe src={`/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
 
                     </div>
                     <div className='p-4'>

@@ -42,7 +42,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
     const sanitizePath = (path) => {
         // MIGHT HAVE TO CHANGE IN THE FUTURE
         let realPath = path.slice(46)
-        console.log(realPath, 'yuh')
+        console.log('%cProcessingOrders.jsx line:45 realPath', 'color: #26bfa5;', realPath);
         return `${realPath}`
     }
 

@@ -136,8 +136,6 @@ const OrderCard = ({ deleted, setDeleted, modalState, setModalState, blobs, setB
       {notesModal && <NotesModal notes={notes} />}
       {order ?
         (toggleSort === 'newest' ? [...order].sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn)) : order).map((o) => {
-          console.log(o)
-
           return(
 
           <div className='grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2' key={o._id}>

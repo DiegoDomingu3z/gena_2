@@ -126,7 +126,7 @@ const LeadsOrderApproval = () => {
                         const dataURI = await Promise.all(
                             labels[index].map(async (l, i) => {
                                 const uri = await modifyPdf(
-                                    `images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`,
+                                    `/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`,
                                     o.labels[i].textToPut)
                                 return uri
                             })

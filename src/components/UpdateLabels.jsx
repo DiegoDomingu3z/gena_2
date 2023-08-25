@@ -48,7 +48,7 @@ const UpdateLabels = () => {
                     labels.map((l) => (
                         <div className='bg-white w-full h-76 laptop:h-[26rem] rounded-lg drop-shadow-md font-genaPrimary' key={l._id}>
                             <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
-                                <iframe src={`images/pdflabels/${l.categoryName}/${l.subCategoryName}/${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
+                                <iframe src={`/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
 
                             </div>
                             <div className='p-4'>

@@ -85,7 +85,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                             o.labels.map(async (label, i) => {
                                 const p = pdf[index][i];
                                 const modifiedPdfDataUri = await modifyPdf(
-                                    `images/pdflabels/${p.categoryName}/${p.subCategoryName}/${p.fileName}`,
+                                    `/api/getPdfs?categoryName=${p.categoryName}&subCategoryName=${p.subCategoryName}&fileName=${p.fileName}`,
                                     label.textToPut
                                 );
                                 return modifiedPdfDataUri;
