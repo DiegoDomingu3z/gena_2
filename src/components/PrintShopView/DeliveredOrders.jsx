@@ -66,7 +66,7 @@ const DeliveredOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =>
 
     const sanitizePath = (path) => {
         // MIGHT HAVE TO CHANGE IN THE FUTURE
-        let realPath = path.slice(46)
+        let realPath = path.slice(33)
         console.log(realPath, 'yuh')
         return `${realPath}`
     }

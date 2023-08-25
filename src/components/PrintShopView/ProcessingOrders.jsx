@@ -17,8 +17,42 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
     const pdf = useSelector((state) => state.PrintShop.processingOrders.arr)
     const user = useSelector((state) => state.Account.users)
     const dispatch = useDispatch()
+
+
+    const markOrderAsDelivered = async (id) => {
+        const token = sessionStorage.getItem('accessToken')
+        await dispatch(deliverOrder({ token, id })).then(async (res) => {
+            await dispatch(getApprovedOrders(token))
+            await dispatch(getProcessingOrder(token))
+            await dispatch(getDeliveredOrders(token))
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+                container: 'top-margin',
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+         })
+            await Toast.fire({
+            icon: 'success',
+            title: `Delivered Order ID: ${id}`
+            })
+    }).catch((err) => {
+        console.log(err)
+    })
+    }
+
+
+
     useEffect(() => {
+        const token = sessionStorage.getItem('accessToken')
         dispatch(getAllUsers())
+        dispatch(getProcessingOrder(token))
+        console.log("CALLLING")
     }, [])
 
     const getUser = (id) => {
@@ -41,8 +75,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
 
     const sanitizePath = (path) => {
         // MIGHT HAVE TO CHANGE IN THE FUTURE
-        let realPath = path.slice(46)
-        console.log(realPath, 'yuh')
+        let realPath = path.slice(33)
         return `${realPath}`
     }
 
@@ -51,30 +84,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
     };
 
 
-    const markOrderAsDelivered = async (id) => {
-        const token = sessionStorage.getItem('accessToken')
-        await dispatch(deliverOrder({ token, id }))
-        await dispatch(getApprovedOrders(token))
-        await dispatch(getProcessingOrder(token))
-        await dispatch(getDeliveredOrders(token))
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top',
-            iconColor: 'white',
-            customClass: {
-                popup: 'colored-toast',
-                container: 'top-margin',
-            },
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-        })
-        await Toast.fire({
-            icon: 'success',
-            title: `Delivered Order ID: ${id}`
-        })
-    }
-
+   
 
     return (
         <div>
@@ -85,14 +95,14 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                         <Collapse size="large">
                             <Panel onClick={() => console.log(o._id)} header={`${o.creatorName} - ${o._id} - ${formatDate(o.createdOn)}`} key={o._id} extra={
                                 <div>
-                                    <Tooltip placement="top" title={`Open in File Manager?`} >
+                                    {/* <Tooltip placement="top" title={`Open in File Manager?`} >
                                         <button onClick={(event) => {
                                             openFileManager(o._id)
                                             event.stopPropagation();
                                         }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
                                             <FontAwesomeIcon icon={faFile} />
                                         </button>
-                                    </Tooltip>
+                                    </Tooltip> */}
                                     {o.notes || o.notes != '' ?
                                         <Tooltip placement="top" title={o.notes}>
                                             <button className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
@@ -139,15 +149,15 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                                 </div>
                             }>
                                 <div className="grid grid-cols-3">
-                                    {pdf && o.labels ? (
+                                    {pdf && o.labels[0].qty ? (
                                         pdf[index].map((p, i) => (
                                             <div key={i} className="mb-5 border-b">
                                                 <div className="text-center">DOCNUM: {p.docNum}</div>
                                                 <div className="flex justify-center">
                                                     <iframe src={sanitizePath(o.finalOrderPaths[i])} className="w-11/12"></iframe>
                                                 </div>
-                                                <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
-                                                <div className="text-center mb-3 mt-1">{p.material}</div>
+                                                <div className="text-center mb-3 mt-3">QTY to be Printed: {(o?.labels[i]?.qty * p.unitPack)}</div>
+                                                <div className="text-center mb-3 mt-1">Material Type: {p.material}</div>
                                             </div>
                                         ))
                                     ) : null}

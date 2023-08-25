@@ -29,6 +29,24 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
       title: 'Ticket Submitted!'
     })
   }
+  const failToast = async () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'center',
+      iconColor: 'white',
+      customClass: {
+        popup: 'colored-toast',
+        container: 'addToCartToast',
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+    await Toast.fire({
+      icon: 'warning',
+      title: 'There was an issue submitting your ticket'
+    })
+  }
 
   return (
     <div className='fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center'>
@@ -42,13 +60,17 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
             importance: ''
           }}
           onSubmit={async (values, helpers) => {
-            console.log(values)
-            var data = values
-            const token = sessionStorage.getItem('accessToken')
-            await dispatch(reportTicket({ data, token }))
-            helpers.resetForm();
-            setTicketModal(!ticketModal)
-            successToast();
+            try {
+              var data = values
+              const token = sessionStorage.getItem('accessToken')
+              setTicketModal(!ticketModal)
+              helpers.resetForm();
+              await dispatch(reportTicket({ data, token }))
+              successToast();
+            } catch (error) {
+              failToast();
+            }
+
           }}
         >
           <Form>
