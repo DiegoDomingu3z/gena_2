@@ -6,7 +6,7 @@ import { Formik, Form, Field } from "formik";
 import { createDepartment, removeDept, updateDepartmentName } from "../../../store/Departments/Thunks";
 import Swal from "sweetalert2";
 import { RingLoader } from "react-spinners";
-const DepartmentView = ({ triggerUseEffect, setTriggerUseEffect }) => {
+const DepartmentView = ({ triggerUseEffect, setTriggerUseEffect, data }) => {
     const dept = useSelector((state) => state.Department.departments)
     const router = useRouter()
     const user = useSelector((state) => state.Account)

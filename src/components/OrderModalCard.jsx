@@ -10,6 +10,7 @@ import { RingLoader } from 'react-spinners'
 const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   // const [activeLabels, setActiveLabels] = useState('')
   const [submit, setSubmit] = useState(false);
+  const [modifiedPDFs, setModifiedPDFs] = useState({})
   const dispatch = useDispatch();
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr)
@@ -57,6 +58,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
     })
   }
 
+
   useEffect(() => {
     setBlobs([])
     const l = []
@@ -64,7 +66,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       for (let i = 0; i < activeLabels.length; i++) {
         const label = activeLabels[i];
         const modifiedLabel = await modifyPdf(
-          `images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`,
+          `/api/getPdfs?categoryName=${label.categoryName}&subCategoryName=${label.subCategoryName}&fileName=${label.fileName}`,
           labels[i].textToPut
         )
         // console.log("Running", i)
@@ -72,31 +74,10 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
         l.push(modifiedLabel)
       }
       setBlobs(l)
-      console.log(l)
     }
     modifyPaths()
   }, [])
-
-  useEffect(() => {
-    setBlobs([])
-    const l = []
-    const modifyPaths = async () => {
-      for (let i = 0; i < activeLabels.length; i++) {
-        const label = activeLabels[i];
-        const modifiedLabel = await modifyPdf(
-          `images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`,
-          labels[i].textToPut
-        )
-        // console.log("Running", i)
-        setBlobs(prev => [...prev, modifiedLabel])
-        l.push(modifiedLabel)
-      }
-      setBlobs(l)
-      console.log(l)
-    }
-    modifyPaths()
-  }, [submit])
-
+  
   const modifyPdf = async (path, text) => {
     try {
       const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());
@@ -159,13 +140,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       return acc;
     }, {});
     vals.qty = labels[i].qty
-    let test = labels[i].textToPut.reduce((acc, curr) => {
-      acc['name'] = curr.name,
-        acc['text'] = curr.text || ''
-
-      return acc
-    }, {})
-
 
     return (
       <div key={label._id}>
@@ -214,15 +188,15 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                             dark:border-gray-600 dark:placeholder-gray-400
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="qty" name="qty" key={1} type="number" />
                     {
-                      labels[i].textToPut.map((field) => {
+                      labels[i].textToPut.map((field, index) => {
                         if (field.text != '') {
                           return (
-                            <div key={label.docNum}>
+                            <div key={index}>
                               <Field className=" bg-gray-50 ms-3.5 border border-gray-300 mt-1
                               sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                               dark:border-gray-600 dark:placeholder-gray-400
                               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              name={field.name} key={label.docNum} id={label.docNum} />
+                              name={field.name} id={label.docNum} />
                             </div>
                           )
                         }

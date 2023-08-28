@@ -13,10 +13,12 @@ import { useCanvasDrawer } from '~/Contexts/canvasDrawerContext'
 import CartCanvasDrawer from '~/components/CartCanvasDrawer'
 import { useRouter } from 'next/router'
 import { getAccount } from '../../store/Account/thunks'
+import { api } from '../../axiosService'
 
 
 
-const StartNewOrder = () => {
+const StartNewOrder = ({res}) => {
+  console.log(res)
   const dispatch = useDispatch()
   const cats = useSelector((state) => state.Category.categories)
   const subCats = useSelector((state) => state.SubCategory.subCats)

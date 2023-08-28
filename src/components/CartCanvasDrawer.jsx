@@ -118,9 +118,10 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
           const actualLabel = basketLabels[i];
           let modifiedPdf
           modifiedPdf = await modifyPdf(
-            `images/pdflabels/${actualLabel.categoryName}/${actualLabel.subCategoryName}/${actualLabel.fileName}`,
+            `/api/getPdfs?categoryName=${actualLabel.categoryName}&subCategoryName=${actualLabel.subCategoryName}&fileName=${actualLabel.fileName}`,
             basket[i]?.textToPut
           )
+          
           setBlobs(prev => [...prev, modifiedPdf])
         }
       }
@@ -130,6 +131,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
   }, [basketLabels])
   const modifyPdf = async (path, text) => {
     try {
+      console.log(path)
       const existingPdfBytes = await fetch(path).then((res) => res.arrayBuffer());
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
@@ -185,7 +187,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
       return (
         <div className='flex justify-center'>
           <iframe className='rounded' src={blobs[index]}
-            width="80%" height="50%" frameborder="0" ></iframe>
+            width="80%" height="50%" frameBorder="0" ></iframe>
         </div>
       )
     } else {

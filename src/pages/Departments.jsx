@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import DepartmentView from "~/components/Department/DepartmentView"
 import Layout from "~/components/Layout"
 import { getDepartments } from "../../store/Departments/Thunks"
+import { api } from "../../axiosService"
 
 
 

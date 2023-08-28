@@ -66,8 +66,7 @@ const DeliveredOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =>
 
     const sanitizePath = (path) => {
         // MIGHT HAVE TO CHANGE IN THE FUTURE
-        let realPath = path.slice(33)
-        console.log(realPath, 'yuh')
+        let realPath = path.slice(60)
         return `${realPath}`
     }
 
@@ -93,7 +92,7 @@ const DeliveredOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =>
                                             <div key={i} className="mb-5 border-b">
                                                 <div className="text-center">DOCNUM: {p.docNum}</div>
                                                 <div className="flex justify-center">
-                                                    <iframe src={sanitizePath(o.finalOrderPaths[i])} className="w-11/12"></iframe>
+                                                    <iframe src={`/api/getOrders?filePath=${sanitizePath(o.finalOrderPaths[i])}`} className="w-11/12"></iframe>
                                                 </div>
                                                 <div className="text-center mb-3 mt-3">QTY to be Printed: {(o.labels[i].qty * p.unitPack)}</div>
                                             </div>
