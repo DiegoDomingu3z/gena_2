@@ -4,6 +4,8 @@ import { Collapse, Divider, Tooltip } from 'antd';
 import { PrinterOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/icons';
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faNoteSticky, faCheckCircle, faAdd, faFile, faCircle } from '@fortawesome/free-solid-svg-icons'
 import { getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder } from "../../../store/PrintShop/Thunks";
 import { PDFDocument } from 'pdf-lib'
 import Swal from "sweetalert2";
@@ -181,6 +183,13 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                         <Collapse size="large">
                             <Panel onClick={() => console.log(o._id)} header={`${o.creatorName} - ${o._id} - ${formatDate(o.createdOn)}`} key={o._id} extra={
                                 <div>
+                                    {o.notes || o.notes != '' ?
+                                        <Tooltip placement="top" title={o.notes}>
+                                            <button className='text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
+                                                <FontAwesomeIcon icon={faNoteSticky} />
+                                            </button>
+                                        </Tooltip> : null
+                                    }
                                     {!multipleOrders.includes(o._id) ?
                                         <Tooltip placement="top" title={`Print ${o.creatorName}'s order?`} >
                                             <button onClick={(event) => {
@@ -224,7 +233,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                                     {seeString(index)}
                                 </div>
                                 <div className="grid grid-cols-3">
-                                    {pdf && o.labels ? (
+                                    {pdf && o.labels.length > 0 ? (
                                         pdf[index].map((p, i) => {
                                             return (
                                                 <div key={i} className="mb-5 border-b">
