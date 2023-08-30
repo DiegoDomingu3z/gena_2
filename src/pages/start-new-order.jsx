@@ -18,8 +18,7 @@ import useDebounce from '~/hooks/useDebounce'
 
 
 
-const StartNewOrder = ({res}) => {
-  console.log(res)
+const StartNewOrder = () => {
   const dispatch = useDispatch()
   const cats = useSelector((state) => state.Category.categories)
   const subCats = useSelector((state) => state.SubCategory.subCats)
@@ -32,6 +31,7 @@ const StartNewOrder = ({res}) => {
   const account = useSelector((state) => state.Account.account)
   const [render, setRender] = useState(false)
   const debouncedField = useDebounce(searchInput, 600)
+
 
   const filterSubCats = (event) => {
     let id = event.target.value
