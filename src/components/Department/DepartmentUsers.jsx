@@ -69,7 +69,7 @@ console.log(account)
 
                                     <div
                                         onClick={() => {
-                                            if (account.privileges == 'admin' || (account.privileges == 'group-lead' && deptName == account.department)) {
+                                            if (account.privileges == 'admin' || (account.privileges == 'group-lead' && (u.groupLeadId == account._id))) {
                                                 openModal()
                                                 setActiveUser(u)
                                             }

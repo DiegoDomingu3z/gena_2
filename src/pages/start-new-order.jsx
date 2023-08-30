@@ -14,11 +14,11 @@ import CartCanvasDrawer from '~/components/CartCanvasDrawer'
 import { useRouter } from 'next/router'
 import { getAccount } from '../../store/Account/thunks'
 import { api } from '../../axiosService'
+import useDebounce from '~/hooks/useDebounce'
 
 
 
-const StartNewOrder = ({res}) => {
-  console.log(res)
+const StartNewOrder = () => {
   const dispatch = useDispatch()
   const cats = useSelector((state) => state.Category.categories)
   const subCats = useSelector((state) => state.SubCategory.subCats)
@@ -30,6 +30,8 @@ const StartNewOrder = ({res}) => {
   const [searchInput, setSearchInput] = useState('');
   const account = useSelector((state) => state.Account.account)
   const [render, setRender] = useState(false)
+  const debouncedField = useDebounce(searchInput, 600)
+
 
   const filterSubCats = (event) => {
     let id = event.target.value
@@ -39,12 +41,15 @@ const StartNewOrder = ({res}) => {
     setActiveSubCats(filteredSubCats)
   }
 
-  const handleSearch = (event) => {
-    let data = event.target.value
+  const handleSearch = (data) => {
     let token = account.departmentId
     dispatch(searchLabel({ data, token }))
     setSearchInput(data)
   }
+
+  useEffect(() => {
+    handleSearch(debouncedField)
+  }, [debouncedField])
 
   const singleSubCat = (event) => {
     let id = event.target.value
@@ -73,7 +78,7 @@ const StartNewOrder = ({res}) => {
           <div className='mr-auto'><h1 className='text-3xl font-medium font-genaPrimary'>Labels</h1></div>
           <div className='flex justify-end items-end gap-5 md:w-3/5 lg:w-2/5'>
             <label htmlFor='labelSearch'><FontAwesomeIcon className='p-3 cursor-pointer rounded-full drop-shadow-sm bg-[#233042] text-white' icon={faMagnifyingGlass} /></label>
-            <input onChange={handleSearch} id='labelSearch' name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
+            <input onChange={(e) => setSearchInput(e.target.value)} id='labelSearch' name='labelSearch' type="text" className='laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
              outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5' placeholder='Type name of label here' />
             <div className='relative '>
               <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>

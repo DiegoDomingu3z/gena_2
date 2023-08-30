@@ -151,7 +151,7 @@ const OrderCard = ({ deleted, setDeleted, modalState, setModalState, blobs, setB
                     setBlobs([])
                     handleUpdateModal(o._id)
                   }}
-                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hidden lg:block hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${(o.status === 'processing' || o.status === 'delivered') && 'pointer-events-none'}`}>
+                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hidden lg:block hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${(o.status === 'delivered') && 'pointer-events-none'}`}>
                   <FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>
               <Tooltip placement='top' title="Delete Order">
@@ -170,7 +170,7 @@ const OrderCard = ({ deleted, setDeleted, modalState, setModalState, blobs, setB
                           setBlobs([])
                           handleUpdateModal(o._id)
                         }}
-                        data-order-id={o._id} className={`text-white hover:bg-[#ff9800] w-full hover:text-white transition-all ease-in-out rounded-full ${(o.status === 'processing' || o.status === 'delivered') && 'pointer-events-none'}`}>
+                        data-order-id={o._id} className={`text-white hover:bg-[#ff9800] w-full hover:text-white transition-all ease-in-out rounded-full ${(o.status === 'delivered') && 'pointer-events-none'}`}>
                           <div className='flex gap-5 items-center text-sm'>
                             <FontAwesomeIcon icon={faPencil} />
                             <span>Edit Order</span>
