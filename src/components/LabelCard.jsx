@@ -1,14 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
 import Swal from 'sweetalert2'
+import handleViewport from 'react-in-viewport';
 
+const IframeBlock = (props) => {
+  const { inViewport, forwardedRef, src, alwaysRendered } = props
+  const shouldRender = inViewport || alwaysRendered.includes(src._id);
+  return (
+    <iframe id={src._id} ref={forwardedRef} src={shouldRender ? `/api/getPdfs?categoryName=${src.categoryName}&subCategoryName=${src.subCategoryName}&fileName=${src.fileName}` : ''} width="100%" height="100%" className='rounded-t-md'></iframe>
+  )
+}
+const ViewportBlock = handleViewport(IframeBlock);
 
 
 const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
+  const [alwaysRenderedIframes, setAlwaysRenderedIframes] = useState([]);
+
+  const handleEnterViewport = (iframeId) => {
+    if (!alwaysRenderedIframes.includes(iframeId)) {
+      setAlwaysRenderedIframes(prev => [...prev, iframeId]);
+    }
+  };
+
+  useEffect(() => {
+    setAlwaysRenderedIframes([])
+  }, [labels])
+
 
   const toast = async () => {
     const Toast = Swal.mixin({
@@ -68,7 +89,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                 <Form id={l._id} key={index}>
                   <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
-                      <iframe src={`/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
+                      <ViewportBlock key={l._id} alwaysRendered={alwaysRenderedIframes} src={l} onEnterViewport={() => handleEnterViewport(l._id)} onLeaveViewport={() => console.log('leave')} />
                     </div>
                     <div className='p-4'>
                       <div className='text-end text-xs'>{l.docNum}</div>
