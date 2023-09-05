@@ -151,13 +151,18 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
           console.log(check, 'checkss')
         } catch (error) {
           if (check != true) {
-            const fieldToFill = form.getTextField(fieldName);
-            if (!text) {
-              console.log(text)
-              return
+            if (fieldName == 'AREA') {
+              const dropdown = form.getDropdown(fieldName)
+              dropdown.select(text[i].text)
             } else {
-              console.log(text)
-              fieldToFill.setText(text[i].text);
+              const fieldToFill = form.getTextField(fieldName);
+              if (!text) {
+                console.log(text)
+                return
+              } else {
+                console.log(text)
+                fieldToFill.setText(text[i].text);
+              }
             }
           }
         }

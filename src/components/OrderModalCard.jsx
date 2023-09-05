@@ -15,11 +15,46 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder)
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr)
   const labels = activeOrder ? activeOrder.labels : []
+  const [labelOptions, setLabelOptions] = useState([])
   const activeLabels = labelsArray
     .flatMap(innerArray => innerArray)
     .filter((value, i) => {
       return value.orderId == activeOrder?._id
     })
+
+
+
+
+    useEffect(() => {
+      activeLabels.forEach((l) => {
+        fetch(`/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`)
+          .then((res) => res.arrayBuffer())
+          .then(async (data) => {
+            try {
+              const pdfDoc = await PDFDocument.load(data);
+              const form = pdfDoc.getForm();
+              const fieldNames = form.getFields().map((field) => field.getName());
+              if (fieldNames.includes('AREA')) {
+                const dropdown = form.getDropdown('AREA');
+                const options = dropdown.getOptions();
+                let filtered = []
+                for (let i = 0; i < options.length; i++) {
+                  if (!filtered.includes(options[i])) {
+                    filtered.push(options[i])
+                  } else {
+                    continue
+                  }
+                }
+                setLabelOptions(options);
+              }
+            } catch (error) {
+              console.error('Error loading PDF document:', error);
+            }
+          });
+  
+      });
+  
+    }, [activeLabels]);
 
   const toast = async () => {
     const Toast = Swal.mixin({
@@ -88,8 +123,14 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
         try {
-          const fieldToFill = form.getTextField(fieldName);
-          fieldToFill.setText(text[i].text);
+          if (fieldName == 'AREA') {
+            const dropdown = form.getDropdown(fieldName)
+            dropdown.select(text[i].text)
+          } else {
+
+            const fieldToFill = form.getTextField(fieldName);
+            fieldToFill.setText(text[i].text);
+          }
 
         } catch (error) {
           const checkbox = form.getCheckBox(fieldName);
@@ -189,14 +230,26 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-3" placeholder="qty" name="qty" key={1} type="number" />
                     {
                       labels[i].textToPut.map((field, index) => {
-                        if (field.text != '') {
+                        if (field.name == 'AREA') {
+                          return (
+                            <div key={field._id} className={field.type === 'checkbox' ? 'flex gap-5' : ''}>
+                              <Field component="select"
+                                className="bg-gray-50 ms-3.5 border border-gray-300 mt-1 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={field.name} id={field.name} type={field.type} placeholder={field.name} key={field._id} required={field.type === 'checkbox' ? false : false} >
+                                {labelOptions.length > 0 ?
+                                  labelOptions.map((o, index) => (
+                                    <option key={index} id={o} name={o} value={o}>{o}</option>
+                                  )) : null}
+                              </Field>
+                            </div>
+                          )
+                        } else if (field.text != '') {
                           return (
                             <div key={index}>
                               <Field className=" bg-gray-50 ms-3.5 border border-gray-300 mt-1
                               sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
                               dark:border-gray-600 dark:placeholder-gray-400
                               dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              name={field.name} id={label.docNum} />
+                                name={field.name} id={label.docNum} />
                             </div>
                           )
                         }

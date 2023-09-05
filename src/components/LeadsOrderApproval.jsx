@@ -154,8 +154,13 @@ const LeadsOrderApproval = () => {
 
             for (let i = 0; i < fieldNames.length; i++) {
                 const fieldName = fieldNames[i];
-                const fieldToFill = form.getTextField(fieldName);
-                fieldToFill.setText(text[i].text);
+                if (fieldName == 'AREA') {
+                    const dropdown = form.getDropdown(fieldName)
+                    dropdown.select(text[i].text)
+                } else {
+                    const fieldToFill = form.getTextField(fieldName);
+                    fieldToFill.setText(text[i].text);
+                }
             }
 
             const modifiedPdfBytes = await pdfDoc.save();
