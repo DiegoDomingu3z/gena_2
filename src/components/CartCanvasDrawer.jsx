@@ -196,7 +196,9 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
         </div>
       )
     } else {
-      <div>Label Algorithm to show potential print is not working. submitting order should still work, <b>Please Report this Problem</b></div>
+      return (
+        <div><b>The input exceeds the labels character count and will not print. Please delete this label from your order. </b></div>
+      )
     }
   }
 
