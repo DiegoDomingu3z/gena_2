@@ -4,6 +4,8 @@ import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
 import Swal from 'sweetalert2'
 const { PDFDocument } = require('pdf-lib');
+import handleViewport from 'react-in-viewport';
+
 
 const IframeBlock = (props) => {
   const { inViewport, forwardedRef, src, alwaysRendered } = props
@@ -20,6 +22,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
   const dispatch = useDispatch()
   const [labelOptions, setLabelOptions] = useState([])
   const [getBufferCalled, setGetBufferCalled] = useState(false);
+  const [alwaysRenderedIframes, setAlwaysRenderedIframes] = useState([]);
   const [currentFetch, setCurrentFetch] = useState({})
   const [toggle, setToggle] = useState(false)
 
@@ -57,6 +60,16 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
     });
 
   }, [labels]);
+
+  const handleEnterViewport = (iframeId) => {
+    if (!alwaysRenderedIframes.includes(iframeId)) {
+      setAlwaysRenderedIframes(prev => [...prev, iframeId]);
+    }
+  };
+
+  useEffect(() => {
+    setAlwaysRenderedIframes([])
+  }, [labels])
 
 
 
