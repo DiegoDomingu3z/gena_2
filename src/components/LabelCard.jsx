@@ -1,9 +1,9 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
 import Swal from 'sweetalert2'
-import handleViewport from 'react-in-viewport';
+const { PDFDocument } = require('pdf-lib');
 
 const IframeBlock = (props) => {
   const { inViewport, forwardedRef, src, alwaysRendered } = props
@@ -18,17 +18,46 @@ const ViewportBlock = handleViewport(IframeBlock);
 const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render }) => {
   const labels = useSelector((state) => state.Label.activeLabels)
   const dispatch = useDispatch()
-  const [alwaysRenderedIframes, setAlwaysRenderedIframes] = useState([]);
-
-  const handleEnterViewport = (iframeId) => {
-    if (!alwaysRenderedIframes.includes(iframeId)) {
-      setAlwaysRenderedIframes(prev => [...prev, iframeId]);
-    }
-  };
+  const [labelOptions, setLabelOptions] = useState([])
+  const [getBufferCalled, setGetBufferCalled] = useState(false);
+  const [currentFetch, setCurrentFetch] = useState({})
+  const [toggle, setToggle] = useState(false)
 
   useEffect(() => {
-    setAlwaysRenderedIframes([])
-  }, [labels])
+    labels.forEach((l) => {
+      l.fields.forEach((f) => {
+        if (f.name === 'AREA') {
+          console.log('hi')
+          fetch(`/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`)
+            .then((res) => res.arrayBuffer())
+            .then(async (data) => {
+              try {
+                const pdfDoc = await PDFDocument.load(data);
+                const form = pdfDoc.getForm();
+                const fieldNames = form.getFields().map((field) => field.getName());
+                if (fieldNames.includes('AREA')) {
+                  const dropdown = form.getDropdown('AREA');
+                  const options = dropdown.getOptions();
+                  let filtered = []
+                  for (let i = 0; i < options.length; i++) {
+                    if (!filtered.includes(options[i])) {
+                      filtered.push(options[i])
+                    } else {
+                      continue
+                    }
+                  }
+                  setLabelOptions(options);
+                }
+              } catch (error) {
+                console.error('Error loading PDF document:', error);
+              }
+            });
+        }
+      });
+    });
+
+  }, [labels]);
+
 
 
   const toast = async () => {
@@ -54,7 +83,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
 
   return (
     <div className='grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10'>
-      {labels ?
+      {labels.length > 0 ?
         labels.map((l, index) => {
           let vals = l.fields.reduce((acc, curr) => {
             acc[curr.name] = curr.value || '';
@@ -105,22 +134,36 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                           placeholder={`Enter Qty: MAX(${l.maxOrderQty})`} name="qty" required key={l.docNum} id={l.docNum} />
                         {l.isKanban ?
                           l.fields.map((f) => {
-                            return (
-                              <div key={f._id} className={f.type === 'checkbox' ? 'flex gap-5' : ''}>
-                                <div className='pt-1'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1
-                            sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700
-                            dark:border-gray-600 dark:placeholder-gray-400
-                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={f.name} id={f.name} type={f.type} placeholder={f.name} key={f._id} required={f.type === 'checkbox' ? false : false} />
+                            if (f.name === 'AREA') {
+                              return (
+                                <div key={f._id} className={f.type === 'checkbox' ? 'flex gap-5' : ''}>
+                                  <Field component="select"
+                                    className="bg-gray-50 ms-3.5 border border-gray-300 mt-1 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={f.name} id={f.name} type={f.type} placeholder={f.name} key={f._id} required={f.type === 'checkbox' ? false : false} >
+                                    {labelOptions.length > 0 ?
+                                      labelOptions.map((o, index) => (
+                                        <option key={index} id={o} name={o} value={o}>{o}</option>
+                                      )) : null}
+                                  </Field>
                                 </div>
-                                <div className=''>
-                                  {f.type === 'checkbox' ? <label htmlFor={f.name} className=''>{f.name.toUpperCase()}</label> : null}
+
+                              )
+
+                            } else {
+
+                              return (
+                                <div key={f._id} className={f.type === 'checkbox' ? 'flex gap-5' : ''}>
+                                  <div className='pt-1'><Field className="bg-gray-50 ms-3.5 border border-gray-300 mt-1 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={f.name} id={f.name} type={f.type} placeholder={f.name} key={f._id} required={f.type === 'checkbox' ? false : false} />
+                                  </div>
+                                  <div className=''>
+                                    {f.type === 'checkbox' ? <label htmlFor={f.name} className=''>{f.name.toUpperCase()}</label> : null}
+                                  </div>
                                 </div>
-                              </div>
-                            )
+                              )
+                            }
                           })
                           : null
-
                         }
+
                       </div>
                       <div className='text-center mt-3'><button className='bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out' type='submit' disabled={isSubmitting}>Add to Order</button></div>
                     </div>
