@@ -56,6 +56,8 @@ const StartNewOrder = () => {
     setActiveSubCategoryId(id)
   }
 
+  
+
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken')
     dispatch(getCategories())

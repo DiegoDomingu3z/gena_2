@@ -4,7 +4,17 @@ import { Field, Form, Formik } from 'formik';
 import { addToBasket } from '../../store/Orders/thunks';
 import Swal from 'sweetalert2'
 const { PDFDocument } = require('pdf-lib');
+import handleViewport from 'react-in-viewport';
 
+
+const IframeBlock = (props) => {
+  const { inViewport, forwardedRef, src, alwaysRendered } = props
+  const shouldRender = inViewport || alwaysRendered.includes(src._id);
+  return (
+    <iframe id={src._id} ref={forwardedRef} src={shouldRender ? `/api/getPdfs?categoryName=${src.categoryName}&subCategoryName=${src.subCategoryName}&fileName=${src.fileName}` : ''} width="100%" height="100%" className='rounded-t-md'></iframe>
+  )
+}
+const ViewportBlock = handleViewport(IframeBlock);
 
 
 const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render }) => {
@@ -12,6 +22,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
   const dispatch = useDispatch()
   const [labelOptions, setLabelOptions] = useState([])
   const [getBufferCalled, setGetBufferCalled] = useState(false);
+  const [alwaysRenderedIframes, setAlwaysRenderedIframes] = useState([]);
   const [currentFetch, setCurrentFetch] = useState({})
   const [toggle, setToggle] = useState(false)
 
@@ -49,6 +60,16 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
     });
 
   }, [labels]);
+
+  const handleEnterViewport = (iframeId) => {
+    if (!alwaysRenderedIframes.includes(iframeId)) {
+      setAlwaysRenderedIframes(prev => [...prev, iframeId]);
+    }
+  };
+
+  useEffect(() => {
+    setAlwaysRenderedIframes([])
+  }, [labels])
 
 
 
@@ -110,7 +131,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                 <Form id={l._id} key={index}>
                   <div className='bg-white w-full h-76 laptop:h-auto rounded-lg drop-shadow-md font-genaPrimary'>
                     <div className='w-full h-[15rem] rounded-md justify-center flex items-center'>
-                      <iframe src={`/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`} width="100%" height="100%" className='rounded-t-md'></iframe>
+                      <ViewportBlock key={l._id} alwaysRendered={alwaysRenderedIframes} src={l} onEnterViewport={() => handleEnterViewport(l._id)} onLeaveViewport={() => console.log('leave')} />
                     </div>
                     <div className='p-4'>
                       <div className='text-end text-xs'>{l.docNum}</div>
