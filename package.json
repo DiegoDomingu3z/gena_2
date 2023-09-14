@@ -17,7 +17,6 @@
     "@fortawesome/react-fontawesome": "github:fortawesome/react-fontawesome",
     "@react-pdf/renderer": "^3.1.9",
     "@reduxjs/toolkit": "^1.9.5",
-    "@tanstack/react-virtual": "^3.0.0-beta.57",
     "antd": "^5.4.7",
     "autoprefixer": "10.4.14",
     "axios": "^1.3.6",

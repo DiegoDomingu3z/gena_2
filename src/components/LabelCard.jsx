@@ -123,8 +123,8 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                 await dispatch(addToBasket({ finalArr, qty, id }))
                 setRender(!render)
                 toast()
-                document.getElementById(`${l._id}`).reset()
-                document.getElementById(`${l.docNum}`).reset()
+                // document.getElementById(`${l._id}`).reset()
+                // document.getElementById(`${l.docNum}`).reset()
               }}
             >
               {({ isSubmitting }) => (

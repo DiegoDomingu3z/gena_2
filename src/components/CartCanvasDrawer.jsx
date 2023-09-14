@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCanvasDrawer } from '~/Contexts/canvasDrawerContext'
 import { faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
@@ -43,6 +43,7 @@ const CartCanvasDrawer = ({ toggleCartCanvas, setToggleCartCanvas, render }) => 
     await dispatch(placeOrder({ orderNote, basket, token }))
     setOrderNote('');
     const basketLabelsCopy = basketLabels.slice();
+    console.log(basketLabelsCopy)
     basketLabelsCopy.splice(0, 1);
     setBasketLabels(basketLabelsCopy);
     toast()
@@ -80,55 +81,67 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
   const basket = useSelector((state) => state.Orders.labelBasket)
   const labels = useSelector((state) => state.Label.activeLabels)
   const [blobs, setBlobs] = useState([])
-
+  const [runEffect, setRunEffect] = useState(true);
+  const prevRunEffect = useRef(runEffect);
   const removeFromOrder = (index) => {
-    const basketLabelsCopy = basketLabels.slice();
-    basketLabelsCopy.splice(index, 1);
-    setBasketLabels(basketLabelsCopy)
+    setRunEffect(!runEffect)
+    console.log(index)
     dispatch(removeFromBasket(index))
+    const basketLabelsCopy = basketLabels.slice();
+    console.log(basketLabelsCopy)
+    basketLabelsCopy.splice(index, 1);
+    console.log(basketLabelsCopy)
+    setBasketLabels(basketLabelsCopy)
   }
-
-
 
   useEffect(() => {
     const getLabels = async () => {
+      let start = basketLabels
       setBasketLabels([])
       for (let i = 0; i < basket.length; i++) {
         const label = basket[i];
         let showLabels = labels.filter(l => l._id == label.labelId)
         let labelObj = showLabels.shift()
-        setBasketLabels(prevFiles => [...prevFiles, labelObj])
+        if (labelObj != undefined) {
+          setBasketLabels(start)
+          setBasketLabels(prevFiles => [...prevFiles, labelObj])
+        }
         console.log(basket, 'bsdd')
         console.log(basketLabels)
       }
     }
-    getLabels()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toggleCartCanvas, render])
+    if (runEffect !== prevRunEffect.current) {
+    } else {
+      getLabels()
+    }
+
+  }, [basket, runEffect])
 
   useEffect(() => {
     setBlobs([])
-    if (basketLabels.length < 1) {
+    if (basket.length < 1) {
       console.log(blobs.length)
       return
     } else {
-
       const modifyPaths = async () => {
+
         for (let i = 0; i < basketLabels.length; i++) {
           const actualLabel = basketLabels[i];
+          console.log(actualLabel)
           let modifiedPdf
           modifiedPdf = await modifyPdf(
             `/api/getPdfs?categoryName=${actualLabel.categoryName}&subCategoryName=${actualLabel.subCategoryName}&fileName=${actualLabel.fileName}`,
             basket[i]?.textToPut
           )
-          
+
           setBlobs(prev => [...prev, modifiedPdf])
         }
       }
       modifyPaths()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basketLabels])
+
+
   const modifyPdf = async (path, text) => {
     try {
       console.log(path)
@@ -189,6 +202,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
 
   const seeLabel = (index) => {
     if (blobs.length > 0) {
+      console.log(blobs, "HEREEEEE")
       return (
         <div className='flex justify-center'>
           <iframe className='rounded' src={blobs[index]}
@@ -209,6 +223,8 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
       {basketLabels.length > 0 ?
         basketLabels.map((label, i) => (
           <div key={i}>
+            {console.log(basket)}
+            {console.log(basketLabels)}
             {/* <div className='flex justify-center'>
               <iframe className='rounded' src={`images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`}
                 width="80%" height="50%" frameborder="0" ></iframe>
@@ -222,7 +238,7 @@ const CartCanvasLabelCard = ({ toggleCartCanvas, basketLabels, setBasketLabels, 
                 <h4 className='text-gray-500'>
                   {basket.length > 0 ?
                     <div>
-                      Qty: <span className='ms-1 font-semibold'>{basket[i].qty}</span>
+                      Qty: <span className='ms-1 font-semibold'>{basket[i]?.qty}</span>
                     </div>
                     : null}
                 </h4>
