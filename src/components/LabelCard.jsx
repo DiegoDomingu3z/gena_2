@@ -107,7 +107,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
             <Formik
               key={l._id}
               initialValues={vals}
-              onSubmit={async (values) => {
+              onSubmit={async (values, helpers) => {
                 const { qty, ...newValues } = values;
                 delete values.qty;
                 let id = l._id
@@ -123,6 +123,7 @@ const LabelCard = ({ setToggleCartCanvas, toggleCartCanvas, setRender, render })
                 await dispatch(addToBasket({ finalArr, qty, id }))
                 setRender(!render)
                 toast()
+                helpers.resetForm()
                 // document.getElementById(`${l._id}`).reset()
                 // document.getElementById(`${l.docNum}`).reset()
               }}
