@@ -151,7 +151,7 @@ const OrderCard = ({ deleted, setDeleted, modalState, setModalState, blobs, setB
                     setBlobs([])
                     handleUpdateModal(o._id)
                   }}
-                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hidden lg:block hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${(o.status === 'delivered') && 'pointer-events-none'}`}>
+                  data-order-id={o._id} className={`text-[#233043] hover:bg-[#ff9800] hidden lg:block hover:text-white transition-all ease-in-out w-7 h-7 rounded-full`}>
                   <FontAwesomeIcon icon={faPencil} /></button>
               </Tooltip>
               <Tooltip placement='top' title="Delete Order">
