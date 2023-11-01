@@ -125,35 +125,35 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
             <Form>
               <div className={`grid justify-items-center gap-8 laptoplg:grid-cols-3 grid-cols-2 max-h-[80rem]`}>
                 <div className='grow w-full'>
-                  <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name <span className='text-red-500'>*</span></label>
+                  <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900">First Name <span className='text-red-500'>*</span></label>
                   <Field type="text" name="firstName" id="firstName"
                     className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                   block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                   dark:focus:border-blue-500`} placeholder="First" required />
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name <span className='text-red-500'>*</span></label>
+                  <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-900">Last Name <span className='text-red-500'>*</span></label>
                   <Field type="text" name="lastName" id="lastName" placeholder="Last"
                     className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
                   focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                   dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`} required />
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor='userName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username <span className='text-red-500'>*</span></label>
+                  <label htmlFor='userName' className="block mb-2 text-sm font-medium text-gray-900">Username <span className='text-red-500'>*</span></label>
                   <Field type="text" name="userName" id="signupUserName"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 
                   focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="e.g. JaneD" required />
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Set New Password</label>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Set New Password</label>
                   <Field type="password" name="password" id="signupPassword" placeholder="•••••••••" className="bg-gray-50 border
                                      border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full 
                                      p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
                                      dark:focus:border-blue-500"  />
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor='departmentId' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department <span className='text-red-500'>*</span></label>
+                  <label htmlFor='departmentId' className="block mb-2 text-sm font-medium text-gray-900">Department <span className='text-red-500'>*</span></label>
                   <Field component='select' name="departmentId" id="departmentId"
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600
                   focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
@@ -168,11 +168,11 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                   </Field>
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
                   <Field type="email" name="email" id="email" placeholder="e.g. johnd@inventive-group.com" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor='teamLeadId' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Team Lead</label>
+                  <label htmlFor='teamLeadId' className="block mb-2 text-sm font-medium text-gray-900">Team Lead</label>
                   <Field type="select" name="teamLeadId" id="teamLeadId" component='select'
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block 
                   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
@@ -188,7 +188,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                   </Field>
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor="groupLead" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Group Lead</label>
+                  <label htmlFor="groupLead" className="block mb-2 text-sm font-medium text-gray-900">Group Lead</label>
                   <Field type="select" name="groupLeadId" id="groupLeadId" component='select'
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block 
                                     w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
@@ -204,7 +204,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                   </Field>
                 </div>
                 <div className='grow w-full'>
-                  <label htmlFor="groupLead" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Privileges <span className='text-red-500'>*</span></label>
+                  <label htmlFor="groupLead" className="block mb-2 text-sm font-medium text-gray-900">Privileges <span className='text-red-500'>*</span></label>
                   <Field type="text" name="privileges" id="privileges" component='select' required
                     className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block 
                   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
