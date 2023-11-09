@@ -12,7 +12,6 @@ export const getApprovedOrders = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res, "this the res");
       return res;
     } catch (error) {
       console.log(error);
@@ -31,7 +30,6 @@ export const getProcessingOrder = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res, "processing orders");
       return res;
     } catch (error) {
       console.log(error);
@@ -50,7 +48,6 @@ export const getDeliveredOrders = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res, "this the res");
       return res;
     } catch (error) {
       console.log(error);
@@ -108,7 +105,6 @@ export const deliverOrder = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);

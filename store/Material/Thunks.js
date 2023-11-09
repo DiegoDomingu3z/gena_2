@@ -3,7 +3,6 @@ import { api } from "../../axiosService";
 
 export const getMaterials = createAsyncThunk("materials/get", async (token) => {
   try {
-    console.log(token);
     const res = await api
       .get("api/materials/getall", {
         headers: {
@@ -11,7 +10,6 @@ export const getMaterials = createAsyncThunk("materials/get", async (token) => {
         },
       })
       .then((res) => res.data);
-    // console.log(res)
     return res;
   } catch (error) {
     throw error;
@@ -43,7 +41,6 @@ export const createNewMaterial = createAsyncThunk(
           Authorization: token,
         },
       });
-      console.log(res.data);
       return res;
     } catch (error) {
       throw error;

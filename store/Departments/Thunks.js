@@ -4,7 +4,6 @@ import { api } from "../../axiosService";
 export const getDepartments = createAsyncThunk("departments/get", async () => {
   try {
     const res = await api.get("api/department/all").then((res) => res.data);
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -17,7 +16,6 @@ export const getLeads = createAsyncThunk("leads/get", async () => {
     const res = await api
       .get("api/department/team-lead")
       .then((res) => res.data);
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -36,7 +34,6 @@ export const createDepartment = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -72,7 +69,6 @@ export const updateDepartmentName = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -85,7 +81,6 @@ export const removeDept = createAsyncThunk(
   "remove/department",
   async ({ token, id }) => {
     try {
-      console.log("GETTING CALLED");
       const res = await api
         .delete(`api/department/${id}/remove`, {
           headers: {
@@ -93,7 +88,6 @@ export const removeDept = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -107,7 +101,6 @@ export const getGroupLead = createAsyncThunk("get/groupLead", async () => {
     const res = await api
       .get("api/department/group-leads")
       .then((res) => res.data);
-    console.log(res, "leads");
     return res;
   } catch (error) {
     console.log(error);

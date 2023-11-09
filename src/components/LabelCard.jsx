@@ -44,7 +44,6 @@ const LabelCard = ({
     labels.forEach((l) => {
       l.fields.forEach((f) => {
         if (f.name === "AREA") {
-          console.log("hi");
           fetch(
             `/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`
           )
@@ -132,7 +131,6 @@ const LabelCard = ({
                     };
                     finalArr.push(obj);
                   }
-                  console.log(finalArr);
                   await dispatch(addToBasket({ finalArr, qty, id }));
                   setRender(!render);
                   toast();
@@ -150,7 +148,6 @@ const LabelCard = ({
                           alwaysRendered={alwaysRenderedIframes}
                           src={l}
                           onEnterViewport={() => handleEnterViewport(l._id)}
-                          onLeaveViewport={() => console.log("leave")}
                         />
                       </div>
                       <div className="p-4">

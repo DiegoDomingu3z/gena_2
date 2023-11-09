@@ -88,7 +88,6 @@ const Spending = () => {
     },
     onHover: (event, chartElements) => {
       const { element } = chartRef.current;
-      // console.log(element)
       if (element) {
         element.style.cursor =
           chartElements && chartElements.length > 0 ? "pointer" : "default";

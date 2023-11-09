@@ -4,7 +4,6 @@ import fs from "fs";
 
 export default async (req, res) => {
   const { filePath } = req.query;
-  console.log("%cgetOrders.js line:7 filePath", "color: #26bfa5;", filePath);
 
   if (!filePath) {
     return res.status(400).json({ error: "Missing filePath parameter" });

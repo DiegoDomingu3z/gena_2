@@ -72,7 +72,6 @@ const ProcessingOrders = ({
     const token = sessionStorage.getItem("accessToken");
     dispatch(getAllUsers());
     dispatch(getProcessingOrder(token));
-    console.log("CALLLING");
   }, []);
 
   const getUser = (id) => {
@@ -119,7 +118,6 @@ const ProcessingOrders = ({
               </Divider>
               <Collapse size="large">
                 <Panel
-                  onClick={() => console.log(o._id)}
                   header={`${o.creatorName} - ${o._id} - ${formatDate(
                     o.createdOn
                   )}`}
@@ -185,7 +183,6 @@ const ProcessingOrders = ({
                     {pdf && o.labels[0].qty
                       ? pdf[index].map((p, i) => (
                           <div key={i} className="mb-5 border-b">
-                            {console.log(sanitizePath(o.finalOrderPaths[i]))}
                             <div className="text-center">
                               DOCNUM: {p.docNum}
                             </div>

@@ -105,7 +105,6 @@ export const DepartmentSlice = createSlice({
         state.loading = true;
       })
       .addCase(deleteAccount.fulfilled, (state, action) => {
-        // console.log(state.departments, 'MY SCLICE')
         // state.departments.users = state.departments.users.filter(a => a._id != action.payload._id)
         state.loading = false;
       })

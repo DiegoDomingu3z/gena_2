@@ -53,7 +53,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
   const getUser = (id) => {
     const singleUser = user.filter((u) => u._id == id).shift();
-    console.log(singleUser);
     return `${singleUser?.department}`;
   };
 
@@ -199,7 +198,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
               </Divider>
               <Collapse size="large">
                 <Panel
-                  onClick={() => console.log(o._id)}
                   header={`${o.creatorName} - ${o._id} - ${formatDate(
                     o.createdOn
                   )}`}

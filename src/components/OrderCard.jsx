@@ -83,7 +83,6 @@ const OrderCard = ({
       await dispatch(getMyOrders(token));
       await dispatch(getOrdersToApprove(token));
     };
-    console.log("GETTING CALLED");
     getOrders();
   }, []);
 

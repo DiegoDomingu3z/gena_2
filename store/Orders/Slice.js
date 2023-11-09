@@ -31,12 +31,9 @@ export const OrdersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addToBasket.pending, (state, action) => {
-        console.log("YOLO");
       })
       .addCase(addToBasket.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.labelBasket.push(action.payload);
-        console.log(state.labelBasket, "REDUX STORE");
       })
       .addCase(addToBasket.rejected, (state, action) => {
         console.log(action.error);
@@ -47,7 +44,6 @@ export const OrdersSlice = createSlice({
         const basketLabelsCopy = state.labelBasket.slice();
         basketLabelsCopy.splice(action.payload, 1);
         state.labelBasket = basketLabelsCopy;
-        console.log(state.labelBasket);
       })
       // place order to server
       .addCase(placeOrder.pending, (state, action) => {
@@ -131,7 +127,6 @@ export const OrdersSlice = createSlice({
         console.log(action.error);
       })
       .addCase(updateLabel.fulfilled, (state, action) => {
-        console.log(action.payload);
       })
       .addCase(updateLabel.rejected, (state, action) => {
         console.log(action.error);

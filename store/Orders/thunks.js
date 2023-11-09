@@ -24,7 +24,6 @@ export const addToBasket = createAsyncThunk(
         labelId: id,
         textToPut: finalArr,
       };
-      console.log(sanatizedData);
       return sanatizedData;
     } catch (error) {
       console.log(error);
@@ -88,7 +87,6 @@ export const getMyOrders = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -127,7 +125,6 @@ export const getOrdersToApprove = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -147,7 +144,6 @@ export const approveOrder = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -166,7 +162,6 @@ export const declineOrder = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -190,7 +185,6 @@ export const updateLabel = createAsyncThunk(
   "order/updateLabel",
   async ({ token, orderId, labelId, valuesArray }) => {
     try {
-      console.log(valuesArray, "info");
       const res = await api.put(
         `api/orders/update/${orderId}/label/${labelId}`,
         valuesArray,
@@ -214,7 +208,6 @@ export const getGroupLeadOrderApproveLabels = createAsyncThunk(
       const res = await api
         .post("api/orders/group-lead/labels/to-see", orderArr)
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);

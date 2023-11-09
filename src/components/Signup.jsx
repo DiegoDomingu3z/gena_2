@@ -31,11 +31,8 @@ const Signup = () => {
     dispatch(getGroupLead());
   }, []);
 
-  console.log(groupLeads, "leads");
   const toast = async (firstName, lastName, departmentId) => {
-    console.log(dept);
     const dep = dept.filter((d) => d._id == departmentId);
-    console.log(dep);
     Swal.fire({
       toast: true,
       title: `${firstName} ${lastName} is now part of the ${dep[0].name} team`,
@@ -87,7 +84,6 @@ const Signup = () => {
             groupLeadId: "",
           }}
           onSubmit={async (values) => {
-            console.log(values);
             dispatch(createAccount(values))
               .then((res) => {
                 toast(values.firstName, values.lastName, values.departmentId);

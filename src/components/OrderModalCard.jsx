@@ -99,7 +99,6 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
           `/api/getPdfs?categoryName=${label.categoryName}&subCategoryName=${label.subCategoryName}&fileName=${label.fileName}`,
           labels[i].textToPut
         );
-        // console.log("Running", i)
         setBlobs((prev) => [...prev, modifiedLabel]);
         l.push(modifiedLabel);
       }

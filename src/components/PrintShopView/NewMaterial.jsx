@@ -88,8 +88,6 @@ const NewMaterial = ({
               const foundMatch = materialsArray.some(
                 (v) => v.name.toLowerCase() == values.name.toLowerCase()
               );
-              console.log(foundMatch);
-              console.log(materialsArray);
               if (!foundMatch) {
                 await dispatch(createNewMaterial({ token, values }));
                 await fetchMaterials();

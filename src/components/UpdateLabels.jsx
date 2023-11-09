@@ -21,7 +21,6 @@ const UpdateLabels = () => {
       confirmButtonText: "Delete!",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(account.accessToken);
         Swal.fire("Deleted!", `${labelName} label has been deleted`, "success");
         dispatch(removeLabel({ id, token }));
       }

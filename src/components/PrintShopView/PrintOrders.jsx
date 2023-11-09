@@ -25,7 +25,6 @@ const PrintOrders = () => {
   const pickTab = (e) => {
     setTab(e.key);
   };
-  console.log(deliveredOrders);
 
   return (
     <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>

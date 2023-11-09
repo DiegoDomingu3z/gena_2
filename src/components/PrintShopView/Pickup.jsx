@@ -65,7 +65,6 @@ const Pickup = ({ readyForPickupOrders }) => {
       },
     });
     if (pickUpName) {
-      console.log(pickUpName);
       const updatedOrder = api
         .put(
           `/api/orders/${id}/picked-up-by`,
@@ -183,7 +182,6 @@ const Pickup = ({ readyForPickupOrders }) => {
                     {pdf && r.labels[0].qty
                       ? pdf[index].map((p, i) => (
                           <div key={i} className="mb-5 border-b">
-                            {console.log(sanitizePath(r.finalOrderPaths[i]))}
                             <div className="text-center">
                               DOCNUM: {p.docNum}
                             </div>

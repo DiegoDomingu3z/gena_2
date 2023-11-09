@@ -208,7 +208,6 @@ const DepartmentView = ({ triggerUseEffect, setTriggerUseEffect, data }) => {
             name: "",
           }}
           onSubmit={async (values) => {
-            console.log(values);
             createDept(values);
             document.getElementById("deptForm").reset();
           }}

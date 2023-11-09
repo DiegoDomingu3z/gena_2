@@ -50,7 +50,6 @@ const CartCanvasDrawer = ({
     await dispatch(placeOrder({ orderNote, basket, token }));
     setOrderNote("");
     const basketLabelsCopy = basketLabels.slice();
-    console.log(basketLabelsCopy);
     basketLabelsCopy.splice(0, 1);
     setBasketLabels(basketLabelsCopy);
     toast();
@@ -124,7 +123,6 @@ const CartCanvasLabelCard = ({
   const [runEffect, setRunEffect] = useState(true);
   const prevRunEffect = useRef(runEffect);
   const removeFromOrder = async (index) => {
-    console.log(index);
     await dispatch(removeFromBasket(index));
     const updatedBasketLabels = basketLabels.filter((_, i) => i !== index);
     setRunEffect(!runEffect);
@@ -143,8 +141,6 @@ const CartCanvasLabelCard = ({
           setBasketLabels(start);
           setBasketLabels((prevFiles) => [...prevFiles, labelObj]);
         }
-        // console.log(basket, 'bsdd')
-        // console.log(basketLabels)
       }
     };
     getLabels();
@@ -153,18 +149,11 @@ const CartCanvasLabelCard = ({
   useEffect(() => {
     setBlobs([]);
     if (basket.length < 1) {
-      console.log(blobs.length);
       return;
     } else {
       const modifyPaths = async () => {
         for (let i = 0; i < basketLabels.length; i++) {
           const actualLabel = basketLabels[i];
-          console.log(actualLabel);
-          console.log(
-            "%cCartCanvasDrawer.jsx line:129 basketLabels",
-            "color: #26bfa5;",
-            basketLabels
-          );
           let modifiedPdf;
           modifiedPdf = await modifyPdf(
             `/api/getPdfs?categoryName=${actualLabel.categoryName}&subCategoryName=${actualLabel.subCategoryName}&fileName=${actualLabel.fileName}`,
@@ -180,7 +169,6 @@ const CartCanvasLabelCard = ({
 
   const modifyPdf = async (path, text) => {
     try {
-      // console.log(path)
       const existingPdfBytes = await fetch(path).then((res) =>
         res.arrayBuffer()
       );
@@ -188,8 +176,6 @@ const CartCanvasLabelCard = ({
 
       const form = pdfDoc.getForm();
       const fieldNames = form.getFields().map((field) => field.getName());
-      // console.log(fieldNames)
-
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
         let check;
@@ -199,7 +185,6 @@ const CartCanvasLabelCard = ({
           if (text[i].text) {
             checkbox.check();
           }
-          console.log(check, "checkss");
         } catch (error) {
           if (check != true) {
             if (fieldName == "AREA") {
@@ -208,10 +193,8 @@ const CartCanvasLabelCard = ({
             } else {
               const fieldToFill = form.getTextField(fieldName);
               if (!text) {
-                console.log(text);
                 return;
               } else {
-                console.log(text);
                 fieldToFill.setText(text[i].text);
               }
             }
@@ -237,7 +220,6 @@ const CartCanvasLabelCard = ({
 
   const seeLabel = (index) => {
     if (blobs.length > 0) {
-      // console.log(blobs, "HEREEEEE")
       return (
         <div className="flex justify-center">
           <iframe
@@ -266,12 +248,6 @@ const CartCanvasLabelCard = ({
       {basketLabels.length > 0 ? (
         basketLabels.map((label, i) => (
           <div key={i}>
-            {/* {console.log(basket)} */}
-            {/* {console.log(basketLabels)} */}
-            {/* <div className='flex justify-center'>
-              <iframe className='rounded' src={`images/pdflabels/${label.categoryName}/${label.subCategoryName}/${label.fileName}`}
-                width="80%" height="50%" frameborder="0" ></iframe>
-            </div> */}
             {seeLabel(i)}
             <div className="border-b-2 p-4 flex mb-2">
               <div className="flex gap-24 mr-auto">

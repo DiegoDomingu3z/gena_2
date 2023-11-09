@@ -155,7 +155,6 @@ const NewLabel = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setSerialNum(result.value);
-          console.log(result.value);
         }
       });
     }
@@ -176,7 +175,6 @@ const NewLabel = () => {
     let cat = category.categories.filter((c) => c._id == id);
     setActiveCategory(cat[0]._id);
     let filteredSubCats = subCategory.subCats.filter((c) => c.categoryId == id);
-    console.log(filteredSubCats, activeSubCats);
     filteredSubCats ? setActiveSubCats(filteredSubCats) : setActiveSubCats("");
   };
 
@@ -227,7 +225,6 @@ const NewLabel = () => {
     if (isSerialCheck == true) {
       data.currentSerialNum = parseInt(startingSerial);
     }
-    console.log(data);
     const formData = await pushFiles();
     dispatch(createLabelInfo({ data, formData }));
   };

@@ -12,7 +12,6 @@ export const sendCredentials = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);

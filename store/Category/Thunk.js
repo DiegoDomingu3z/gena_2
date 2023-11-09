@@ -4,7 +4,6 @@ import { api } from "../../axiosService";
 export const getCategories = createAsyncThunk("category/getall", async () => {
   try {
     const res = await api.get("/api/category/all").then((res) => res.data);
-    console.log(res, "DATA");
     return res;
   } catch (error) {
     throw error;
@@ -15,7 +14,6 @@ export const addCategory = createAsyncThunk(
   "category/add",
   async ({ values, token }) => {
     try {
-      console.log(values);
       const res = await api
         .post("/api/category/create", values, {
           headers: {
@@ -23,7 +21,6 @@ export const addCategory = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res, "THUNK DATA");
       return res;
     } catch (error) {
       console.log(error);
@@ -43,7 +40,6 @@ export const removeCategory = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -54,7 +50,6 @@ export const removeCategory = createAsyncThunk(
 
 export const getCategory = createAsyncThunk("category/by-id", async (id) => {
   try {
-    console.log(id);
     const res = await api.get(`api/category/${id}`).then((res) => res.data);
     return res;
   } catch (error) {
@@ -75,7 +70,6 @@ export const updateCategory = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);

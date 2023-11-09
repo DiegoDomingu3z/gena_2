@@ -12,7 +12,6 @@ export const createAccount = createAsyncThunk(
       return res;
     } catch (error) {
       const { data } = error.response;
-      console.log(data);
       return data;
     }
   }
@@ -43,7 +42,6 @@ export const login = createAsyncThunk("account/login", async (loginData) => {
     return res;
   } catch (error) {
     const { data } = error.response;
-    console.log(data);
     return data;
   }
 });
@@ -65,7 +63,6 @@ export const logout = createAsyncThunk("account/logout", async (token) => {
 export const deleteAccount = createAsyncThunk(
   "account/delete",
   async ({ id, token }) => {
-    console.log(token);
     try {
       const res = await api
         .delete(`api/account/delete-user/${id}`, {
@@ -74,7 +71,6 @@ export const deleteAccount = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res, "THIS IS THE RES BRO");
       return res;
     } catch (error) {
       throw error;
@@ -87,7 +83,6 @@ export const getAllUsers = createAsyncThunk("all/users", async () => {
     const res = await api.get("api/account/all").then((res) => res.data);
     return res;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 });
@@ -103,7 +98,6 @@ export const updateUser = createAsyncThunk(
           },
         })
         .then((res) => res.data);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);

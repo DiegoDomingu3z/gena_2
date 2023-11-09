@@ -82,7 +82,6 @@ const LeadsOrderApproval = () => {
       const updatedModifiedPdfDataUris = prevModifiedPdfDataUris.filter(
         (_, index) => index !== orderId
       );
-      console.log(updatedModifiedPdfDataUris);
       return updatedModifiedPdfDataUris;
     });
     getLabels();
@@ -201,8 +200,6 @@ const LeadsOrderApproval = () => {
       return pdfDataUri;
     }
   };
-  console.log(order);
-  console.log(modifiedPdfDataUris);
 
   const createDataUri = async (pdfBytes) => {
     const pdfData = await new Blob([pdfBytes], { type: "application/pdf" });

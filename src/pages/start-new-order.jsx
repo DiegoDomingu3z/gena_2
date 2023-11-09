@@ -62,7 +62,6 @@ const StartNewOrder = () => {
 
   useEffect(() => {
     if (activeCategory && activeSubCategoryId) {
-      console.log(activeCategory, activeSubCategoryId, "IN EFFECT");
       dispatch(getLabels({ activeCategory, activeSubCategoryId }));
     }
   }, [activeCategory, activeSubCategoryId]);
