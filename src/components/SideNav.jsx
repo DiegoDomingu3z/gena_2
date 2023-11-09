@@ -98,9 +98,9 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
           {user.accessToken && <button
             onClick={() => setTicketModal(!ticketModal)}
             id="reportBtn"
-            className='text-white mb-5 absolute bottom-14 left-4 bg-yellow-600 px-3 py-1 rounded-full transition-all ease-in-out transform-gpu group-hover:scale-110'
+            className='text-white ml-4 mb-5 absolute bottom-14 left-4 bg-yellow-600 px-8 py-1 rounded-full transition-all ease-in-out transform-gpu group-hover:scale-110'
           >
-            <FontAwesomeIcon icon={faReceipt} />
+            Submit a Ticket <FontAwesomeIcon icon={faReceipt} />
           </button>}
         </div>
         {<div className='text-white bg-[#1e2a38] w-full h-full flex justify-center items-center text-md'>
