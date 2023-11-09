@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Chart } from 'chart.js/auto';
-import { Tooltip } from 'react-tooltip';
+import React, { useState, useEffect, useRef } from "react";
+import { Chart } from "chart.js/auto";
+import { Tooltip } from "react-tooltip";
 
 const Spending = () => {
   const [chart, setChart] = useState(null);
@@ -9,19 +9,32 @@ const Spending = () => {
   const chartRef = useRef(null);
 
   const today = new Date();
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = today.toLocaleString('default', { month: 'long' }); //January is 0!
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = today.toLocaleString("default", { month: "long" }); //January is 0!
   const yyyy = today.getFullYear();
-  const date = mm + ' ' + dd;
+  const date = mm + " " + dd;
 
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
     datasets: [
       {
-        label: 'Money Spent',
+        label: "Money Spent",
         // We'll dynamically push data to this data array. It goes from January to December, so the first number in the array will be charted for January and so forth.
         data: [300, 800, 450, 320],
-        backgroundColor: '#1baded',
+        backgroundColor: "#1baded",
         pointRadius: 4,
         pointHoverRadius: 6,
         pointHitRadius: 6,
@@ -30,7 +43,7 @@ const Spending = () => {
       },
     ],
   };
-  
+
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -41,12 +54,12 @@ const Spending = () => {
           display: true,
           font: {
             size: 16,
-            weight: 'bold',
+            weight: "bold",
           },
         },
         grid: {
-            display: false,
-        }
+          display: false,
+        },
       },
       y: {
         display: true,
@@ -54,12 +67,12 @@ const Spending = () => {
           display: true,
           font: {
             size: 16,
-            weight: 'bold',
+            weight: "bold",
           },
         },
         grid: {
-            display: false,
-        }
+          display: false,
+        },
       },
     },
     plugins: {
@@ -77,7 +90,8 @@ const Spending = () => {
       const { element } = chartRef.current;
       // console.log(element)
       if (element) {
-        element.style.cursor = chartElements && chartElements.length > 0 ? 'pointer' : 'default';
+        element.style.cursor =
+          chartElements && chartElements.length > 0 ? "pointer" : "default";
       }
     },
   };
@@ -87,9 +101,9 @@ const Spending = () => {
       chart.destroy();
     }
 
-    const ctx = chartRef.current.getContext('2d');
+    const ctx = chartRef.current.getContext("2d");
     const newChart = new Chart(ctx, {
-      type: 'bar',
+      type: "bar",
       data: data,
       options: options,
     });
@@ -104,18 +118,18 @@ const Spending = () => {
   // Rest of the code...
 
   return (
-    <div className='bg-white h-full rounded-lg drop-shadow-md font-genaPrimary p-4 w-full'>
-        <div className="mb-10">
-            {/* Spending Report: */}
-            {/* {tooltipContent && tooltipContent.raw && tooltipContent.raw[0] ? tooltipContent.raw[0].y : ''} */}
-            <p className='text-2xl'>$236.40</p>
-        </div>
+    <div className="bg-white h-full rounded-lg drop-shadow-md font-genaPrimary p-4 w-full">
+      <div className="mb-10">
+        {/* Spending Report: */}
+        {/* {tooltipContent && tooltipContent.raw && tooltipContent.raw[0] ? tooltipContent.raw[0].y : ''} */}
+        <p className="text-2xl">$236.40</p>
+      </div>
       <div>
-        <canvas className='w-[35.5rem]' ref={chartRef} id="line-chart" />
+        <canvas className="w-[35.5rem]" ref={chartRef} id="line-chart" />
         {tooltipContent && tooltipContent.raw && tooltipContent.raw.y && (
-            <Tooltip place="top" type="dark" effect="solid">
-                {tooltipContent.raw.y}
-            </Tooltip>
+          <Tooltip place="top" type="dark" effect="solid">
+            {tooltipContent.raw.y}
+          </Tooltip>
         )}
       </div>
     </div>
