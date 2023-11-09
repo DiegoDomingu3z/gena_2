@@ -28,23 +28,23 @@ const DeliveredOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =>
     }
 
     const deleteOldOrder = async (id, token) => {
-      await dispatch(deleteDeliveredOrder({id, token}))
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        iconColor: 'white',
-        customClass: {
-            popup: 'colored-toast',
-            container: 'top-margin',
-        },
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true
-    })
-    await Toast.fire({
-        icon: 'success',
-        title: `Deleted Order ID: ${id}`
-    })
+        await dispatch(deleteDeliveredOrder({ id, token }))
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+                container: 'top-margin',
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+        })
+        await Toast.fire({
+            icon: 'success',
+            title: `Deleted Order ID: ${id}`
+        })
     }
 
     const getUserName = (id) => {
@@ -69,9 +69,8 @@ const DeliveredOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =>
         if (path) {
             let realPath = path.slice(47)
             return `${realPath}`
-        } 
-        
-        return ""
+        }
+        return ''
     }
 
     const openFileManager = async (id) => {
@@ -85,7 +84,7 @@ const DeliveredOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =>
                     <div key={o._id} >
                         <Divider orientation="left" className="flex"> Department: {user.length > 0 ? <span>{getUser(o.creatorId)}</span> : <RingLoader size={6} />} </Divider>
                         <Collapse size="large">
-                            <Panel onClick={() => console.log(o._id)} header={`${o.creatorName} - ${o._id} - ${formatDate(o.createdOn)}`} key={o._id} extra={
+                            <Panel onClick={() => console.log(o._id)} header={`${o.creatorName} - ${o._id} - ${formatDate(o.createdOn)} - Picked Up By: ${o.pickedUpBy ? o.pickedUpBy : 'N/A'}`} key={o._id} extra={
                                 <div>
                                     {day - formatDate(o.updatedOn).split('/')[1] == 14 && <button onClick={() => deleteOldOrder(o._id, currentUser.accessToken)} className="hover:bg-red-500 hover:text-white transition-all ease-in-out rounded-full px-3 py-1"><FontAwesomeIcon icon={faTrash} /></button>}
                                 </div>
