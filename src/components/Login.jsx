@@ -79,19 +79,40 @@ const Login = () => {
                         <Form className="space-y-4 md:space-y-6" >
                             <div>
                                 <div className='flex'>
-                                    <label htmlFor='Username' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white mr-auto">Username</label>
+                                    <label htmlFor='Username' className="block mb-2 text-sm font-medium text-gray-900 mr-auto">Username</label>
                                     {user.account === 'ACCOUNT DOES NOT EXISTS' && <p className='text-red-500 text-sm'>* User does not exist</p>}
                                 </div>
                                 <Field type="text" name="userName" autoComplete="userName" id="userName" className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${user.account === 'ACCOUNT DOES NOT EXISTS' && 'animate-wiggle border-red-500'}`} placeholder="Enter username" required="" />
                             </div>
                             <div>
                                 <div className="flex">
-                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white mr-auto">Password</label>
+                                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 mr-auto">Password</label>
                                     {user.account === 'INCORRECT Password' && <p className="text-red-500 text-sm">* Incorrect Password</p>}
                                 </div>
-                                <div className='relative'>
-                                    <Field type={showPassword ? 'text' : 'password'} name="password" id="password" placeholder="••••••••" autoComplete="password"
-                                        className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${user.account === 'INCORRECT Password' && 'animate-wiggle border-red-500'}`} required="" /><FontAwesomeIcon className={`absolute top-[35%] right-[10%] laptop:right-[6%] hover:cursor-pointer w-[20px] ${showPassword && 'hidden'}`} onClick={() => setShowPassword(true)} icon={faEye} /> <FontAwesomeIcon className={`absolute top-[35%] right-[9.9%] laptop:right-[5.9%] hover:cursor-pointer w-[20px] ${!showPassword && 'hidden'}`} onClick={() => setShowPassword(false)} icon={faEyeSlash} />
+                                <div className="relative">
+                                    <Field
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        id="password"
+                                        placeholder="••••••••"
+                                        autoComplete="password"
+                                        className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${user.account === "INCORRECT Password" &&
+                                            "animate-wiggle border-red-500"
+                                            }`}
+                                        required=""
+                                    />
+                                    <FontAwesomeIcon
+                                        className={`absolute top-[35%] right-[10%] laptop:right-[6%] hover:cursor-pointer dark:fill-white w-[20px] ${showPassword && "hidden"
+                                            }`}
+                                        onClick={() => setShowPassword(true)}
+                                        icon={faEye}
+                                    />
+                                    <FontAwesomeIcon
+                                        className={`absolute top-[35%] right-[9.9%] laptop:right-[5.9%] dark:fill-white hover:cursor-pointer w-[20px] ${!showPassword && "hidden"
+                                            }`}
+                                        onClick={() => setShowPassword(false)}
+                                        icon={faEyeSlash}
+                                    />
                                 </div>
                             </div>
                             <div className="flex items-center justify-between">

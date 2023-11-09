@@ -114,3 +114,37 @@ export const deliverOrder = createAsyncThunk(
         }
     }
 )
+
+export const getReadyForPickUpOrders = createAsyncThunk(
+    'orders/pickup',
+    async (token) => {
+        try {
+            const res = await api.get('api/orders/ready-for-pickup', {
+                headers: {
+                    Authorization: token
+                }
+            })
+                .then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+)
+
+export const updateToPickup = createAsyncThunk(
+    'pickup/order',
+    async ({ token, id }) => {
+        try {
+            const res = await api.put(`api/orders/${id}/update-to-pickup`, null, {
+                headers: {
+                    Authorization: token
+                }
+            }).then((res) => res.data)
+            return res
+        } catch (error) {
+            console.log(error)
+        }
+    }
+)

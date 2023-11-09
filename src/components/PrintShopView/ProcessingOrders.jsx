@@ -6,9 +6,9 @@ import { PrinterOutlined, UploadOutlined, DownloadOutlined } from '@ant-design/i
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faNoteSticky, faCheckCircle, faAdd, faFile, faCircle } from '@fortawesome/free-solid-svg-icons'
+import { faNoteSticky, faCheckCircle, faAdd, faFile, faCircle, faEnvelopeOpen } from '@fortawesome/free-solid-svg-icons'
 import { api } from "../../../axiosService";
-import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder } from "../../../store/PrintShop/Thunks";
+import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder, getReadyForPickUpOrders, updateToPickup } from "../../../store/PrintShop/Thunks";
 import Swal from "sweetalert2";
 
 const { Panel } = Collapse;
@@ -21,29 +21,30 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
 
     const markOrderAsDelivered = async (id) => {
         const token = sessionStorage.getItem('accessToken')
-        await dispatch(deliverOrder({ token, id })).then(async (res) => {
+        await dispatch(updateToPickup({ token, id })).then(async (res) => {
             await dispatch(getApprovedOrders(token))
             await dispatch(getProcessingOrder(token))
             await dispatch(getDeliveredOrders(token))
+            await dispatch(getReadyForPickUpOrders(token))
             const Toast = Swal.mixin({
-            toast: true,
-            position: 'top',
-            iconColor: 'white',
-            customClass: {
-                popup: 'colored-toast',
-                container: 'top-margin',
-            },
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true
-         })
-            await Toast.fire({
-            icon: 'success',
-            title: `Delivered Order ID: ${id}`
+                toast: true,
+                position: 'top',
+                iconColor: 'white',
+                customClass: {
+                    popup: 'colored-toast',
+                    container: 'top-margin',
+                },
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
             })
-    }).catch((err) => {
-        console.log(err)
-    })
+            await Toast.fire({
+                icon: 'success',
+                title: `Updated Order ID: ${id} to Ready For Pickup`
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
 
@@ -84,7 +85,7 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
     };
 
 
-   
+
 
     return (
         <div>
@@ -112,19 +113,19 @@ const ProcessingOrders = ({ deliverMultipleOrders, setDeliverMultipleOrders }) =
                                     }
                                     {!deliverMultipleOrders.includes(o._id) ?
 
-                                        <Tooltip placement="top" title={`Deliver ${o.creatorName}'s Order?`} >
+                                        <Tooltip placement="top" title={`Update ${o.creatorName}'s Order to Ready For Pickup?`} >
                                             <button onClick={(event) => {
                                                 markOrderAsDelivered(o._id)
                                                 event.stopPropagation();
                                             }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
-                                                <FontAwesomeIcon icon={faCheckCircle} />
+                                                <FontAwesomeIcon icon={faEnvelopeOpen} />
                                             </button>
                                         </Tooltip>
 
 
                                         : null}
 
-                                        
+
                                     {/* {!deliverMultipleOrders.includes(o._id)
                                         ?
                                         <Tooltip placement="top" title={`Add to Deliver multiple?`} >

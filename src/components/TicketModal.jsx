@@ -75,15 +75,15 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
         >
           <Form>
             <div className='mt-10'>
-              <label htmlFor="subject" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Subject</label>
+              <label htmlFor="subject" className='block mb-2 text-sm font-medium text-gray-900'>Subject</label>
               <Field type="text" name="subject" id="subject" className='bg-gray-50 border border-gray-300
               text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 mb-5'>
               </Field>
-              <label htmlFor="description" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Description</label>
+              <label htmlFor="description" className='block mb-2 text-sm font-medium text-gray-900'>Description</label>
               <Field type="text" component="textarea" name="description" id="description" className='bg-gray-50 border border-gray-300
               text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 max-h-[10rem] min-h-[5rem] mb-5'>
               </Field>
-              <label htmlFor="importance" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Importance</label>
+              <label htmlFor="importance" className='block mb-2 text-sm font-medium text-gray-900'>Importance</label>
               <Field component="select" name="importance" id="importance" required="" className='bg-gray-50 border border-gray-300
               text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[60%] lg:w-[50%] p-2.5 mb-10'>
                 <option className='text-gray-500' selected>What is the business impact?</option>

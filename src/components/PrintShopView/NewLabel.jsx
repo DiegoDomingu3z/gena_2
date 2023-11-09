@@ -289,7 +289,7 @@ const NewLabel = () => {
                             <Form id='newLabelForm'>
                                 <div className='flex justify-around gap-8'>
                                     <div className='grow'>
-                                        <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Label Name <span className='text-red-500'>*</span></label>
+                                        <label htmlFor='firstName' className="block mb-2 text-sm font-medium text-gray-900">Label Name <span className='text-red-500'>*</span></label>
                                         <Field value={name} name="labelName" onChange={(e) => handleNameChange(e.target.value)} type="text" component="select" id="labelName" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
@@ -314,14 +314,14 @@ const NewLabel = () => {
                                         )}
                                     </div>
                                     <div className='grow'>
-                                        <label htmlFor="docNum" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Document Number <span className='text-red-500'>*</span></label>
+                                        <label htmlFor="docNum" className="block mb-2 text-sm font-medium text-gray-900">Document Number <span className='text-red-500'>*</span></label>
                                         <Field onChange={setDocNum} value={docNum} type="text" name="docNum" id="docNum" placeholder="Doc #" className="bg-gray-50 border
                                         border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                                         block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                         dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                                     </div>
                                     <div className='grow'>
-                                        <label htmlFor="maxOrderQty" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Max Order Qty <span className='text-red-500'>*</span></label>
+                                        <label htmlFor="maxOrderQty" className="block mb-2 text-sm font-medium text-gray-900">Max Order Qty <span className='text-red-500'>*</span></label>
                                         <Field type="number" name="maxOrderQty" id="maxOrderQty" placeholder="Max #" className="bg-gray-50 
                                         border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 
                                         block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
@@ -330,14 +330,14 @@ const NewLabel = () => {
                                 </div>
                                 <div className='grid grid-cols-2 gap-x-8 mt-10'>
                                     <div className=''>
-                                        <label htmlFor='unitPack' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Units Per Pack <span className='text-red-500'>*</span></label>
+                                        <label htmlFor='unitPack' className="block mb-2 text-sm font-medium text-gray-900">Units Per Pack <span className='text-red-500'>*</span></label>
                                         <Field type="number" name="unitPack" id="unitPack" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400
                                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" placeholder="#" required />
                                     </div>
                                     <div className=''>
-                                        <label htmlFor="materialTypeId" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Type <span className='text-red-500'>*</span></label>
+                                        <label htmlFor="materialTypeId" className="block mb-2 text-sm font-medium text-gray-900">Material Type <span className='text-red-500'>*</span></label>
                                         <Field component='select' name="materialTypeId" id="materialTypeId" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" required >
@@ -356,7 +356,7 @@ const NewLabel = () => {
                                 <div className='grid grid-cols-2 gap-x-8 mt-10'>
 
                                     <div className=''>
-                                        <label htmlFor="materialType" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Name<span className='text-red-500'>*</span></label>
+                                        <label htmlFor="materialType" className="block mb-2 text-sm font-medium text-gray-900">Category Name<span className='text-red-500'>*</span></label>
                                         <Field onChange={filterSubCats} value={activeCategory} component='select' name="categoryId" id="categoryId" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" required >
@@ -372,7 +372,7 @@ const NewLabel = () => {
                                         </Field>
                                     </div>
                                     <div className=''>
-                                        <label htmlFor='unitPack' className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sub-Category Name<span className='text-red-500'>*</span></label>
+                                        <label htmlFor='unitPack' className="block mb-2 text-sm font-medium text-gray-900">Sub-Category Name<span className='text-red-500'>*</span></label>
                                         <Field component='select' disabled={activeSubCats.length == 0 && true} name="subCategoryId" id="subCategoryId" className="bg-gray-50 border border-gray-300
                                         text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-full" required >
@@ -455,12 +455,12 @@ const NewLabel = () => {
                                         {files.length > 0 ?
                                             <div className='mt-5'>
                                                 <div className='grow flex mb-5'>
-                                                    <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Bulk Label?</label>
+                                                    <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900'>Bulk Label?</label>
                                                     <Field onClick={handleBulkCheckBoxChange} type='checkbox' name='isBulkLabel' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
                                                 </div>
                                                 {isBulkChecked == true ?
                                                     <div className='grow flex mb-5'>
-                                                        <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Serial Number Label?</label>
+                                                        <label htmlFor="isBulkLabel" className='block mb-2 text-sm font-medium text-gray-900'>Serial Number Label?</label>
                                                         <Field onClick={handleSerialCheckChange} type='checkbox' name='isSerialChecked' className='h-4 ms-5 w-4 text-primary-600 focus:outline outline-2 outline-offset-2 rounded-md' />
                                                         {startingSerial && isSerialCheck ?
                                                             <div className='ms-3'>{startingSerial}</div> : null}
@@ -505,7 +505,7 @@ const NewLabel = () => {
                                                     <div className='mt-20'>
 
                                                         <iframe src={URL.createObjectURL(files[1])} frameborder="0" ></iframe>
-                                                        <div className='block mb-4 text-md font-medium text-gray-900 dark:text-white mt-7'>Label to Print</div>
+                                                        <div className='block mb-4 text-md font-medium text-gray-900 mt-7'>Label to Print</div>
                                                     </div>
                                                     : <div className='grow mt-8'>
                                                         <div class="flex">

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder, deleteDeliveredOrder } from "./Thunks";
+import { deliverOrder, getApprovedOrders, getDeliveredOrders, getProcessingOrder, printOrder, deleteDeliveredOrder, updateToPickup, getReadyForPickUpOrders } from "./Thunks";
 
 
 
@@ -13,6 +13,7 @@ export const PrintShopSlice = createSlice({
         approvedOrders: [],
         processingOrders: [],
         deliveredOrders: [],
+        pickupOrders: [],
         loading: false
     },
     reducers: {
@@ -77,6 +78,26 @@ export const PrintShopSlice = createSlice({
                 state.loading = false
                 state.processingOrders.orders = state.processingOrders.orders.filter(o => o._id != action.payload._id)
             })
+            .addCase(updateToPickup.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(updateToPickup.fulfilled, (state, action) => {
+                state.pickupOrders.orders = state.pickupOrders.orders.filter(o => o._id != action.payload._id)
+                state.loading = false
+            })
+            .addCase(updateToPickup.rejected, (state, action) => {
+                console.log(action.error)
+            })
+            .addCase(getReadyForPickUpOrders.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(getReadyForPickUpOrders.fulfilled, (state, action) => {
+                state.pickupOrders = action.payload
+            })
+            .addCase(getReadyForPickUpOrders.rejected, (state, action) => {
+                console.log(action.error)
+            })
+
     }
 })
 
