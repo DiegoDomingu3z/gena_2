@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 export const useScrollPosition = (containerRef) => {
-    const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-    useEffect(() => {
-        const container = containerRef.current;
+  useEffect(() => {
+    const container = containerRef.current;
 
-        const updatePosition = () => {
-            setScrollPosition(container.scrollTop);
-        }
+    const updatePosition = () => {
+      setScrollPosition(container.scrollTop);
+    };
 
-        container.addEventListener('scroll', updatePosition);
-        updatePosition();
+    container.addEventListener("scroll", updatePosition);
+    updatePosition();
 
-        return () => container.removeEventListener('scroll', updatePosition);
-    }, [containerRef])
+    return () => container.removeEventListener("scroll", updatePosition);
+  }, [containerRef]);
 
-    return scrollPosition;
-}
+  return scrollPosition;
+};
