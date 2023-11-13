@@ -256,7 +256,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                       })
                     }
                   </div>
-                  <div className='text-center mt-3'><button className={`${activeOrder.status == 'processing' || 'delivered' ? 'hidden' : ''}bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out`} type='submit' disabled={isSubmitting}>Update Label</button></div>
+                  <div className='text-center mt-3'><button className={`${activeOrder.status == 'processing' || activeOrder.status == 'delivered' ? 'hidden' : ''} bg-[#1baded] px-3 py-1 rounded-lg text-white mt-2 hover:bg-[#16b9ff] hover:scale-110 hover:shadow-md transition-all ease-in-out`} type='submit' disabled={isSubmitting}>Update Label</button></div>
                 </div>
               </div>
             </Form>
