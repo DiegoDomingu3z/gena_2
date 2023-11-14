@@ -14,6 +14,7 @@ import {
   faUsers,
   faPrint,
   faReceipt,
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { useLoginInput } from "~/Contexts/LoginContext";
@@ -186,6 +187,19 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
           >
             <FontAwesomeIcon className="text-slate-400" icon={faUser} />
             <span className="font-genaPrimary">Add User</span>
+          </button>
+        </Link>
+        <Link
+          href={"/resources"}
+        >
+          <button
+            className={`h-14 w-full flex items-center gap-6 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${
+              router.pathname === "/resources" &&
+              "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
+            }`}
+          >
+            <FontAwesomeIcon className="text-slate-400" icon={faFile} />
+            <span className="font-genaPrimary">Resources</span>
           </button>
         </Link>
       </div>
