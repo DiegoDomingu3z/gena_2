@@ -21,6 +21,29 @@ const CartCanvasDrawer = ({
   const [orderNote, setOrderNote] = useState("");
   const basket = useSelector((state) => state.Orders.labelBasket);
   const dispatch = useDispatch();
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useCanvasDrawer } from "~/Contexts/canvasDrawerContext";
+import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightLong, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  clearBasket,
+  getBasketLabels,
+  placeOrder,
+  removeFromBasket,
+} from "../../store/Orders/thunks";
+import Swal from "sweetalert2";
+import { PDFDocument } from "pdf-lib";
+const CartCanvasDrawer = ({
+  toggleCartCanvas,
+  setToggleCartCanvas,
+  render,
+}) => {
+  const [basketLabels, setBasketLabels] = useState([]);
+  const [orderNote, setOrderNote] = useState("");
+  const basket = useSelector((state) => state.Orders.labelBasket);
+  const dispatch = useDispatch();
   const handleNote = (event) => {
     let note = event.target.value;
     setOrderNote(note);

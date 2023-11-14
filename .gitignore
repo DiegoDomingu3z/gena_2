@@ -8,6 +8,8 @@
 /server/images/
 # testing
 /coverage
+axiosService.js
+/.vscode
 
 # next.js
 /.next/

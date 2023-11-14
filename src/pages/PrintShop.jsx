@@ -2,11 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "~/components/Layout";
 import PrintOrders from "~/components/PrintShopView/PrintOrders";
-import { getApprovedOrders, getDeliveredOrders, getProcessingOrder } from "../../store/PrintShop/Thunks";
+import { getApprovedOrders, getDeliveredOrders, getProcessingOrder, getReadyForPickUpOrders } from "../../store/PrintShop/Thunks";
 import { io } from "socket.io-client";
-
-
-
 
 const PrintShop = () => {
     const dispatch = useDispatch()
@@ -18,7 +15,7 @@ const PrintShop = () => {
             await dispatch(getApprovedOrders(token))
             await dispatch(getProcessingOrder(token))
             await dispatch(getDeliveredOrders(token))
-            console.log('getting called')
+            await dispatch(getReadyForPickUpOrders(token));
         }
         getOrders()
 
@@ -38,6 +35,5 @@ const PrintShop = () => {
         </Layout>
     )
 }
-
 
 export default PrintShop;
