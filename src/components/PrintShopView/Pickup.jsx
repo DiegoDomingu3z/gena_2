@@ -19,6 +19,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import { api } from "../../../axiosService";
+import { RingLoader } from "react-spinners";
 
 const { Panel } = Collapse;
 const Pickup = ({ readyForPickupOrders }) => {

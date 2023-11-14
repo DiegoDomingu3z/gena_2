@@ -1,4 +1,6 @@
 import Layout from "~/components/Layout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const Resources = () => {
   return (
     <Layout title={"Gena | Resources"}>
@@ -7,36 +9,42 @@ const Resources = () => {
           <h1 className="text-3xl font-medium font-genaPrimary">Resources</h1>
         </div>
         <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
+        <h1 className="text-2xl font-semibold">How Do I...</h1>
         <div
-          className={`grid px-5 grid-cols-3 font-medium text-lg h-14 bg-white items-center transition-all ease-in-out duration-100 mx-10 mt-10 `}
+          className={`grid grid-cols-3 font-medium text-lg h-14 items-center transition-all ease-in-out duration-100 mt-10`}
         >
-          <h4>How To</h4>
-          <h4>Video Link</h4>
-          <h4>Procedure Link</h4>
+          <div className="w-[300px]">
+            <h2 className="bg-[#233042] text-white px-5 h-10 flex items-center">
+              <span>Place an order?</span>
+            </h2>
+            <div className="border border-[#233042] p-5 shadow-[5px_5px_#233042] leading-[3rem]">
+              <div>
+                <a
+                  className="w-full hover:border-[#233042] hover:border-dotted border-b-2 border-transparent"
+                  target="_blank"
+                  href="https://youtu.be/dx1uvHVyEpg"
+                >
+                  <span className="w-[20px] mr-[20px]">
+                    <FontAwesomeIcon icon={faPlay} />
+                  </span>
+                  Watch The Video
+                </a>
+              </div>
+              <div>
+                <a
+                  className="w-full hover:border-[#233042] hover:border-dotted border-b-2 border-transparent"
+                  target="_blank"
+                  href="http://internalweb/wp-content/uploads/IG-Gena-Ordering-Procedure-DOC1588.pdf"
+                >
+                  <span className="w-[20px] mr-[20px]">
+                    <FontAwesomeIcon icon={faFilePdf} />
+                  </span>
+                  Read The Documentation
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="grid px-5 grid-cols-3 font-small h-10 border-t-2 bg-white items-center duration-100 mx-10 hover:bg-gray-100 transition-all ease-in-out">
-          <p>Place an Order</p>
-          <span>
-            <a className="pointer-events-none" href="#">
-              Coming Soon!
-            </a>
-          </span>
-          <span>
-            <a
-              target="_blank"
-              href="http://internalweb/wp-content/uploads/IG-Gena-Ordering-Procedure-DOC1588.pdf"
-            >
-              Click Here
-            </a>
-          </span>
-        </div>
-
-        {/* <div className="grid px-5 grid-cols-3 justify-items-center font-small h-10 border-t-2 bg-white items-center  duration-500 mx-10  hover:bg-gray-100 transition-all ease-in-out cursor-pointer">
-                <p>Insert or Update a Label</p>
-                <p>Click Here</p>
-                <p></p>
-              </div> */}
       </div>
       <div></div>
     </Layout>

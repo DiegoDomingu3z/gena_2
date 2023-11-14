@@ -41,6 +41,7 @@ const OrderCard = ({
     approved: "bg-[#1baded]",
     delivered: "bg-[#63cb67]",
     declined: "bg-[#fb3939]",
+    "ready for pickup": "bg-[#706ff1]"
   };
 
   const deleteOrder = async (id) => {

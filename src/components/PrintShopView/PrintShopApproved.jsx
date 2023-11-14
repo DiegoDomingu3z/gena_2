@@ -91,7 +91,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         const modifiedPdfDataUris = await Promise.all(
           order.map(async (o, index) => {
             const modifiedPdfDataUrisForOrder = await Promise.all(
-              o.labels.map(async (label, i) => {
+              o.labels?.map(async (label, i) => {
                 const p = pdf[index][i];
                 const modifiedPdfDataUri = await modifyPdf(
                   `/api/getPdfs?categoryName=${p.categoryName}&subCategoryName=${p.subCategoryName}&fileName=${p.fileName}`,
@@ -170,7 +170,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
 
   const seeString = (index) => {
     if (modifiedPdfDataUris.length > 0) {
-      return modifiedPdfDataUris[index].map((m) => {
+      return modifiedPdfDataUris[index]?.map((m) => {
         return (
           <div key={m} className="">
             <iframe src={m} className="w-11/12"></iframe>

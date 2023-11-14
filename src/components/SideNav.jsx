@@ -191,6 +191,11 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
         </Link>
         <Link
           href={"/resources"}
+          className={
+            user.accessToken
+              ? "flex items-center gap-5"
+              : "hidden"
+          }
         >
           <button
             className={`h-14 w-full flex items-center gap-6 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${
