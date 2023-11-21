@@ -134,7 +134,9 @@ const Pickup = ({ readyForPickupOrders }) => {
   return (
     <div>
       {readyForPickupOrders
-        ? readyForPickupOrders.map((r, index) => (
+        ? readyForPickupOrders.map((r, index) => {
+          let identifier = 0
+          return(
             <div key={r._id}>
               <Divider orientation="left" className="flex">
                 {" "}
@@ -181,7 +183,10 @@ const Pickup = ({ readyForPickupOrders }) => {
                 >
                   <div className="grid grid-cols-3">
                     {pdf && r.labels[0].qty
-                      ? pdf[index].map((p, i) => (
+                      ? pdf[index].map((p, i) => {
+                        identifier += r?.labels[i]?.qty
+                        return (
+
                           <div key={i} className="mb-5 border-b">
                             <div className="text-center">
                               DOCNUM: {p.docNum}
@@ -189,10 +194,10 @@ const Pickup = ({ readyForPickupOrders }) => {
                             <div className="flex justify-center">
                               <iframe
                                 src={`/api/getOrders?filePath=${sanitizePath(
-                                  r.finalOrderPaths[i]
-                                )}`}
-                                className="w-11/12"
-                              ></iframe>
+                                  r.finalOrderPaths[identifier - 1]
+                                  )}`}
+                                  className="w-11/12"
+                                  ></iframe>
                             </div>
                             <div className="text-center mb-3 mt-3">
                               QTY to be Printed:{" "}
@@ -202,13 +207,15 @@ const Pickup = ({ readyForPickupOrders }) => {
                               Material Type: {p.material}
                             </div>
                           </div>
-                        ))
-                      : null}
+        )
+        })
+        : null}
                   </div>
                 </Panel>
               </Collapse>
             </div>
-          ))
+          )
+})
         : null}
     </div>
   );

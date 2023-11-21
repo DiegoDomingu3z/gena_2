@@ -98,7 +98,9 @@ const DeliveredOrders = ({
   return (
     <div>
       {order
-        ? order.map((o, index) => (
+        ? order.map((o, index) => {
+          let identifier = 0
+          return (
             <div key={o._id}>
               <Divider orientation="left" className="flex">
                 {" "}
@@ -133,7 +135,9 @@ const DeliveredOrders = ({
                 >
                   <div className="grid grid-cols-3">
                     {pdf && o.labels
-                      ? pdf[index].map((p, i) => (
+                      ? pdf[index].map((p, i) => {
+                        identifier += o.labels[i].qty
+                        return (
                           <div key={i} className="mb-5 border-b">
                             <div className="text-center">
                               DOCNUM: {p.docNum}
@@ -141,22 +145,25 @@ const DeliveredOrders = ({
                             <div className="flex justify-center">
                               <iframe
                                 src={`/api/getOrders?filePath=${sanitizePath(
-                                  o.finalOrderPaths[i]
-                                )}`}
-                                className="w-11/12"
-                              ></iframe>
+                                  o.finalOrderPaths[identifier - 1]
+                                  )}`}
+                                  className="w-11/12"
+                                  ></iframe>
                             </div>
                             <div className="text-center mb-3 mt-3">
                               QTY to be Printed: {o.labels[i].qty * p.unitPack}
+                              
                             </div>
                           </div>
-                        ))
+                                  )
+        })
                       : null}
                   </div>
                 </Panel>
               </Collapse>
             </div>
-          ))
+          )
+})
         : null}
     </div>
   );

@@ -121,7 +121,11 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
         try {
           if (fieldName == "AREA") {
             const dropdown = form.getDropdown(fieldName);
-            dropdown.select(text[i].text);
+            if (!text[i].text || text[i].text == "") {
+              continue
+            } else {
+              dropdown.select(text[i].text);
+            }
           } else {
             const fieldToFill = form.getTextField(fieldName);
             fieldToFill.setText(text[i].text);

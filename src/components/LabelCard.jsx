@@ -174,7 +174,7 @@ const LabelCard = ({
                                     className="bg-gray-50 ms-3.5 border border-gray-300 mt-1 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-11/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name={f.name} id={f.name} type={f.type} placeholder={f.name} key={f._id} required >
                                     {labelOptions.length > 0 ?
                                       labelOptions.map((o, index) => (
-                                        <option key={index} id={o} name={o} value={o === "AREA OPTIONS" ? "" : o}>{o}</option>
+                                        <option key={index} id={o} name={o} value={o}>{o}</option>
                                       )) : null}
                                   </Field>
                                 </div>

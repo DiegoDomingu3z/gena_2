@@ -1,20 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { Collapse, Divider, Tooltip } from "antd";
-import {
-  PrinterOutlined,
-  UploadOutlined,
-  DownloadOutlined,
-} from "@ant-design/icons";
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faNoteSticky,
-  faCheckCircle,
-  faAdd,
-  faFile,
-  faCircle,
   faEnvelopeOpen,
 } from "@fortawesome/free-solid-svg-icons";
 import { api } from "../../../axiosService";
@@ -37,7 +28,7 @@ const ProcessingOrders = ({
   const pdf = useSelector((state) => state.PrintShop.processingOrders.arr);
   const user = useSelector((state) => state.Account.users);
   const dispatch = useDispatch();
-
+  
   const markOrderAsDelivered = async (id) => {
     const token = sessionStorage.getItem("accessToken");
     await dispatch(updateToPickup({ token, id }))
@@ -94,8 +85,11 @@ const ProcessingOrders = ({
 
   const sanitizePath = (path) => {
     // MIGHT HAVE TO CHANGE IN THE FUTURE
-    let realPath = path.slice(47);
-    return `${realPath}`;
+    if (path) {
+      let realPath = path.slice(47);
+      return `${realPath}`;
+    }
+    return ''
   };
 
   const openFileManager = async (id) => {
@@ -105,7 +99,10 @@ const ProcessingOrders = ({
   return (
     <div>
       {order
-        ? order.map((o, index) => (
+        ? order.map((o, index) => {
+          let identifier = 0
+          return (
+
             <div key={o._id}>
               <Divider orientation="left" className="flex">
                 {" "}
@@ -114,24 +111,24 @@ const ProcessingOrders = ({
                   <span>{getUser(o.creatorId)}</span>
                 ) : (
                   <RingLoader size={6} />
-                )}{" "}
+                  )}{" "}
               </Divider>
               <Collapse size="large">
                 <Panel
                   header={`${o.creatorName} - ${o._id} - ${formatDate(
                     o.createdOn
-                  )}`}
+                    )}`}
                   key={o._id}
                   extra={
                     <div>
                       {/* <Tooltip placement="top" title={`Open in File Manager?`} >
                                         <button onClick={(event) => {
-                                            openFileManager(o._id)
-                                            event.stopPropagation();
+                                          openFileManager(o._id)
+                                          event.stopPropagation();
                                         }} className='text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1'>
-                                            <FontAwesomeIcon icon={faFile} />
+                                        <FontAwesomeIcon icon={faFile} />
                                         </button>
-                                    </Tooltip> */}
+                                      </Tooltip> */}
                       {o.notes || o.notes != "" ? (
                         <Tooltip placement="top" title={o.notes}>
                           <button className="text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1">
@@ -141,8 +138,8 @@ const ProcessingOrders = ({
                       ) : null}
                       {!deliverMultipleOrders.includes(o._id) ? (
                         <Tooltip
-                          placement="top"
-                          title={`Update ${o.creatorName}'s Order to Ready For Pickup?`}
+                        placement="top"
+                        title={`Update ${o.creatorName}'s Order to Ready For Pickup?`}
                         >
                           <button
                             onClick={(event) => {
@@ -150,7 +147,7 @@ const ProcessingOrders = ({
                               event.stopPropagation();
                             }}
                             className="text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-8 rounded-full py-1"
-                          >
+                            >
                             <FontAwesomeIcon icon={faEnvelopeOpen} />
                           </button>
                         </Tooltip>
@@ -159,29 +156,34 @@ const ProcessingOrders = ({
                       {/* {!deliverMultipleOrders.includes(o._id)
                                         ?
                                         <Tooltip placement="top" title={`Add to Deliver multiple?`} >
-                                            <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full py-1 '>
-                                                <FontAwesomeIcon icon={faAdd} />
-                                            </button>
+                                        <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full py-1 '>
+                                        <FontAwesomeIcon icon={faAdd} />
+                                        </button>
                                         </Tooltip>
                                         :
                                         <Tooltip title={`Remove from Deliver multiple`}>
-                                            <button>
-                                                <BeatLoader size={8} color="red"
-                                                    onClick={(event) => {
-                                                        let newList = deliverMultipleOrders.filter(i => i != o._id)
-                                                        setDeliverMultipleOrders(newList)
-                                                        event.stopPropagation();
-                                                    }}
-                                                />
-                                            </button>
+                                        <button>
+                                        <BeatLoader size={8} color="red"
+                                        onClick={(event) => {
+                                          let newList = deliverMultipleOrders.filter(i => i != o._id)
+                                          setDeliverMultipleOrders(newList)
+                                          event.stopPropagation();
+                                        }}
+                                        />
+                                        </button>
                                         </Tooltip>
-                                    } */}
+                                      } */}
                     </div>
                   }
-                >
+                  >
+                  
+                    
+                  
                   <div className="grid grid-cols-3">
                     {pdf && o.labels[0].qty
-                      ? pdf[index].map((p, i) => (
+                      ? pdf[index].map((p, i) => {
+                        identifier += o?.labels[i]?.qty
+                        return(
                           <div key={i} className="mb-5 border-b">
                             <div className="text-center">
                               DOCNUM: {p.docNum}
@@ -189,29 +191,34 @@ const ProcessingOrders = ({
                             <div className="flex justify-center">
                               <iframe
                                 src={`/api/getOrders?filePath=${sanitizePath(
-                                  o.finalOrderPaths[i]
-                                )}`}
-                                className="w-11/12"
-                              ></iframe>
+                                  o.finalOrderPaths[identifier - 1]
+                                  )}`}
+                                  className="w-11/12"
+                                  ></iframe>
                             </div>
                             <div className="text-center mb-3 mt-3">
                               QTY to be Printed:{" "}
                               {o?.labels[i]?.qty * p.unitPack}
+                              
                             </div>
                             <div className="text-center mb-3 mt-1">
                               Material Type: {p.material}
                             </div>
                           </div>
-                        ))
-                      : null}
+                                  )
+                                }
+                                )
+                                : null}
                   </div>
                 </Panel>
               </Collapse>
             </div>
-          ))
-        : null}
+                              )
+                              }
+                              )
+                              : null}
     </div>
-  );
-};
+    );
+  };
 
 export default ProcessingOrders;

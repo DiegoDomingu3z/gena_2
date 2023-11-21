@@ -189,7 +189,11 @@ const CartCanvasLabelCard = ({
           if (check != true) {
             if (fieldName == "AREA") {
               const dropdown = form.getDropdown(fieldName);
-              dropdown.select(text[i].text);
+              if (!text[i].text || text[i].text == "") {
+                continue
+              } else {
+                dropdown.select(text[i].text);
+              }
             } else {
               const fieldToFill = form.getTextField(fieldName);
               if (!text) {
