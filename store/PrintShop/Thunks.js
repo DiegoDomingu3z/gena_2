@@ -56,6 +56,19 @@ export const getDeliveredOrders = createAsyncThunk(
   }
 );
 
+
+export const filterDeliveredOrders = createAsyncThunk(
+  "orders/filtered", 
+  async({filteredOrders, filteredPDF}, thunkAPI) => {
+    try {
+        return {filteredOrders, filteredPDF}
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+)
+
 export const deleteDeliveredOrder = createAsyncThunk(
   "deleteOlderOrder/order",
   async ({ id, token }) => {

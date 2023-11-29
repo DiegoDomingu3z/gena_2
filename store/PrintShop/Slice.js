@@ -8,6 +8,7 @@ import {
   deleteDeliveredOrder,
   updateToPickup,
   getReadyForPickUpOrders,
+  filterDeliveredOrders,
 } from "./Thunks";
 
 export const PrintShopSlice = createSlice({
@@ -105,7 +106,18 @@ export const PrintShopSlice = createSlice({
       })
       .addCase(getReadyForPickUpOrders.rejected, (state, action) => {
         console.log(action.error);
-      });
+      })
+      .addCase(filterDeliveredOrders.pending, (state, action) => {
+        state.loading = true
+      })
+      .addCase(filterDeliveredOrders.fulfilled, (state, action) => {
+        console.log(action.payload)
+        state.deliveredOrders.orders = action.payload.filteredOrders
+        state.deliveredOrders.arr = action.payload.filteredPDF
+      })
+      .addCase(filterDeliveredOrders.rejected, (state, action) => {
+        state.loading = false
+      })
   },
 });
 

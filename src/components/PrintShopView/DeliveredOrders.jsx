@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { Collapse, Divider, Tooltip } from "antd";
+import { Button, Collapse, Divider, Dropdown, Space, Tooltip } from "antd";
 import {
   PrinterOutlined,
   UploadOutlined,
@@ -24,19 +24,24 @@ import {
   getDeliveredOrders,
   getProcessingOrder,
   deleteDeliveredOrder,
+  filterDeliveredOrders,
 } from "../../../store/PrintShop/Thunks";
 import Swal from "sweetalert2";
+import { FaSort } from "react-icons/fa";
 
 const { Panel } = Collapse;
 const DeliveredOrders = ({
   deliverMultipleOrders,
   setDeliverMultipleOrders,
 }) => {
-  const order = useSelector((state) => state.PrintShop.deliveredOrders.orders);
+  let order = useSelector((state) => state.PrintShop.deliveredOrders.orders);
   const pdf = useSelector((state) => state.PrintShop.deliveredOrders.arr);
   const user = useSelector((state) => state.Account.users);
   const currentUser = useSelector((state) => state.Account.account);
+  const token = sessionStorage.getItem("accessToken");
   const dispatch = useDispatch();
+  const [activeSort, setActiveSort] = useState(null)
+  const [sortLoading, setSortLoading] = useState(false)
   useEffect(() => {
     dispatch(getAllUsers());
   }, []);
@@ -95,9 +100,82 @@ const DeliveredOrders = ({
     await api.post("api/printshop/openFileManger/" + id);
   };
 
+  const items = [
+    {
+      label: 'Today',
+      key: '1',
+      icon: <FaSort />,
+    },
+    {
+      label: 'Last 3 Days',
+      key: '3',
+      icon: <FaSort />,
+    },
+    {
+      label: 'Last 7 Days',
+      key: '7',
+      icon: <FaSort />,
+    
+    },
+    {
+      label: 'All Orders',
+      key: '~',
+      icon: <FaSort />,
+     
+    },
+  ];
+
+
+  const handleMenuClick = async (e) => {
+    const res = await dispatch(getDeliveredOrders(token))
+    const sorter = items.find(i => i['key'] == e.key)
+    setActiveSort(sorter.label)
+    if (e.key == '~') {return}
+    let filterDate = +e.key
+    console.log(filterDate, 'date')
+  setSortLoading(true);
+    
+    const today = new Date();
+    const threeDaysAgo = new Date(today);
+    threeDaysAgo.setDate(today.getDate() - filterDate);
+    const filteredOrdersWithIndices = res.payload.orders.reduce((result, o, index) => {
+      let date = new Date(o.createdOn);
+      if (date >= threeDaysAgo) {
+        result.filteredOrders.push(o);
+        result.indices.push(index);
+      }
+      return result;
+    }, { filteredOrders: [], indices: [] });
+    let filteredPDF = []
+    const { filteredOrders, indices } = filteredOrdersWithIndices;
+    res.payload.arr.reduce((result, p, index) => {
+      if (indices.includes(index)) {
+       filteredPDF.push(p)
+      }
+    })
+
+    dispatch(filterDeliveredOrders({filteredOrders, filteredPDF}))
+    setSortLoading(false)
+  }
+  const menuProps = {
+    items,
+    onClick: handleMenuClick,
+  };
+
   return (
     <div>
-      {order
+      <div className="text-end mt-5">
+        <Dropdown menu={menuProps} placement="bottomLeft" >
+        <Button>
+        <Space>
+          {activeSort ? activeSort : 'Sort'}
+          <FaSort />
+        </Space>
+      </Button>
+
+        </Dropdown>
+      </div>
+      {order || sortLoading != true
         ? order.map((o, index) => {
           let identifier = 0
           return (
@@ -135,7 +213,7 @@ const DeliveredOrders = ({
                 >
                   <div className="grid grid-cols-3">
                     {pdf && o.labels
-                      ? pdf[index].map((p, i) => {
+                      ? pdf[index]?.map((p, i) => {
                         identifier += o.labels[i].qty
                         return (
                           <div key={i} className="mb-5 border-b">
@@ -157,7 +235,9 @@ const DeliveredOrders = ({
                           </div>
                                   )
         })
-                      : null}
+                      : <div>
+                          <h1>No Orders Found</h1>
+                        </div>}
                   </div>
                 </Panel>
               </Collapse>
