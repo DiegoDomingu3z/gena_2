@@ -152,33 +152,12 @@ const ProcessingOrders = ({
                           </button>
                         </Tooltip>
                       ) : null}
-
-                      {/* {!deliverMultipleOrders.includes(o._id)
-                                        ?
-                                        <Tooltip placement="top" title={`Add to Deliver multiple?`} >
-                                        <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full py-1 '>
-                                        <FontAwesomeIcon icon={faAdd} />
-                                        </button>
-                                        </Tooltip>
-                                        :
-                                        <Tooltip title={`Remove from Deliver multiple`}>
-                                        <button>
-                                        <BeatLoader size={8} color="red"
-                                        onClick={(event) => {
-                                          let newList = deliverMultipleOrders.filter(i => i != o._id)
-                                          setDeliverMultipleOrders(newList)
-                                          event.stopPropagation();
-                                        }}
-                                        />
-                                        </button>
-                                        </Tooltip>
-                                      } */}
                     </div>
                   }
                   >
                   
                     
-                  
+                  <div className="relative -top-5 text-gray-500">{o.orderName}</div>
                   <div className="grid grid-cols-3">
                     {pdf && o.labels[0].qty
                       ? pdf[index].map((p, i) => {

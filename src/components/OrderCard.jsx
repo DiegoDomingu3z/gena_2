@@ -167,18 +167,23 @@ const OrderCard = ({
           ).map((o) => {
             return (
               <div
-                className="grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2"
+                className="grid grid-cols-5 justify-items-center bg-white border-t py-5 justify-between hover:bg-slate-100 pl-2 items-center"
                 key={o._id}
               >
-                <p className="text-sm w-full break-words lg:text-center">
-                  {o._id}
-                </p>
+                <div className="break-all">
+                  <p className="text-sm w-full break-words">
+                    {o._id}
+                  </p>
+                  <p className="text-sm w-full break-words relative text-gray-500 top-2">
+                    {o.orderName && o.orderName}
+                  </p>
+                </div>
                 <p className="">{o.labels.length}</p>
                 <p className="">{formatDate(o.createdOn)}</p>
                 <span
                   className={`px-5 ${
                     statusColors[o.status]
-                  } text-center text-white rounded-lg flex items-center text-sm`}
+                  } text-center text-white rounded-lg flex items-center text-sm w-full max-w-[170px] justify-center`}
                 >
                   {o.status}
                 </span>

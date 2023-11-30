@@ -20,6 +20,7 @@ export const OrdersSlice = createSlice({
   name: "Orders",
   initialState: {
     labelBasket: [],
+    activeName: "",
     activeNote: "",
     activeOrder: "",
     myOrders: [],

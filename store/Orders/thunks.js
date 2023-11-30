@@ -46,10 +46,11 @@ export const removeFromBasket = createAsyncThunk(
 
 export const placeOrder = createAsyncThunk(
   "submit/order",
-  async ({ orderNote, basket, token }) => {
+  async ({ orderInput, basket, token }) => {
     try {
       const data = {
-        notes: orderNote,
+        name: orderInput.orderName,
+        notes: orderInput.orderNote,
         labels: basket,
       };
       const res = await api

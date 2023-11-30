@@ -19,12 +19,28 @@ const CartCanvasDrawer = ({
 }) => {
   const [basketLabels, setBasketLabels] = useState([]);
   const [orderNote, setOrderNote] = useState("");
+  const [orderName, setOrderName] = useState("");
+  const [orderInput, setOrderInput] = useState({});
   const basket = useSelector((state) => state.Orders.labelBasket);
   const dispatch = useDispatch();
-  const handleNote = (event) => {
-    let note = event.target.value;
-    setOrderNote(note);
-  };
+  // const handleNote = (event) => {
+  //   let note = event.target.value;
+  //   setOrderNote(note);
+  // };
+  // const handleOrderName = (event) => {
+  //   let name = event.target.value;
+  //   setOrderName(name);
+  // };
+  const handleInput = (event) => {
+    let input = event.target.value;
+    setOrderInput((previousInput) => {
+      return {
+        ...previousInput,
+        [event.target.name]: input
+      }
+    })
+    console.log(orderInput)
+  }
 
   const toast = async () => {
     const Toast = Swal.mixin({
@@ -47,8 +63,8 @@ const CartCanvasDrawer = ({
 
   const submitOrder = async () => {
     const token = sessionStorage.getItem("accessToken");
-    await dispatch(placeOrder({ orderNote, basket, token }));
-    setOrderNote("");
+    await dispatch(placeOrder({ orderInput, basket, token }));
+    setOrderInput({orderNote: "", orderName: ""});
     const basketLabelsCopy = basketLabels.slice();
     basketLabelsCopy.splice(0, 1);
     setBasketLabels(basketLabelsCopy);
@@ -63,8 +79,8 @@ const CartCanvasDrawer = ({
     <div
       className={
         toggleCartCanvas
-          ? "pt-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5"
-          : "pt-5 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20"
+          ? "pt-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5 overflow-hidden"
+          : "pt-5 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
       }
     >
       <div className="w-full flex flex-col justify-center mb-8">
@@ -82,14 +98,27 @@ const CartCanvasDrawer = ({
         render={render}
       />
       <div className="absolute bottom-8 w-full flex flex-col items-center">
-        <div className="mb-1 text-center rounded-lg w-full h-48">
+        <div className="mb-1 text-center rounded-lg w-[calc(100%_-_33px)]">
+          <label className="w-full inline-block text-left mb-[5px]">Order Details</label>
+          <input
+            id="orderNameInput"
+            type="text"
+            className="rounded-lg bg-[#233042] text-white px-5 py-1 w-full"
+            placeholder="Order Name"
+            name="orderName"
+            maxLength={24}
+            onChange={handleInput}
+            value={orderInput.orderName}
+          ></input>
+        </div>
+        <div className="mb-1 text-center rounded-lg w-full">
           <textarea
             id="noteInput"
-            onChange={handleNote}
-            value={orderNote}
-            className="rounded-lg bg-[#233042] text-white p-5 max-h-44 min-h-[6rem]"
+            onChange={handleInput}
+            value={orderInput.orderNote}
+            className="rounded-lg bg-[#233042] text-white px-5 py-1 max-h-32 min-h-[6rem]"
             placeholder="Notes..."
-            name=""
+            name="orderNote"
             cols="40"
             rows="6"
           ></textarea>
@@ -190,7 +219,7 @@ const CartCanvasLabelCard = ({
             if (fieldName == "AREA") {
               const dropdown = form.getDropdown(fieldName);
               if (!text[i].text || text[i].text == "") {
-                continue
+                continue;
               } else {
                 dropdown.select(text[i].text);
               }
@@ -248,7 +277,7 @@ const CartCanvasLabelCard = ({
   };
 
   return (
-    <div className="overflow-y-auto	h-3/5">
+    <div className="overflow-y-auto	h-3/5 border-b-2">
       {basketLabels.length > 0 ? (
         basketLabels.map((label, i) => (
           <div key={i}>

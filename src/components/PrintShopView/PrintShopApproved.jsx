@@ -207,7 +207,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                   )}`}
                   key={o._id}
                   extra={
-                    <div>
+                    <div className="flex">
                       {o.notes || o.notes != "" ? (
                         <Tooltip placement="top" title={o.notes}>
                           <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-8 rounded-full py-1">
@@ -231,34 +231,10 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                           </button>
                         </Tooltip>
                       ) : null}
-                      {/* {!multipleOrders.includes(o._id)
-                                        ?
-                                        <Tooltip placement="top" title={`Add to process multiple?`} >
-                                            <button className='text-[#233043] hover:bg-[#22eb5e] hover:text-white transition-all ease-in-out w-8 rounded-full pb-2'>
-                                                <UploadOutlined
-                                                    onClick={(event) => {
-                                                        setMultipleOrders(prevIds => [...prevIds, o._id])
-                                                        event.stopPropagation();
-                                                    }}
-                                                />
-                                            </button>
-                                        </Tooltip>
-                                        :
-                                        <Tooltip title={`Remove from process multiple`}>
-                                            <button>
-                                                <BeatLoader size={8} color="red"
-                                                    onClick={(event) => {
-                                                        let newList = multipleOrders.filter(i => i != o._id)
-                                                        setMultipleOrders(newList)
-                                                        event.stopPropagation();
-                                                    }}
-                                                />
-                                            </button>
-                                        </Tooltip>
-                                    } */}
                     </div>
                   }
-                >
+                > 
+                  <div className="relative -top-5 text-gray-500">{o.orderName}</div>
                   <div className="grid grid-cols-3">{seeString(index)}</div>
                   <div className="grid grid-cols-3">
                     {pdf && o.labels.length > 0
