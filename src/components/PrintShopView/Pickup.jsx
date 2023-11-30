@@ -181,6 +181,7 @@ const Pickup = ({ readyForPickupOrders }) => {
                     </div>
                   }
                 >
+                  <div className="relative -top-5 text-gray-500">{r.orderName}</div>
                   <div className="grid grid-cols-3">
                     {pdf && r.labels[0].qty
                       ? pdf[index].map((p, i) => {
