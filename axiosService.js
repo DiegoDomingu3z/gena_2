@@ -1,6 +1,6 @@
 import axios from "axios"
 
 export const api = axios.create({
-    baseURL: env.NEXT_PUBLIC_AXIOS_URL,
+    baseURL: "http://localhost:4005/",
     timeout: 15000
 })
