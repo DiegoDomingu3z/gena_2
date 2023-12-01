@@ -364,7 +364,7 @@ const NewLabel = () => {
                       Document Number <span className="text-red-500">*</span>
                     </label>
                     <Field
-                      onChange={setDocNum}
+                      onChange={(e) => setDocNum(e.target.value)}
                       value={docNum}
                       type="text"
                       name="docNum"
