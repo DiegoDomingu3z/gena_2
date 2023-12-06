@@ -235,12 +235,15 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                   }
                 > 
                   <div className="relative -top-5 text-gray-500">{o.orderName}</div>
-                  <div className="grid grid-cols-3">{seeString(index)}</div>
+                  {/* <div className="grid grid-cols-3">{seeString(index)}</div> */}
                   <div className="grid grid-cols-3">
                     {pdf && o.labels.length > 0
                       ? pdf[index].map((p, i) => {
                           return (
                             <div key={i} className="mb-5 border-b">
+                              <div key={modifiedPdfDataUris?.[index]?.[i]} className="">
+                                <iframe src={modifiedPdfDataUris?.[index]?.[i]} className="w-11/12"></iframe>
+                              </div>
                               <div className="text-center text-sm">
                                 DOCNUM: {p.docNum}
                               </div>
