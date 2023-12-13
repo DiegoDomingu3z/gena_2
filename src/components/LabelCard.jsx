@@ -24,7 +24,7 @@ const IframeBlock = (props) => {
     ></iframe>
   );
 };
-const ViewportBlock = handleViewport(IframeBlock);
+export const ViewportBlock = handleViewport(IframeBlock);
 
 const LabelCard = ({
   setToggleCartCanvas,

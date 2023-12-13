@@ -24,7 +24,7 @@ const OrderModal = ({ modalState, setModalState, blobs, setBlobs }) => {
         <h1 className="font-medium mb-12">Labels in this order</h1>
         <div
           ref={containerRef}
-          className={`grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10 rounded-sm ${
+          className={`grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10 rounded-sm ${
             scrollPosition > 1 && "shadow-inset-top"
           } transition-all ease-in-out duration-500`}
         >

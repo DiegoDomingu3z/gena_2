@@ -244,14 +244,14 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                               <div key={modifiedPdfDataUris?.[index]?.[i]} className="">
                                 <iframe src={modifiedPdfDataUris?.[index]?.[i]} className="w-11/12"></iframe>
                               </div>
-                              <div className="text-center text-sm">
+                              <div className="text-sm mt-1 mb-3 pl-[4%]">
                                 DOCNUM: {p.docNum}
                               </div>
-                              <div className="text-center mb-3 mt-1">
+                              <div className="mb-3 pl-[4%]">
                                 QTY to be Printed:{" "}
                                 {o.labels[i].qty * p.unitPack}
                               </div>
-                              <div className="text-center">
+                              <div className="mb-3 pl-[4%]">
                                 Material Type: {p.material}
                               </div>
                             </div>

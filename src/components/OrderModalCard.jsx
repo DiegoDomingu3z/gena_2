@@ -221,9 +221,13 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                 {seeLabels(i)}
                 <div className="p-4">
                   <div className="text-end text-xs">{label.docNum}</div>
-                  <div className="text-center text-md text-gray-500 mb-5">
+                  <div className="text-center text-md text-gray-500 mb-2">
                     {label.name}
                   </div>
+                  {activeOrder.labels[i].serialRange && <div className="text-center text-md text-gray-500 mb-2">
+                    <div className="text-red-500 w-full">Serials on this roll:</div>
+                    {activeOrder.labels[i].serialRange}
+                  </div>}
                   <div className="text-center text-md font-semibold">
                     <span>Pack of {label.unitPack}</span>
                   </div>

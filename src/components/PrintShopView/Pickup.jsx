@@ -189,9 +189,6 @@ const Pickup = ({ readyForPickupOrders }) => {
                         return (
 
                           <div key={i} className="mb-5 border-b">
-                            <div className="text-center">
-                              DOCNUM: {p.docNum}
-                            </div>
                             <div className="flex justify-center">
                               <iframe
                                 src={`/api/getOrders?filePath=${sanitizePath(
@@ -200,13 +197,19 @@ const Pickup = ({ readyForPickupOrders }) => {
                                   className="w-11/12"
                                   ></iframe>
                             </div>
-                            <div className="text-center mb-3 mt-3">
+                            <div className="mb-3 mt-1 pl-[4%]">
+                              DOCNUM: {p.docNum}
+                            </div>
+                            <div className="mb-3 pl-[4%]">
                               QTY to be Printed:{" "}
                               {r?.labels[i]?.qty * p.unitPack}
                             </div>
-                            <div className="text-center mb-3 mt-1">
+                            <div className="mb-3 pl-[4%]">
                               Material Type: {p.material}
                             </div>
+                            {r.labels?.[identifier - 1]?.serialRange && <div className="pl-[4%]">
+                            <span className="text-red-500">Serial Numbers:</span> {r.labels?.[identifier - 1]?.serialRange}
+                            </div>}
                           </div>
         )
         })

@@ -81,19 +81,19 @@ const StartNewOrder = () => {
           <div className="flex justify-end items-end gap-5 md:w-3/5 lg:w-2/5">
             <label htmlFor="labelSearch">
               <FontAwesomeIcon
-                className="p-3 cursor-pointer rounded-full drop-shadow-sm bg-[#233042] text-white"
+                className="p-3 cursor-pointer rounded-full drop-shadow-sm bg-[#233042] text-white relative bottom-[-6px]"
                 icon={faMagnifyingGlass}
               />
             </label>
             <input
-              onChange={(e) => setSearchInput(e.target.value)}
-              id="labelSearch"
-              name="labelSearch"
-              type="text"
-              className="laptop:w-2/4 w-4/5 drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
-             outline-none focus:drop-shadow-lg focus:translate-y-10 focus:w-4/5 p-5"
-              placeholder="Type name of label here"
-            />
+                onChange={(e) => setSearchInput(e.target.value)}
+                id="labelSearch"
+                name="labelSearch"
+                type="text"
+                className="laptop:w-2/4 w-full drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
+              outline-none focus:drop-shadow-xl focus:shadow-[0px_-2px_#374151_inset] p-5"
+                placeholder="Type name of label here"
+              />
             <div className="relative ">
               <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
                 <FontAwesomeIcon

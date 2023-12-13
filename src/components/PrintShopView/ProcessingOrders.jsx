@@ -164,9 +164,6 @@ const ProcessingOrders = ({
                         identifier += o?.labels[i]?.qty
                         return(
                           <div key={i} className="mb-5 border-b">
-                            <div className="text-center">
-                              DOCNUM: {p.docNum}
-                            </div>
                             <div className="flex justify-center">
                               <iframe
                                 src={`/api/getOrders?filePath=${sanitizePath(
@@ -175,14 +172,20 @@ const ProcessingOrders = ({
                                   className="w-11/12"
                                   ></iframe>
                             </div>
-                            <div className="text-center mb-3 mt-3">
+                            <div className="mt-1 mb-3 pl-[4%]">
+                              DOCNUM: {p.docNum}
+                            </div>
+                            <div className="mb-3 pl-[4%]">
                               QTY to be Printed:{" "}
                               {o?.labels[i]?.qty * p.unitPack}
                               
                             </div>
-                            <div className="text-center mb-3 mt-1">
+                            <div className="mb-3 pl-[4%]">
                               Material Type: {p.material}
                             </div>
+                            {o.labels?.[identifier - 1]?.serialRange && <div className="pl-[4%]">
+                            <span className="text-red-500">Serial Numbers:</span> {o.labels?.[identifier - 1]?.serialRange}
+                            </div>}
                           </div>
                                   )
                                 }
