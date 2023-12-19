@@ -117,3 +117,20 @@ export const removeLabel = createAsyncThunk(
   }
 );
 
+export const updateSerialLabel = createAsyncThunk(
+  "label/updateSerial",
+  async ({ formData, token }) => {
+    console.log("made it baby");
+    try {
+      const res = await api.put(`api/update-label-db/${formData.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      return res.data;
+    } catch (error) {
+      console.log("%cThunks.js line:126 error", "color: #26bfa5;", error);
+    }
+  }
+);
