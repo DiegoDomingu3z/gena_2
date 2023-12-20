@@ -1,6 +1,6 @@
 import axios from "axios"
 
 export const api = axios.create({
-    baseURL: "http://192.168.55.26:4005/",
+    baseURL: process.env.NEXT_PUBLIC_IP_ADDRESS,
     timeout: 15000
 })

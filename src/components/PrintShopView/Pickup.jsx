@@ -44,7 +44,7 @@ const Pickup = ({ readyForPickupOrders }) => {
   const sanitizePath = (path) => {
     // MIGHT HAVE TO CHANGE IN THE FUTURE
     if (path) {
-      let realPath = path.slice(47);
+      let realPath = path.slice(process.env.NEXT_PUBLIC_SLICE_PATH);
       return `${realPath}`;
     }
     return "";
