@@ -119,15 +119,31 @@ export const removeLabel = createAsyncThunk(
 
 export const updateSerialLabel = createAsyncThunk(
   "label/updateSerial",
-  async ({ formData, token }) => {
-    console.log("made it baby");
+  async ({ formData, pdfData, token }) => {
     try {
-      const res = await api.put(`api/update-label-db/${formData.id}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
+      const res = await api.put(
+        `api/upload/update-label-db/${formData.id}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = res.data;
+      console.log("%cThunks.js line:134 pdfData", "color: #26bfa5;", pdfData);
+      const res2 = await api.post(
+        `/api/upload/pdf/cat/${data.categoryId}/subCat/${data.subCategoryId}`,
+        pdfData,
+        {
+          headers: {
+            Authorization: token,
+          },
+          contentType: false,
+          processData: false,
+        }
+      );
+      console.log("%cThunks.js line:135 res.data", "color: #26bfa5;", res.data);
       return res.data;
     } catch (error) {
       console.log("%cThunks.js line:126 error", "color: #26bfa5;", error);

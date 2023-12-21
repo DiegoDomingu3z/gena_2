@@ -33,7 +33,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
     });
   }, [serialModal]);
 
-  const updateSerialLabel = (formData) => {
+  const confirmUpdate = (formData, pdfData) => {
     let token = account.accessToken;
     Swal.fire({
       title: `Make these updates to this label?`,
@@ -46,7 +46,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Updated!", `Label has been updated`, "success");
-        dispatch(updateSerialLabel({ formData, token }));
+        dispatch(updateSerialLabel({ formData, pdfData, token }));
       }
     });
   };
@@ -66,6 +66,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
       return match[1];
     }
   };
+
   return (
     <div className="fixed left-0 top-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
       <div className="bg-[#f7f9fc] w-3/5 laptop:w-2/5 laptop:h-[44rem] h-[44rem] rounded-lg px-10 py-5 flex flex-col">
@@ -97,15 +98,35 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
               );
               const sanitizedData = {
                 id: values.id,
-                fileName: parsedFileName,
-                bulkFileName: parsedBulkFileName,
+                fileName: parsedFileName || activeLabel.fileName,
+                bulkFileName: parsedBulkFileName || activeLabel.bulkFileName,
                 currentSerialNum:
                   values.currentSerialNum ||
                   Number(activeLabel.currentSerialNum),
                 unitPack: values.unitPack || Number(activeLabel.unitPack),
               };
-              console.log(sanitizedData);
-              await updateSerialLabel(sanitizedData);
+
+              const pdfData = new FormData();
+              pdfData.append("fileName", values.fileName);
+              pdfData.append("bulkFileName", values.bulkFileName);
+              console.log(
+                "%cSerialUpdateForm.jsx line:115 pdfData",
+                "color: #26bfa5;",
+                pdfData
+              );
+
+              const formDataObject = {};
+              pdfData.forEach((value, key) => {
+                formDataObject[key] = value;
+              });
+
+              console.log(
+                "%cSerialUpdateForm.jsx line:115 pdfData",
+                "color: #26bfa5;",
+                formDataObject
+              );
+
+              await confirmUpdate(sanitizedData, pdfData);
               // helpers.resetForm();
             } catch (error) {
               console.log(
@@ -127,6 +148,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
                 </label>
                 <Field
                   type="file"
+                  accept=".pdf"
                   name="fileName"
                   id="fileName"
                   className="bg-gray-50 border border-gray-300
@@ -140,6 +162,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
                 </label>
                 <Field
                   type="file"
+                  accept=".pdf"
                   name="bulkFileName"
                   id="bulkFileName"
                   className="bg-gray-50 border border-gray-300
