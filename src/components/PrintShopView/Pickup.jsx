@@ -1,5 +1,5 @@
 import { Collapse, Divider, Tooltip } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllUsers } from "../../../store/Account/thunks";
 import {
@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faEnvelopeOpen,
+  faHammer,
   faHandsHoldingCircle,
   faStickyNote,
   faTruckPickup,
@@ -20,13 +21,14 @@ import {
 import Swal from "sweetalert2";
 import { api } from "../../../axiosService";
 import { RingLoader } from "react-spinners";
+import DefectSNForm from "./defectSNForm";
 
 const { Panel } = Collapse;
 const Pickup = ({ readyForPickupOrders }) => {
   const user = useSelector((state) => state.Account.users);
   const pdf = useSelector((state) => state.PrintShop.pickupOrders.arr);
   const dispatch = useDispatch();
-
+  const [snModal, setSNModal] = useState(false);
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
     dispatch(getAllUsers());
@@ -155,6 +157,16 @@ const Pickup = ({ readyForPickupOrders }) => {
                   key={r._id}
                   extra={
                     <div>
+                      <Tooltip placement="top" title="Serial Number Defect Form">
+                        <button
+                        onClick={(event) => {
+                          setSNModal(true)
+                          event.stopPropagation();
+                        }}
+                        className="text-[#233043] hover:bg-[#ff5454] hover:text-white transition-all ease-in-out w-8 rounded-full py-1 mr-1" >
+                          <FontAwesomeIcon icon={faHammer} />
+                        </button>
+                      </Tooltip>
                       {r.notes || r.notes != "" ? (
                         <Tooltip placement="top" title={r.notes}>
                           <button>
@@ -217,6 +229,7 @@ const Pickup = ({ readyForPickupOrders }) => {
                   </div>
                 </Panel>
               </Collapse>
+              <DefectSNForm  snModal={snModal} setSNModal={setSNModal} orderId={r._id} creator={r.creatorName}/>
             </div>
           )
 })
