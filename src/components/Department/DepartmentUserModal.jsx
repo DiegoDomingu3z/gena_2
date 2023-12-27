@@ -111,7 +111,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
         </button>
         <div className="flex mb-5">
           <img
-            src={`http://internalweb/wp-content/uploads/${cleanImg(
+            src={`http://192.168.55.26/wp-content/uploads/${cleanImg(
               activeUser.firstName
             )}-${activeUser.lastName}.jpg`}
             alt={`Employee image`}

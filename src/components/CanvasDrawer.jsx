@@ -239,7 +239,7 @@ export const CanvasButtons = ({
             {user.accessToken ? (
               <Space>
                 <Avatar
-                  src={`http://internalweb/wp-content/uploads/${cleanImg(
+                  src={`http://192.168.55.26/wp-content/uploads/${cleanImg(
                     user.account.firstName
                   )}-${user.account.lastName}.jpg`}
                 />
