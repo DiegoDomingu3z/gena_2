@@ -1,19 +1,22 @@
 import { Button, Select, Space, Table, DatePicker, Form } from "antd";
 import { useEffect, useState } from "react";
 import { api } from "../../../axiosService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getFilterData } from "../../../store/Exporter/Thunks";
 const { RangePicker } = DatePicker;
 const Export = () => {
     const [form] = Form.useForm();
     const [param, setParam] = useState(false)
     const [snLabels, setSNLabels] = useState([])
     const dispatch = useDispatch()
+    const activeData = useSelector((state) => state.Exporter.activeData)
+    const loading = useSelector((state) => state.Exporter.loading)
     const submittingForm = (values) => {
         const dateRangeFrom = `${values.dateRange[0].$y}-${values.dateRange[0].$M + 1}-${values.dateRange[0].$D}`
         const dateRangeTo = `${values.dateRange[1].$y}-${values.dateRange[1].$M + 1}-${values.dateRange[1].$D}`
         let params = new URLSearchParams(window.location.search);
         params.set('dataType', values.dataType);
-        params.set('docNum', values.docNum);
+        params.set('labelId', values.labelId);
         params.set('dateFrom', dateRangeFrom);
         params.set('dateTo', dateRangeTo);
         let newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
@@ -31,18 +34,20 @@ const Export = () => {
     
     
           getLabels()
-      }, [])
+      }, [param])
 
       useEffect(() => {
         const getFilteredData = async () => {
             const params = new URLSearchParams(window.location.search);
-            const { dataType, docNum, dateFrom, dateTo } = Object.fromEntries(params.entries());
-            const query = `dataType=${dataType}&docNum=${docNum}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
-            // dispatch(getFilteredData({query}))
-            console.log("working")
+            const { dataType, labelId, dateFrom, dateTo } = Object.fromEntries(params.entries());
+            const query = `dataType=${dataType}&labelId=${labelId}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+            if (dataType && labelId && dateFrom &&dateTo && param) {
+              dispatch(getFilterData({query}))
+            }
+    
         }
         getFilteredData()
-      }), [param]
+      }, [param]) 
 
     return(
         <div className="flex flex-col pl-20 pr-20 pt-20 pb-4">
@@ -64,11 +69,11 @@ const Export = () => {
                <Select.Option  value="label-defects">Label Defects</Select.Option>
                </Select>
                 </Form.Item>
-                <Form.Item name="docNum" className="w-[200px]">
+                <Form.Item name="labelId" className="w-[200px]">
                <Select placeholder="DocNum" >
                <Select.Option  value="*">All</Select.Option>
                {snLabels.length > 0 ? snLabels.map((l) => (
-                <Select.Option  value="docNum">DOC01234</Select.Option>
+                <Select.Option key={l._id} value={l._id}>{l.docNum}</Select.Option>
                )) : null}
                </Select>
                 </Form.Item>
@@ -91,7 +96,7 @@ const Export = () => {
             </Space>
       </Form>
                 
-            <Table className="" loading={true}/>
+            <Table className="" loading={loading}/>
           </div>
         </div>
         

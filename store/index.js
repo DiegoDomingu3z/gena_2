@@ -9,6 +9,7 @@ import LabelReducer from './Label/Slice'
 import OrderReducer from './Orders/Slice'
 import DepartmentReducer from './Departments/Slice'
 import PrintShopReducer from './PrintShop/Slice'
+import ExportReducer from './Exporter/Slice'
 export const store = configureStore({
     reducer: {
         Account: AccountReducer,
@@ -18,6 +19,7 @@ export const store = configureStore({
         Label: LabelReducer,
         Orders: OrderReducer,
         Department: DepartmentReducer,
-        PrintShop: PrintShopReducer
+        PrintShop: PrintShopReducer,
+        Exporter: ExportReducer
     }
 })
