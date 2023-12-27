@@ -1,17 +1,20 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSerialLabel } from "../../../store/Label/Thunks";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
-import { useRef } from "react";
 import { Formik, Form, Field } from "formik";
-import { useEffect } from "react";
-import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark, faUpload } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import { updateSerialLabel } from "../../../store/Label/Thunks";
 
 const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Label.activeLabels);
+  const [files, setFiles] = useState([]);
+  const [labelName, setLabelName] = useState({
+    fileName: "",
+    bulkFileName: "",
+  });
   const [activeLabel, setActiveLabel] = useState({
     fileName: "",
     bulkFileName: "",
@@ -20,20 +23,25 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
   });
 
   useEffect(() => {
-    setActiveLabel(() => {
-      const labelData = labels.filter(
-        (label) => label._id === serialModal.labelId
-      );
-      return {
-        fileName: `${labelData[0].pdfPath}/${labelData[0].fileName}`,
-        bulkFileName: `${labelData[0].pdfBulkPath}/${labelData[0].bulkFileName}`,
-        currentSerialNum: labelData[0].currentSerialNum,
-        unitPack: labelData[0].unitPack,
-      };
-    });
+    setFiles([]);
+    const labelData = labels.find((label) => label._id === serialModal.labelId);
+    const data = serialModal.isOpen
+      ? {
+          fileName: labelData?.fileName || "",
+          bulkFileName: labelData?.bulkFileName || "",
+          currentSerialNum: labelData?.currentSerialNum || "",
+          unitPack: labelData?.unitPack || "",
+        }
+      : {
+          fileName: "",
+          bulkFileName: "",
+          currentSerialNum: "",
+          unitPack: "",
+        };
+    setActiveLabel(data);
   }, [serialModal]);
 
-  const confirmUpdate = (formData, pdfData) => {
+  const confirmUpdate = async (formData, pdfData) => {
     let token = account.accessToken;
     Swal.fire({
       title: `Make these updates to this label?`,
@@ -43,11 +51,33 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Update!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         Swal.fire("Updated!", `Label has been updated`, "success");
-        dispatch(updateSerialLabel({ formData, pdfData, token }));
+        await dispatch(updateSerialLabel({ formData, pdfData, token }));
+        setSerialModal((prev) => ({ ...prev, isOpen: false }));
       }
+    });
+  };
+
+  const handleFileInputChange = (e) => {
+    const fieldName = e.target.name;
+    setFiles((prev) => {
+      return [...prev, e.target.files[0]];
+    });
+
+    setActiveLabel((prev) => {
+      return {
+        ...prev,
+        [fieldName]: e.target.files[0].name,
+      };
+    });
+
+    setLabelName((prev) => {
+      return {
+        ...prev,
+        [fieldName]: e.target.files[0].name,
+      };
     });
   };
 
@@ -59,11 +89,41 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
       };
     });
   };
-  const handleFileChange = (fieldName, filePath) => {
-    const match = filePath?.match(/\\([^\\]+)$/);
 
-    if (match && match[1]) {
-      return match[1];
+  const pushFiles = () => {
+    if (files.length > 0) {
+      return new Promise((resolve) => {
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          formData.append("pdf", file);
+        }
+        resolve(formData);
+      });
+    }
+    return null;
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      const sanitizedData = {
+        id: values.id,
+        fileName: values.fileName.name || activeLabel.fileName,
+        bulkFileName: values.bulkFileName.name || activeLabel.bulkFileName,
+        currentSerialNum:
+          values.currentSerialNum || Number(activeLabel.currentSerialNum),
+        unitPack: values.unitPack || Number(activeLabel.unitPack),
+      };
+
+      const pdfData = await pushFiles();
+
+      await confirmUpdate(sanitizedData, pdfData);
+    } catch (error) {
+      console.log(
+        "%cSerialUpdateForm.jsx line:52 error",
+        "color: #26bfa5;",
+        error
+      );
     }
   };
 
@@ -85,88 +145,56 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
             currentSerialNum: activeLabel.currentSerialNum,
             unitPack: activeLabel.unitPack,
           }}
-          onSubmit={async (values, helpers) => {
-            try {
-              const token = sessionStorage.getItem("accessToken");
-              const parsedFileName = await handleFileChange(
-                "fileName",
-                values.fileName
-              );
-              const parsedBulkFileName = await handleFileChange(
-                "bulkFileName",
-                values.bulkFileName
-              );
-              const sanitizedData = {
-                id: values.id,
-                fileName: parsedFileName || activeLabel.fileName,
-                bulkFileName: parsedBulkFileName || activeLabel.bulkFileName,
-                currentSerialNum:
-                  values.currentSerialNum ||
-                  Number(activeLabel.currentSerialNum),
-                unitPack: values.unitPack || Number(activeLabel.unitPack),
-              };
-
-              const pdfData = new FormData();
-              pdfData.append("fileName", values.fileName);
-              pdfData.append("bulkFileName", values.bulkFileName);
-              console.log(
-                "%cSerialUpdateForm.jsx line:115 pdfData",
-                "color: #26bfa5;",
-                pdfData
-              );
-
-              const formDataObject = {};
-              pdfData.forEach((value, key) => {
-                formDataObject[key] = value;
-              });
-
-              console.log(
-                "%cSerialUpdateForm.jsx line:115 pdfData",
-                "color: #26bfa5;",
-                formDataObject
-              );
-
-              await confirmUpdate(sanitizedData, pdfData);
-              // helpers.resetForm();
-            } catch (error) {
-              console.log(
-                "%cSerialUpdateForm.jsx line:52 error",
-                "color: #26bfa5;",
-                error
-              );
-            }
+          onSubmit={async (values) => {
+            handleSubmit(values);
           }}
         >
           {({ isSubmitting, values, setFieldValue }) => (
             <Form>
               <div className="mt-10">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Display Label
+                </label>
                 <label
                   htmlFor="fileName"
-                  className="block mb-2 text-sm font-medium text-gray-900"
+                  className="mb-3 mt-3 text-sm font-medium text-gray-900 block truncate"
                 >
-                  Display Label
+                  <span className="flex w-[180px] justify-center items-center bg-gray-300 hover:bg-gray-400 mb-2 px-4 py-2 rounded-sm cursor-pointer">
+                    <FontAwesomeIcon icon={faUpload} className="mr-2" />
+                    Upload Label
+                  </span>
+                  <span className="mt-2 truncate">{labelName.fileName}</span>
                 </label>
                 <Field
                   type="file"
                   accept=".pdf"
                   name="fileName"
                   id="fileName"
-                  className="bg-gray-50 border border-gray-300
-              text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 mb-5"
+                  onChange={handleFileInputChange}
+                  className="absolute top-0 left-0 opacity-0 h-[1px] w-[1px]"
                 ></Field>
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Kanban Label
+                </label>
                 <label
                   htmlFor="bulkFileName"
-                  className="block mb-2 text-sm font-medium text-gray-900"
+                  className="mb-3 mt-3 text-sm font-medium text-gray-900 block truncate"
                 >
-                  Kanban Label
+                  <span className="flex w-[180px] justify-center items-center bg-gray-300 hover:bg-gray-400 mb-2 px-4 py-2 rounded-sm cursor-pointer">
+                    <FontAwesomeIcon icon={faUpload} className="mr-2" />
+                    Upload Kanban Label
+                  </span>
+                  <span className="mt-2 truncate">
+                    {labelName.bulkFileName}
+                  </span>
                 </label>
                 <Field
                   type="file"
                   accept=".pdf"
                   name="bulkFileName"
                   id="bulkFileName"
-                  className="bg-gray-50 border border-gray-300
-                text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 mb-5"
+                  onChange={handleFileInputChange}
+                  className="absolute top-0 left-0 opacity-0 h-[1px] w-[1px]"
                 ></Field>
                 <label
                   htmlFor="currentSerialNum"

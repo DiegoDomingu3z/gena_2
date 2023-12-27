@@ -18,7 +18,7 @@ const AllLabels = () => {
     const activeCategory = router.query.categoryId;
     const activeSubCategoryId = router.query.subCategoryId;
     dispatch(getLabels({ activeCategory, activeSubCategoryId }));
-  }, [router]);
+  }, [router, serialModal]);
   return (
     <Layout title={"Gena | Departments"}>
       <div>
