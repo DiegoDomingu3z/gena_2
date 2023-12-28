@@ -117,3 +117,36 @@ export const removeLabel = createAsyncThunk(
   }
 );
 
+export const updateSerialLabel = createAsyncThunk(
+  "label/updateSerial",
+  async ({ formData, pdfData, token }) => {
+    try {
+      const res = await api.put(
+        `api/upload/update-label-db/${formData.id}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = res.data;
+      if (pdfData != null) {
+        const res2 = await api.post(
+          `/api/upload/pdf/cat/${data.categoryId}/subCat/${data.subCategoryId}`,
+          pdfData,
+          {
+            headers: {
+              Authorization: token,
+            },
+            contentType: false,
+            processData: false,
+          }
+        );
+      }
+      return data;
+    } catch (error) {
+      console.log("%cThunks.js line:126 error", "color: #26bfa5;", error);
+    }
+  }
+);

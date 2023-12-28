@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { removeLabel } from "../../store/Label/Thunks";
+import { removeLabel, updateSerialLabel } from "../../store/Label/Thunks";
 
-const UpdateLabels = () => {
+const UpdateLabels = ({ serialModal, setSerialModal }) => {
   const [modal, setModal] = useState(false);
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Label.activeLabels);
@@ -64,20 +64,35 @@ const UpdateLabels = () => {
                     <span>Pack of {l.unitPack}</span>
                   </div>
                   <div className="text-center mt-3">
-                    <button
-                      onClick={() => {
-                        if (
-                          account.privileges == "admin" ||
-                          account.privileges == "printshop"
-                        ) {
-                          deleteLabel(l.name, l._id);
-                        }
-                      }}
-                      className="bg-[#e73b3b] px-3 py-1 rounded-lg w-full text-white mt-2 hover:bg-[#c04343] hover:scale-105 hover:shadow-md transition-all
+                    {labels[0].subCategoryName != "serial-numbers" ? (
+                      <button
+                        onClick={() => {
+                          if (
+                            account.privileges == "admin" ||
+                            account.privileges == "printshop"
+                          ) {
+                            deleteLabel(l.name, l._id);
+                          }
+                        }}
+                        className="bg-[#e73b3b] px-3 py-1 rounded-lg w-full text-white mt-2 hover:bg-[#c04343] hover:scale-105 hover:shadow-md transition-all
                                      ease-in-out"
-                    >
-                      Delete Label
-                    </button>
+                      >
+                        Delete Label
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          setSerialModal({
+                            labelId: l._id,
+                            isOpen: true,
+                          })
+                        }
+                        className="bg-[#d5c558] px-3 py-1 rounded-lg w-full text-white mt-2 hover:bg-[#c0ac2d] hover:scale-105 hover:shadow-md transition-all
+                    ease-in-out"
+                      >
+                        Update Label
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
