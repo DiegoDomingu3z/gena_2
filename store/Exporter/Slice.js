@@ -4,7 +4,7 @@ import { getFilterData } from "./Thunks";
 export const ExporterSlice = createSlice({
     name: "Exporter",
     initialState: {
-        activeData: null,
+        activeData: [],
         loading: false
     },
     reducers: {},

@@ -6,8 +6,8 @@ export const getFilterData = createAsyncThunk(
     async ({query}) => {
         try {
             console.log(query)
-            const data = api.get(`/api/export/label-defects?${query}`).then((res) => res.data)
-            console.log(data)
+            const data = await api.get(`/api/export/label-defects?${query}`).then((res) => res.data)
+            console.log(data, "THIS IS THE DAT")
             return data
         } catch (error) {
             console.log(error)
