@@ -6,6 +6,7 @@ import {
   removeLabel,
   searchLabel,
   updateLabel,
+  updateSerialLabel,
 } from "./Thunks";
 
 export const LabelSlice = createSlice({
@@ -59,6 +60,15 @@ export const LabelSlice = createSlice({
         state.loading = false;
       })
       .addCase(removeLabel.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateSerialLabel.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateSerialLabel.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateSerialLabel.fulfilled, (state, action) => {
         state.loading = false;
       });
   },
