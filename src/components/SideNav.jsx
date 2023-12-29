@@ -211,8 +211,8 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
         <Link
           href={"/exporter"}
           className={
-            user.accessToken && user.account.privileges == "admin" ||
-            user.account.privileges == "printshop"
+            user.accessToken && (user.account.privileges == "admin" ||
+            user.account.privileges == "printshop") ? 'flex items-center gap-5' : 'hidden'
           }
         >
           <button
