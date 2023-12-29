@@ -44,6 +44,36 @@ const Resources = () => {
               </div>
             </div>
           </div>
+          <div className="w-[300px]">
+            <h2 className="bg-[#233042] text-white px-5 h-10 flex items-center">
+              <span>Learn Server Information</span>
+            </h2>
+            <div className="border border-[#233042] p-5 shadow-[5px_5px_#233042] leading-[3rem]">
+              <div>
+                <a
+                  className="w-full hover:border-[#233042] hover:border-dotted border-b-2 border-transparent"
+                  target="_blank"
+                >
+                  <span className="w-[20px] mr-[20px]">
+                    <FontAwesomeIcon icon={faPlay} />
+                  </span>
+                  Video Coming Soon
+                </a>
+              </div>
+              <div>
+                <a
+                  className="w-full hover:border-[#233042] hover:border-dotted border-b-2 border-transparent"
+                  target="_blank"
+                  href="http://192.168.55.26:3006/"
+                >
+                  <span className="w-[20px] mr-[20px]">
+                    <FontAwesomeIcon icon={faFilePdf} />
+                  </span>
+                  Read The Documentation
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div></div>
