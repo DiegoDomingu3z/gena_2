@@ -22,6 +22,7 @@ const CartCanvasDrawer = ({
   const [orderName, setOrderName] = useState("");
   const [orderInput, setOrderInput] = useState({});
   const basket = useSelector((state) => state.Orders.labelBasket);
+  const [invalidLabel, setInvalidLabel] = useState(false)
   const dispatch = useDispatch();
   // const handleNote = (event) => {
   //   let note = event.target.value;
@@ -96,6 +97,7 @@ const CartCanvasDrawer = ({
         basketLabels={basketLabels}
         setBasketLabels={setBasketLabels}
         render={render}
+        setInvalidLabel={setInvalidLabel}
       />
       <div className="absolute bottom-8 w-full flex flex-col items-center">
         <div className="mb-1 text-center rounded-lg w-[calc(100%_-_33px)]">
@@ -126,10 +128,11 @@ const CartCanvasDrawer = ({
         <div className="w-full flex flex-col justify-center">
           <button
             onClick={() => submitOrder()}
-            disabled={basket.length > 0 ? false : true}
-            className="bg-[#1baded] mx-3 p-3 rounded-xl text-white hover:bg-[#16b9ff] hover:tracking-widest transition-all ease-in-out"
+            disabled={basket.length > 0 && invalidLabel != true ? false : true}
+            className={`${invalidLabel ? 'bg-red-500 hover:bg-red-400' : 'bg-[#1baded]  hover:bg-[#16b9ff]'} mx-3 p-3 rounded-xl text-white hover:tracking-widest transition-all ease-in-out`}
           >
-            Submit Order
+            {invalidLabel != true ?
+            'Submit Label' : 'Will not Submit Until Order is Fixed'}
           </button>
         </div>
       </div>
@@ -144,6 +147,7 @@ const CartCanvasLabelCard = ({
   basketLabels,
   setBasketLabels,
   render,
+  setInvalidLabel
 }) => {
   const dispatch = useDispatch();
   const basket = useSelector((state) => state.Orders.labelBasket);
@@ -184,12 +188,20 @@ const CartCanvasLabelCard = ({
         for (let i = 0; i < basketLabels.length; i++) {
           const actualLabel = basketLabels[i];
           let modifiedPdf;
-          modifiedPdf = await modifyPdf(
-            `/api/getPdfs?categoryName=${actualLabel.categoryName}&subCategoryName=${actualLabel.subCategoryName}&fileName=${actualLabel.fileName}`,
-            basket[i]?.textToPut
-          );
+          try {
+            modifiedPdf = await modifyPdf(
+              `/api/getPdfs?categoryName=${actualLabel.categoryName}&subCategoryName=${actualLabel.subCategoryName}&fileName=${actualLabel.fileName}`,
+              basket[i]?.textToPut
+            );
+            setBlobs((prev) => [...prev, modifiedPdf]);
+            setInvalidLabel(false)
+          } catch (error) {
+            setBlobs((prev) => [...prev, '']);
+            setInvalidLabel(true)
+          }
+        
 
-          setBlobs((prev) => [...prev, modifiedPdf]);
+        
         }
       };
       modifyPaths();
@@ -252,7 +264,8 @@ const CartCanvasLabelCard = ({
   };
 
   const seeLabel = (index) => {
-    if (blobs.length > 0) {
+    console.log(blobs)
+    if (blobs[index] != '') {
       return (
         <div className="flex justify-center">
           <iframe
@@ -266,10 +279,11 @@ const CartCanvasLabelCard = ({
       );
     } else {
       return (
-        <div>
+        <div className="text-center">
           <b>
+            <img className="m-auto" height="300px" width="150px" src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg" />
             The input exceeds the labels character count and will not print.
-            Please delete this label from your order.{" "}
+            Please delete this label from your order.
           </b>
         </div>
       );
