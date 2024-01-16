@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 body {
   background-color: #f7f9fc;
@@ -11,10 +11,9 @@ body {
   align-items: center !important;
 }
 
-
 /* width */
 ::-webkit-scrollbar {
-  width: 15px;
+  width: 10px;
 }
 
 /* Track */
@@ -32,7 +31,6 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #233043c2;
-  ;
 }
 
 .colored-toast.swal2-icon-success {
@@ -55,13 +53,12 @@ body {
   z-index: 60px;
 }
 
-
 @media screen and (min-width: 1200px) {
   .top-margin {
     margin-left: 120px;
   }
 
   .addToCartToast {
-    margin-left:120px;
+    margin-left: 120px;
   }
 }

@@ -18,13 +18,26 @@ export const getTickets = createAsyncThunk("tickets/getTickets", async () => {
 export const updateTicket = createAsyncThunk("tickets/update", async (data) => {
   try {
     const token = sessionStorage.getItem("accessToken");
-    const updatedTicket = await api.get(`api/ticket/update/${data.id}`, data, {
+    const updatedTicket = await api.put(`api/ticket/update/${data.id}`, data, {
       headers: {
         Authorization: token,
       },
     });
-    console.log(updatedTicket);
     return updatedTicket.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+});
+export const createTicket = createAsyncThunk("tickets/create", async (data) => {
+  try {
+    const token = sessionStorage.getItem("accessToken");
+    const newTicket = await api.post(`api/ticket/create`, data, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return newTicket.data;
   } catch (error) {
     console.log(error);
     throw error;

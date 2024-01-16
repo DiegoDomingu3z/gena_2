@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getTickets, updateTicket } from "./Thunks";
+import { createTicket, getTickets, updateTicket } from "./Thunks";
 
 export const TicketSlice = createSlice({
   name: "Ticket",
@@ -28,6 +28,16 @@ export const TicketSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateTicket.rejected, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(createTicket.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(createTicket.fulfilled, (state, action) => {
+        state.tickets = [...state.tickets, action.payload];
+        state.loading = false;
+      })
+      .addCase(createTicket.rejected, (state, action) => {
         state.loading = false;
       });
   },

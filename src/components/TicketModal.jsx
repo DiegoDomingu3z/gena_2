@@ -6,6 +6,7 @@ import useEasterEgg from "~/hooks/useEasterEgg";
 import { useDispatch } from "react-redux";
 import { reportTicket } from "../../store/Emails/Thunks";
 import Swal from "sweetalert2";
+import { createTicket } from "../../store/Tickets/Thunks";
 
 const TicketModal = ({ setTicketModal, ticketModal }) => {
   useEasterEgg();
@@ -70,7 +71,7 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
               const token = sessionStorage.getItem("accessToken");
               setTicketModal(!ticketModal);
               helpers.resetForm();
-              await dispatch(reportTicket({ data, token }));
+              await dispatch(createTicket(data));
               successToast();
             } catch (error) {
               failToast();
@@ -107,15 +108,15 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
               text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 max-h-[10rem] min-h-[5rem] mb-5"
               ></Field>
               <label
-                htmlFor="importance"
+                htmlFor="priority"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Importance
+                Priority
               </label>
               <Field
                 component="select"
-                name="importance"
-                id="importance"
+                name="priority"
+                id="priority"
                 required=""
                 className="bg-gray-50 border border-gray-300
               text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[60%] lg:w-[50%] p-2.5 mb-10"
@@ -123,8 +124,9 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
                 <option className="text-gray-500" selected>
                   What is the business impact?
                 </option>
-                <option value="low">Low</option>
-                <option value="high">High</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
               </Field>
               <button
                 className="bg-[#28aeeb] p-2 px-5 rounded-lg text-white w-full"

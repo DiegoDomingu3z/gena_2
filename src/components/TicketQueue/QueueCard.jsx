@@ -22,14 +22,43 @@ const QueueCard = ({ account, ticket }) => {
     };
     dispatch(updateTicket(data));
   };
+
+  const badgeColor =
+    ticket.priority == "Low"
+      ? "bg-info"
+      : ticket.priority == "Medium"
+      ? "bg-warning"
+      : "bg-error";
   return (
-    <div className="card max-w-[500px] w-[90%] bg-base-100 shadow-xl">
-      <div className="card-body">
-        <div className="flex items-center">
-          <h2 className="card-title inline-block">{ticket.subject}</h2>
-          <span className="text-gray-400 ml-auto text-sm">
-            {ticket.creatorName}
+    <div className="card indicator max-w-[500px] w-[90%] bg-base-100 shadow-xl">
+      <div
+        className={`${
+          ticket.status !== "Completed" &&
+          "tooltip before:left-[100%] before:-bottom-[32px] after:hidden"
+        }`}
+        data-tip={ticket.priority}
+      >
+        {ticket.status !== "Completed" && (
+          <span
+            className={`indicator-item badge badge-ghost ${badgeColor}`}
+          ></span>
+        )}
+        {ticket.status === "Completed" && (
+          <span className="indicator-item badge bg-transparent border-none">
+            🎉
           </span>
+        )}
+      </div>
+      <div className="card-body">
+        <div className="flex items-center gap-4">
+          <h2 className="card-title inline-block max-w-[255px]">
+            {ticket.subject}
+          </h2>
+          {account.privileges === "admin" && (
+            <span className="text-gray-400 ml-auto text-sm">
+              {ticket.creatorName}
+            </span>
+          )}
         </div>
         <p className="mb-5">{ticket.description}</p>
         <span className="text-sm">
