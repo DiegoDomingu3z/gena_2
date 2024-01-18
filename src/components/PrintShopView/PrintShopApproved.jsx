@@ -22,7 +22,7 @@ import {
   getProcessingOrder,
   printOrder,
 } from "../../../store/PrintShop/Thunks";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 import Swal from "sweetalert2";
 import { getMaterials } from "../../../store/Material/Thunks";
 const { Panel } = Collapse;
@@ -95,7 +95,8 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                 const p = pdf[index][i];
                 const modifiedPdfDataUri = await modifyPdf(
                   `/api/getPdfs?categoryName=${p.categoryName}&subCategoryName=${p.subCategoryName}&fileName=${p.fileName}`,
-                  label.textToPut
+                  label.textToPut,
+                  p.categoryName
                 );
                 return modifiedPdfDataUri;
               })
@@ -112,15 +113,28 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     modifyAndStorePdfDataUris();
   }, [pdf]);
 
-  const modifyPdf = async (path, text) => {
+  const modifyPdf = async (path, text, category) => {
     try {
       const existingPdfBytes = await fetch(path).then((res) =>
         res.arrayBuffer()
       );
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      let customFont;
+      if (category == 'floor-labels') {
+        const response = await fetch('../utils/fonts/impact.ttf'); // Adjust the path accordingly
+        const fontData = await response.arrayBuffer();
+        console.log(response, 'resss')
+        customFont = await pdfDoc.embedFont(fontData)
+      } else {
+        customFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
+      }
 
+      
       const form = pdfDoc.getForm();
       const fieldNames = form.getFields().map((field) => field.getName());
+
+  
+
 
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
@@ -134,7 +148,11 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         } else {
           const fieldToFill = form.getTextField(fieldName);
           fieldToFill.setText(text[i].text);
+          fieldToFill.updateAppearances(customFont)
+
+          
         }
+
       }
 
       const modifiedPdfBytes = await pdfDoc.save();
