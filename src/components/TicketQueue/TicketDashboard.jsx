@@ -28,7 +28,7 @@ const TicketDashboard = ({ account, tickets }) => {
   return (
     <div
       ref={containerRef}
-      className="grid grid-cols-3 max-h-[48rem] laptop:h-[48rem] overflow-auto pb-10"
+      className="grid grid-cols-3 max-h-[48rem] overflow-auto pb-10"
     >
       <span
         className={`sticky top-0 pb-1 pl-1 bg-white z-10 transition-all ease-in-out duration-500 ${
@@ -60,13 +60,13 @@ const TicketDashboard = ({ account, tickets }) => {
           {completedCards.length}
         </span>
       </span>
-      <div id="inQueue" className="flex flex-col gap-2 mt-8">
+      <div id="inQueue" className="flex flex-col gap-2 mt-8 pl-[15px]">
         {inQueueCards}
       </div>
-      <div id="inProgress" className="flex flex-col gap-2 mt-8">
+      <div id="inProgress" className="flex flex-col gap-2 mt-8 pl-[15px]">
         {inProgressCards}
       </div>
-      <div id="completed" className="flex flex-col gap-2 mt-8">
+      <div id="completed" className="flex flex-col gap-2 mt-8 pl-[15px]">
         {completedCards}
       </div>
     </div>

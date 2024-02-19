@@ -6,6 +6,7 @@ import {
   UploadOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
+import fontkit from '@pdf-lib/fontkit';
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -96,7 +97,7 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                 const modifiedPdfDataUri = await modifyPdf(
                   `/api/getPdfs?categoryName=${p.categoryName}&subCategoryName=${p.subCategoryName}&fileName=${p.fileName}`,
                   label.textToPut,
-                  p.categoryName
+                  p.subCategoryName
                 );
                 return modifiedPdfDataUri;
               })
@@ -113,19 +114,25 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     modifyAndStorePdfDataUris();
   }, [pdf]);
 
-  const modifyPdf = async (path, text, category) => {
+  const modifyPdf = async (path, text, subCategory) => {
     try {
       const existingPdfBytes = await fetch(path).then((res) =>
         res.arrayBuffer()
       );
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
       let customFont;
-      if (category == 'floor-labels') {
-        const response = await fetch('../utils/fonts/impact.ttf'); // Adjust the path accordingly
-        const fontData = await response.arrayBuffer();
-        console.log(response, 'resss')
-        customFont = await pdfDoc.embedFont(fontData)
+      if (subCategory == 'floor-labels') {
+        try {
+          console.log("FONTKIT RUNNING", subCategory)
+          pdfDoc.registerFontkit(fontkit)
+        const bytes = await fetch('/fonts/impact.ttf').then((res) => res.arrayBuffer())
+        customFont = await pdfDoc.embedFont(bytes)
+        } catch (error) {
+          console.log(error)
+        }
+
       } else {
+
         customFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
       }
 

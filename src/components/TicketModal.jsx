@@ -117,11 +117,11 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
                 component="select"
                 name="priority"
                 id="priority"
-                required=""
+                required
                 className="bg-gray-50 border border-gray-300
               text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[60%] lg:w-[50%] p-2.5 mb-10"
               >
-                <option className="text-gray-500" selected>
+                <option className="text-gray-500" value="" disabled selected>
                   What is the business impact?
                 </option>
                 <option value="Low">Low</option>
