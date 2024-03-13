@@ -4,6 +4,7 @@ import {
   addCategory,
   removeCategory,
   updateCategory,
+  updateJiraCategoryPoints,
 } from "../../../store/Category/Thunk";
 import { FaMinusCircle, FaPenSquare } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +15,8 @@ import { RingLoader } from "react-spinners";
 import { useState } from "react";
 import { getDepartments } from "../../../store/Departments/Thunks";
 import { useEffect } from "react";
+import { faJira } from "@fortawesome/free-brands-svg-icons";
+import { Tooltip } from "antd";
 const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
   const [newCatName, setNewCatName] = useState("");
   const [togglePopup, setTogglePopup] = useState(false);
@@ -85,10 +88,73 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
     });
   };
 
+  const updateJiraPoints = async (name, id, jiraPoints) => {
+    const token = sessionStorage.getItem("accessToken")
+    const {value: newJiraPoints} = await Swal.fire({
+      title: `Update jira points for ${name}?`,
+      html: `<small>Category jira points take the least priority</small>`,
+      input: "number",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      inputValidator: (value) => {
+        if (!value) {
+          return "If You are not changing the points, please press cancel";
+        }
+      },
+      inputValue: jiraPoints,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Update",
+    })
+    if (newJiraPoints) {
+      let timerInterval;
+      let seconds = (await Math.floor(Math.random() * 8)) + 1;
+      const milliseconds = (await seconds) * 1000;
+      await Swal.fire({
+        title: `Updating Jira Points to ${newJiraPoints}</b>`,
+        html: "<b></b>",
+        timer: milliseconds,
+        timerProgressBar: true,
+        allowOutsideClick: () => {
+          const popup = Swal.getPopup();
+          popup.classList.remove("swal2-show");
+          setTimeout(() => {
+            popup.classList.add("animate__animated", "animate__headShake");
+          });
+          setTimeout(() => {
+            popup.classList.remove("animate__animated", "animate__headShake");
+          }, 500);
+          return false;
+        },
+        didOpen: () => {
+          dispatch(updateJiraCategoryPoints({ token, id, newJiraPoints }));
+          Swal.showLoading();
+          const b = Swal.getHtmlContainer().querySelector("b");
+          timerInterval = setInterval(() => {
+            b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      });
+      setTriggerFetch(!triggerFetch);
+    }
+    
+  }
+
+
+
+
+
+
   const updateCat = async (id, name) => {
     const token = sessionStorage.getItem("accessToken");
     const { value: newName } = await Swal.fire({
-      title: `Update ${name}'s name?`,
+      title: `Update ${name}'s information?`,
       html: `This will update all necessary data`,
       input: "text",
       inputAttributes: {
@@ -111,7 +177,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
       let seconds = (await Math.floor(Math.random() * 8)) + 1;
       const milliseconds = (await seconds) * 1000;
       await Swal.fire({
-        title: `Updating Department: <b>${name} </b> to <b>${newName}</b>`,
+        title: `Updating Category: <b>${name} </b> to <b>${newName}</b>`,
         html: "This may take a couple of seconds, system is changing multiple account information with new data <br> <b></b>",
         timer: milliseconds,
         timerProgressBar: true,
@@ -326,24 +392,41 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
               >
                 <span>{c.name}</span>
                 <div className="flex gap-5">
+                  <Tooltip title={`
+                  Edit Jira Points (${c.jiraPoints ? c.jiraPoints : 'N.A.'})`}>
+
+                  <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    updateJiraPoints(c.name, c._id, c?.jiraPoints)
+                  }}>
+                  <FontAwesomeIcon icon={faJira} color="#579DFF"/>
+                  </button>
+                  </Tooltip>
+                  <Tooltip title="Edit Name">
+
                   <button
                     className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
                     onClick={(event) => {
                       event.stopPropagation(); // Stop propagation here
                       updateCat(c._id, c.name);
                     }}
-                  >
+                    >
                     <FontAwesomeIcon icon={faPencil} />
                   </button>
+                    </Tooltip>
+                    <Tooltip title="Delete Category">
+
                   <button
                     className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
                     onClick={(event) => {
                       event.stopPropagation(); // Stop propagation here
                       deleteCat(c._id, c.name);
                     }}
-                  >
+                    >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
+                    </Tooltip>
                 </div>
               </div>
             ))

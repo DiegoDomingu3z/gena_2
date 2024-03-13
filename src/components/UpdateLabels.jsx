@@ -2,12 +2,30 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { removeLabel, updateSerialLabel } from "../../store/Label/Thunks";
-
+import { Button, Divider, Form, InputNumber, Modal, Switch } from 'antd'
 const UpdateLabels = ({ serialModal, setSerialModal }) => {
-  const [modal, setModal] = useState(false);
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Label.activeLabels);
+  const [modal, showModal] = useState(false);
+  const [activeLabel, setActiveLabel] = useState(null)
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState('Content of the modal');
   const dispatch = useDispatch();
+
+
+
+
+  const updateJiraPoints = (name, id, jiraPoints) => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+
+
+
 
   const deleteLabel = (labelName, id) => {
     let token = account.accessToken;
@@ -40,11 +58,11 @@ const UpdateLabels = ({ serialModal, setSerialModal }) => {
         </div>
       </div>
       <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
-      <div className="grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[80rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10">
+      <div className="grid justify-items-center laptoplg:grid-cols-4 grid-cols-2 gap-8 max-h-[92rem] laptop:h-[37.5rem] overflow-auto pb-4 p-2 pr-10">
         {labels.length > 0
           ? labels.map((l) => (
               <div
-                className="bg-white w-full h-76 laptop:h-[26rem] rounded-lg drop-shadow-md font-genaPrimary"
+                className="bg-white w-full h-88 laptop:h-[30rem] rounded-lg drop-shadow-md font-genaPrimary"
                 key={l._id}
               >
                 <div className="w-full h-[15rem] rounded-md justify-center flex items-center">
@@ -56,7 +74,12 @@ const UpdateLabels = ({ serialModal, setSerialModal }) => {
                   ></iframe>
                 </div>
                 <div className="p-4">
+                  <div className="h-10">
                   <div className="text-end text-xs">{l.docNum}</div>
+                  {l.jiraPoints ? 
+                  <div className="text-end text-xs">Jira points: {l.jiraPoints}</div>
+                  : null}
+                  </div>
                   <div className="text-center text-md text-gray-500 mb-5">
                     {l.name}
                   </div>
@@ -93,12 +116,64 @@ const UpdateLabels = ({ serialModal, setSerialModal }) => {
                         Update Label
                       </button>
                     )}
+                    <button className="bg-[#579DFF] px-3 py-1 rounded-lg w-full text-white mt-2 hover:bg-[#467ece] hover:scale-105 hover:shadow-md transition-all
+                    ease-in-out" onClick={() => {
+                      // updateJiraPoints(l.name, l._id, l?.jiraPoints)
+                      showModal(true)
+                      setActiveLabel(l)
+                    }}>
+                      Edit Jira Points
+                    </button>
                   </div>
                 </div>
               </div>
             ))
           : null}
       </div>
+      <Modal
+        title={`Edit Jira Points`}
+        open={modal}
+        onOk={updateJiraPoints}
+        confirmLoading={confirmLoading}
+        onCancel={() => showModal(false)}
+        centered
+        width={800}
+        height={600}
+      >
+        <Divider plain><h2 className="text-lg font-semibold">{activeLabel?.name}</h2></Divider>
+        {activeLabel?.jiraPoints ?
+        <div className="ant-modal-title">
+            Current Jira Points: {activeLabel.jiraPoints}
+        </div>
+        : null }
+        <Form 
+        onFinish={updateJiraPoints}
+        onFinishFailed={() => {
+          console.log("FAILED")
+        }}
+        autoComplete="off">
+       <Form.Item
+       className="mt-3"
+      label="Jira Points"
+      name="points"
+      rules={[
+        {
+          required: true,
+          message: 'Please insert points',
+        },
+      ]}
+    >
+       <InputNumber min={1} max={144} defaultValue={activeLabel?.jiraPoints}/>
+    </Form.Item>
+      <Form.Item
+      label="Should Points Stack?"
+      name="stack-points">
+        <Switch />
+      </Form.Item>
+       
+   
+        </Form>
+      </Modal>
     </div>
   );
 };

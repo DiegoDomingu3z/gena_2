@@ -82,3 +82,23 @@ export const updateSubCat = createAsyncThunk(
     }
   }
 );
+
+export const updateJiraSubCategoryPoints = createAsyncThunk(
+  'update/jira-points',
+  async ({token, id, newJiraPoints}) => {
+    try {
+      const data = {points: newJiraPoints}
+      console.log(newJiraPoints)
+      const res = await api.put(`api/subcategory/${id}/jira-points`, data, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then((res) => res.data)
+      return res
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+)
