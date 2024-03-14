@@ -5,6 +5,7 @@ import {
   addSubCategory,
   getAllInCats,
   removeSubCat,
+  updateJiraSubCategoryPoints,
   updateSubCat,
 } from "../../../store/Sub-Category/Thunks";
 import { getCategory } from "../../../store/Category/Thunk";
@@ -14,6 +15,8 @@ import { RingLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "antd";
+import { faJira } from "@fortawesome/free-brands-svg-icons";
 
 const NewSubCategory = () => {
   const router = useRouter();
@@ -54,6 +57,59 @@ const NewSubCategory = () => {
       }
     });
   };
+
+  const updateJiraPoints = async (name, id, jiraPoints) => {
+    const token = sessionStorage.getItem("accessToken")
+    const {value: newJiraPoints} = await Swal.fire({
+      title: `Update jira points for the <br> ${name}?`,
+      html: `<small>Sub-Category jira points take the second priority</small>`,
+      input: "number",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      inputValue: jiraPoints,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Update",
+    })
+    if (newJiraPoints) {
+      let timerInterval;
+      let seconds = (await Math.floor(Math.random() * 8)) + 1;
+      const milliseconds = (await seconds) * 1000;
+      await Swal.fire({
+        title: `Updating Jira Points to ${newJiraPoints}</b>`,
+        html: "<b></b>",
+        timer: milliseconds,
+        timerProgressBar: true,
+        allowOutsideClick: () => {
+          const popup = Swal.getPopup();
+          popup.classList.remove("swal2-show");
+          setTimeout(() => {
+            popup.classList.add("animate__animated", "animate__headShake");
+          });
+          setTimeout(() => {
+            popup.classList.remove("animate__animated", "animate__headShake");
+          }, 500);
+          return false;
+        },
+        didOpen: () => {
+          dispatch(updateJiraSubCategoryPoints({ token, id, newJiraPoints }));
+          Swal.showLoading();
+          const b = Swal.getHtmlContainer().querySelector("b");
+          timerInterval = setInterval(() => {
+            b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      });
+      setTriggerFetch(!triggerFetch);
+    }
+    
+  }
 
   const updateSubCats = async (id, name) => {
     const token = sessionStorage.getItem("accessToken");
@@ -160,6 +216,16 @@ const NewSubCategory = () => {
                 >
                   <span>{s.name}</span>
                   <div className="flex gap-5">
+                  <Tooltip title={`
+                  Edit Jira Points (${s.jiraPoints ? s.jiraPoints : 'N.A.'})`}>
+                  <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    updateJiraPoints(s.name, s._id, s?.jiraPoints)
+                  }}>
+                  <FontAwesomeIcon icon={faJira} color="#579DFF"/>
+                  </button>
+                    </Tooltip>
                     <button
                       className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
                       onClick={(event) => {

@@ -6,6 +6,7 @@ import {
   UploadOutlined,
   DownloadOutlined,
 } from "@ant-design/icons";
+import fontkit from '@pdf-lib/fontkit';
 import { BeatLoader, RingLoader } from "react-spinners";
 import { getAllUsers } from "../../../store/Account/thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,7 +23,7 @@ import {
   getProcessingOrder,
   printOrder,
 } from "../../../store/PrintShop/Thunks";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 import Swal from "sweetalert2";
 import { getMaterials } from "../../../store/Material/Thunks";
 const { Panel } = Collapse;
@@ -95,7 +96,8 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
                 const p = pdf[index][i];
                 const modifiedPdfDataUri = await modifyPdf(
                   `/api/getPdfs?categoryName=${p.categoryName}&subCategoryName=${p.subCategoryName}&fileName=${p.fileName}`,
-                  label.textToPut
+                  label.textToPut,
+                  p.subCategoryName
                 );
                 return modifiedPdfDataUri;
               })
@@ -112,15 +114,34 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
     modifyAndStorePdfDataUris();
   }, [pdf]);
 
-  const modifyPdf = async (path, text) => {
+  const modifyPdf = async (path, text, subCategory) => {
     try {
       const existingPdfBytes = await fetch(path).then((res) =>
         res.arrayBuffer()
       );
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      let customFont;
+      if (subCategory == 'floor-labels') {
+        try {
+          console.log("FONTKIT RUNNING", subCategory)
+          pdfDoc.registerFontkit(fontkit)
+        const bytes = await fetch('/fonts/impact.ttf').then((res) => res.arrayBuffer())
+        customFont = await pdfDoc.embedFont(bytes)
+        } catch (error) {
+          console.log(error)
+        }
 
+      } else {
+
+        customFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
+      }
+
+      
       const form = pdfDoc.getForm();
       const fieldNames = form.getFields().map((field) => field.getName());
+
+  
+
 
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
@@ -134,7 +155,11 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
         } else {
           const fieldToFill = form.getTextField(fieldName);
           fieldToFill.setText(text[i].text);
+          fieldToFill.updateAppearances(customFont)
+
+          
         }
+
       }
 
       const modifiedPdfBytes = await pdfDoc.save();

@@ -63,12 +63,6 @@ export const CanvasButtons = ({
         >
           <FontAwesomeIcon className="text-xl" icon={faArrowLeftLong} /> Close
         </button>
-        {/* <Link href={'/home'} className={user.accessToken ? `mb-5 flex items-center gap-5` : "hidden"}>
-          <button className={`h-14 w-full flex items-center gap-5 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${router.pathname === '/home' && "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"}`}>
-            <FontAwesomeIcon className='text-[#28aeeb]' icon={faHouse} />
-            <span className='font-genaPrimary'>Home</span>
-          </button>
-        </Link> */}
         <Link
           href={"/PrintShop"}
           className={
@@ -83,7 +77,10 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faPrint} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faPrint}
+            />
             <span className="font-genaPrimary">Print Orders</span>
           </button>
         </Link>
@@ -97,7 +94,10 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faCirclePlus} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faCirclePlus}
+            />
             <span className="font-genaPrimary">New Order</span>
           </button>
         </Link>
@@ -111,7 +111,10 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faSuitcase} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faSuitcase}
+            />
             <span className="font-genaPrimary">Current Orders</span>
           </button>
         </Link>
@@ -129,7 +132,10 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faTag} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faTag}
+            />
             <span className="font-genaPrimary">New Label</span>
           </button>
         </Link>
@@ -148,7 +154,7 @@ export const CanvasButtons = ({
             }`}
           >
             <FontAwesomeIcon
-              className="text-slate-400"
+              className="text-slate-400 w-[15px] h-[15px]"
               icon={faSquarePiedPiper}
             />
             <span className="font-genaPrimary">New Material</span>
@@ -170,7 +176,10 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faFolderPlus} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faFolderPlus}
+            />
             <span className="font-genaPrimary">Categories</span>
           </button>
         </Link>
@@ -185,7 +194,7 @@ export const CanvasButtons = ({
             }`}
           >
             <FontAwesomeIcon
-              className="text-slate-400 text-sm"
+              className="text-slate-400 text-sm w-[15px] h-[15px]"
               icon={faUsers}
             />
             <span className="font-genaPrimary">Departments</span>
@@ -205,12 +214,16 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faUser} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faUser}
+            />
             <span className="font-genaPrimary">Add User</span>
           </button>
         </Link>
         <Link
           href={"/resources"}
+          className={user.accessToken ? "flex items-center gap-5" : "hidden"}
         >
           <button
             className={`h-14 w-full flex items-center gap-6 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${
@@ -218,15 +231,21 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faFile} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faFile}
+            />
             <span className="font-genaPrimary">Resources</span>
           </button>
         </Link>
         <Link
           href={"/exporter"}
           className={
-            user.accessToken && (user.account.privileges == "admin" ||
-            user.account.privileges == "printshop") ? 'flex items-center gap-5' : 'hidden'
+            user.accessToken &&
+            (user.account.privileges == "admin" ||
+              user.account.privileges == "printshop")
+              ? "flex items-center gap-5"
+              : "hidden"
           }
         >
           <button
@@ -235,8 +254,33 @@ export const CanvasButtons = ({
               "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
             }`}
           >
-            <FontAwesomeIcon className="text-slate-400" icon={faFolderTree} />
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faFolderTree}
+            />
             <span className="font-genaPrimary">Export Data</span>
+          </button>
+        </Link>
+        <Link href={"/ticket-queue"} className={
+            user.accessToken
+              ? "flex items-center gap-5"
+              : "hidden"
+          }>
+          <button
+            className={`h-14 w-full flex items-center gap-6 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${
+              router.pathname === "/ticket-queue" &&
+              "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
+            }`}
+          >
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faReceipt}
+            />
+            <span className="font-genaPrimary">
+              {user.account.privileges != "admin"
+                ? "My Tickets"
+                : "Ticket Queue"}
+            </span>
           </button>
         </Link>
       </div>
