@@ -154,14 +154,15 @@ export const updateSerialLabel = createAsyncThunk(
 
 export const updateJiraLabelPoints = createAsyncThunk(
   'update/jira-points',
-  async ({token, id, newJiraPoints}) => {
+  async ({token, id, data}) => {
     try {
-      const data = {points: newJiraPoints}
-      console.log(newJiraPoints)
-      const res = await api.put(`api/upload/${id}//label/${id}/jira-points`, data, {
+      console.log('data:' , data)
+      const res = await api.put(`api/upload/label/${id}/jira-points`, data, {
         headers: {
           Authorization: token
-        }
+        },
+        contentType: false,
+        processData: false,
       })
       .then((res) => res.data)
       return res
