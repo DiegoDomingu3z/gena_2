@@ -392,7 +392,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
               >
                 <span>{c.name}</span>
                 <div className="flex gap-5">
-                  <Tooltip title={`
+                  {/* <Tooltip title={`
                   Edit Jira Points (${c.jiraPoints ? c.jiraPoints : 'N.A.'})`}>
 
                   <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
@@ -402,7 +402,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                   }}>
                   <FontAwesomeIcon icon={faJira} color="#579DFF"/>
                   </button>
-                  </Tooltip>
+                  </Tooltip> */}
                   <Tooltip title="Edit Name">
 
                   <button

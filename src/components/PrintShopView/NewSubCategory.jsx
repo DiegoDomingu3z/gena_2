@@ -216,7 +216,7 @@ const NewSubCategory = () => {
                 >
                   <span>{s.name}</span>
                   <div className="flex gap-5">
-                  <Tooltip title={`
+                  {/* <Tooltip title={`
                   Edit Jira Points (${s.jiraPoints ? s.jiraPoints : 'N.A.'})`}>
                   <button className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
                   onClick={(event) => {
@@ -225,7 +225,7 @@ const NewSubCategory = () => {
                   }}>
                   <FontAwesomeIcon icon={faJira} color="#579DFF"/>
                   </button>
-                    </Tooltip>
+                    </Tooltip> */}
                     <button
                       className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
                       onClick={(event) => {
