@@ -150,3 +150,25 @@ export const updateSerialLabel = createAsyncThunk(
     }
   }
 );
+
+
+export const updateJiraLabelPoints = createAsyncThunk(
+  'update/jira-points',
+  async ({token, id, data}) => {
+    try {
+      console.log('data:' , data)
+      const res = await api.put(`api/upload/label/${id}/jira-points`, data, {
+        headers: {
+          Authorization: token
+        },
+        contentType: false,
+        processData: false,
+      })
+      .then((res) => res.data)
+      return res
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+)
