@@ -1,26 +1,50 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { removeLabel, updateSerialLabel } from "../../store/Label/Thunks";
+import { removeLabel, updateJiraLabelPoints, updateSerialLabel } from "../../store/Label/Thunks";
 import { Button, Divider, Form, InputNumber, Modal, Switch } from 'antd'
 const UpdateLabels = ({ serialModal, setSerialModal }) => {
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Label.activeLabels);
-  const [modal, showModal] = useState(false);
   const [activeLabel, setActiveLabel] = useState(null)
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
 
+  const showModal = async (label) => {
+    const { value: formValues } = await Swal.fire({
+      title: `${label.name}`,
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      confirmButtonColor: '#579dff',
+      cancelButtonColor: '#e73b3b',
+      html: `
+      <div class="flex justify-between items-center">
+      <label
+  class="inline-block ps-[0.15rem] hover:cursor-pointer"
+  >Jira Points</label>
+      <input id="points" class="swal2-input" type="number" value="${label?.jiraPoints}"/>
+      </div>
+  
+      `,
+      focusConfirm: false,
+      preConfirm: () => {
+        return {
+          'jiraPoints': document.getElementById("points").value,
+        }
+  }
+    });
+    if (formValues) {
+      updateJiraPoints(formValues, label._id)
+    }
+  }
 
-
-  const updateJiraPoints = (name, id, jiraPoints) => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
+  const updateJiraPoints = (data, id) => {
+    console.log(data)
+    let token = account.accessToken;
+    dispatch(updateJiraLabelPoints({token, id, data}))
   };
 
 
@@ -119,8 +143,8 @@ const UpdateLabels = ({ serialModal, setSerialModal }) => {
                     <button className="bg-[#579DFF] px-3 py-1 rounded-lg w-full text-white mt-2 hover:bg-[#467ece] hover:scale-105 hover:shadow-md transition-all
                     ease-in-out" onClick={() => {
                       // updateJiraPoints(l.name, l._id, l?.jiraPoints)
-                      showModal(true)
                       setActiveLabel(l)
+                      showModal(l)
                     }}>
                       Edit Jira Points
                     </button>
@@ -130,50 +154,7 @@ const UpdateLabels = ({ serialModal, setSerialModal }) => {
             ))
           : null}
       </div>
-      <Modal
-        title={`Edit Jira Points`}
-        open={modal}
-        onOk={updateJiraPoints}
-        confirmLoading={confirmLoading}
-        onCancel={() => showModal(false)}
-        centered
-        width={800}
-        height={600}
-      >
-        <Divider plain><h2 className="text-lg font-semibold">{activeLabel?.name}</h2></Divider>
-        {activeLabel?.jiraPoints ?
-        <div className="ant-modal-title">
-            Current Jira Points: {activeLabel.jiraPoints}
-        </div>
-        : null }
-        <Form 
-        onFinish={updateJiraPoints}
-        onFinishFailed={() => {
-          console.log("FAILED")
-        }}
-        autoComplete="off">
-       <Form.Item
-       className="mt-3"
-      label="Jira Points"
-      name="points"
-      rules={[
-        {
-          required: true,
-          message: 'Please insert points',
-        },
-      ]}
-    >
-       <InputNumber min={1} max={144} defaultValue={activeLabel?.jiraPoints}/>
-    </Form.Item>
-      <Form.Item
-      label="Should Points Stack?"
-      name="stack-points">
-        <Switch />
-      </Form.Item>
-       
-   
-        </Form>
-      </Modal>
+
     </div>
   );
 };
