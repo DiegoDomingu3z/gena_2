@@ -18,6 +18,7 @@ import {
   faReceipt,
   faFile,
   faFolderTree,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { faSquarePiedPiper } from "@fortawesome/free-brands-svg-icons";
@@ -280,6 +281,26 @@ export const CanvasButtons = ({
               {user.account.privileges != "admin"
                 ? "My Tickets"
                 : "Ticket Queue"}
+            </span>
+          </button>
+        </Link>
+        <Link href={"/settings"} className={
+            user.account.privileges == 'admin'
+              ? "flex items-center gap-5"
+              : "hidden"
+          }>
+          <button
+            className={`h-14 w-full flex items-center gap-6 p-8 transition-all ease-in-out duration-150 text-white hover:shadow-md hover:tracking-wide hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${
+              router.pathname === "/settings" &&
+              "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8"
+            }`}
+          >
+            <FontAwesomeIcon
+              className="text-slate-400 w-[15px] h-[15px]"
+              icon={faGear}
+            />
+            <span className="font-genaPrimary">
+              Settings
             </span>
           </button>
         </Link>
