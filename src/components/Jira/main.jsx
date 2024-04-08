@@ -1,8 +1,11 @@
-import { faDotCircle, faEllipsis, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { faDotCircle, faEllipsis, faEye, faEyeSlash, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, Form, Input, Popconfirm, Spin, Tag } from "antd";
+import { Button, Card, Form, Input, Popconfirm, Spin, Tag, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { api } from "../../../axiosService";
+import { useDispatch, useSelector } from "react-redux";
+import { getConfig, testEmailConnection, testJiraDomainConnection, updateConfig } from "../../../store/Configuration/Thunks";
+import { SyncOutlined } from "@ant-design/icons";
 
 const customizeRequiredMark = (label, { required }) => (
     <>
@@ -26,9 +29,9 @@ const PopConfirmToEdit = ({title, description, componentDisabled, setComponentDi
             style: { backgroundColor: '#1677ff' }
         }}
         cancelButtonProps={{
-            style: {backgroundColor: '#ff4d4f', color: 'white', border: 'white'}
+            style: {backgroundColor: 'red', color: 'white', border: 'white'}
         }}
-        cancelText="Cancel">
+        cancelText="cancel">
                 <Button className="items-center flex hover:text-[#1677ff]">
                 <FontAwesomeIcon className="text-slate-400 w-[15px] h-[15px]  "
                 icon={faEllipsis} />
@@ -45,7 +48,13 @@ const Main = () => {
     const [componentDisabled, setComponentDisabled] = useState(true);
     const [emailFormDisabled, setEmailFormDisabled] = useState(true)
     const [loading, setLoading] = useState(false)
+    const [testingConnection, setTestConnection] = useState(false)
+    const [testJiraConnection, setTestJiraConnection] = useState(false)
     const [logs, setLogs] = useState([])
+    const configuration = useSelector((state) => state.Configuration.configuration);
+    console.log(configuration.senderEmailAddress, 'email')
+    console.log(configuration, 'config')
+    const dispatch = useDispatch()
     const typeLog = {
         'log': '#00FF00',
         'error': '#FF0000',
@@ -55,7 +64,7 @@ const Main = () => {
 
     }
 
-    const formatDate = (timestamp) => {
+    const formatDate = (timestamp, view) => {
         const date = new Date(timestamp);
         
     // Get the month, day, and year
@@ -69,8 +78,11 @@ const Main = () => {
     
     const formattedDate = `${month}/${day}/${year}`;
     const formattedTime = `${hours}:${minutes}:${seconds}`;
-    
-    return `${formattedDate} : : ${formattedTime}`
+    if (view == 'terminal') {  
+        return `${formattedDate} : : ${formattedTime}`
+    } else if ('regular'){
+        return  `${formattedDate} - ${formattedTime}`
+    }
     }
     
 
@@ -91,8 +103,9 @@ const Main = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const token = sessionStorage.getItem("accessToken")
+                dispatch(getConfig({token}))
                 const res = await api.get('api/logs').then((res) => res.data)
-                console.log(res)
                 setLogs(res)
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -104,6 +117,39 @@ const Main = () => {
         // No cleanup needed for this effect, so you can leave the return statement empty
     }, []);
     
+
+    const submitEmailForm = (values) => {
+        const token = sessionStorage.getItem("accessToken")
+        dispatch(updateConfig({values, token})).then(() => {
+            setEmailFormDisabled(true)
+        })
+    }
+
+    const submitJiraForm = async (values) => {
+        const token = sessionStorage.getItem("accessToken")
+        await dispatch(updateConfig({values, token})).then(() => {
+            setComponentDisabled(true)
+        })
+    }
+
+    const valueChange = (input, value) => {
+        document.getElementById(input).value = value;
+    }
+
+    const testConnection = async () => {
+        setTestConnection(true)
+        await dispatch(testEmailConnection()).then(() => {
+                setTestConnection(false)
+        })
+    }
+
+    const JiraConnection = async () => {
+        setTestJiraConnection(true)
+        dispatch(testJiraDomainConnection()).then(() => {
+            setTestJiraConnection(false)
+        })
+    }
+
 
 
     return (
@@ -121,22 +167,78 @@ const Main = () => {
             title="Email Configuration"
             className="w-full mt-5 mb-5"
             extra={
-                <PopConfirmToEdit title={"Edit Connection Information?"} description={"You will be unable to revert"} componentDisabled={emailFormDisabled} setComponentDisabled={setEmailFormDisabled}/>
+                <div className="flex">
+                    <Button type="primary" className="me-2 bg-blue-500"
+                    onClick={() => testConnection()}
+                    >Test Connection</Button> 
+                    {configuration.emailConnectionStatus == undefined && testingConnection == false ?
+                    <Tag color="warning" className="flex items-center">No Connection</Tag>
+                    : null}
+                    {testingConnection ? 
+                    <Tag icon={<SyncOutlined spin />} color="purple" className="flex items-center">
+                    Connecting
+                  </Tag> : null
+                    }
+                    {configuration?.emailConnectionStatus == true ?
+                    <Tooltip title={`Last Test ${formatDate(configuration.emailConnectionDateTested)}`}>
+                    <Tag color="success" className="flex items-center">Active Connection</Tag>
+                    </Tooltip>
+                    : null}
+                    {configuration.emailConnectionStatus == false ?
+                    <Tooltip  title={`Last Test ${formatDate(configuration.emailConnectionDateTested, 'regular')}`}>
+                    <Tag color="error" className="flex items-center">Connection Failed</Tag>
+                        </Tooltip>
+                    : null}
+                    
+               
+                <PopConfirmToEdit
+                 title={"Edit Connection Information?"} 
+                 description={"You will be unable to revert"} 
+                 componentDisabled={emailFormDisabled} 
+                 setComponentDisabled={setEmailFormDisabled}/>
+                 </div>
             }>
                 <Form
                  layout="vertical"
                  disabled={emailFormDisabled}
+                 onFinish={submitEmailForm}
+                 fields={[
+                    {
+                     name: ['senderEmailAddress'], 
+                     value: configuration.senderEmailAddress  
+                    },
+                    {
+                     name: ['senderEmailPassword'], 
+                     value: configuration.senderEmailPassword  
+                    }
+                 ]}
                 >
-                <Form.Item label="Sender Email Address" required tooltip="Email will be used to send notifications to users">
-                    <Input placeholder="test-email@inventive-group.com"
+                <Form.Item label="Sender Email Address" name="senderEmailAddress" required tooltip="Email will be used to send notifications to users" 
+                 rules={[
+                    {
+                      required: true,
+                      message: 'Please input an email!',
+                    },
+                  ]} initialValue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}>
+                    <Input id="senderEmailAddress" placeholder={configuration.senderEmailAddress} onChange={(e) => valueChange('senderEmailAddress', e.target.value)}
+                    initialValue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}
                      />
                 </Form.Item>
                 
-                <Form.Item label="Sender Email Password" required>
-                    <Input placeholder="********" type="password"
-                     />
+                <Form.Item label="Sender Email Password" name="senderEmailPassword" required
+                 rules={[
+                    {
+                      required: true,
+                      message: 'Please input your password!',
+                    },
+                  ]}>
+                    <Input placeholder="********" type={emailFormDisabled ? 'password' : 'text'} />
                 </Form.Item>
+               
                 <div className="text-end">
+                <Button className="bg-red-500 text-white mr-3 hover:text-red-400" htmlType="reset" onClick={() => setEmailFormDisabled(!emailFormDisabled)}>
+                    Cancel
+                </Button>
                 <Button htmlType="submit" className="bg-[#1677ff] text-white">
                     Update
                 </Button>
@@ -148,29 +250,84 @@ const Main = () => {
             title="Jira Connection Information"
             className="w-full"
             extra={
+                <div className="flex">
+                    <Button type="primary" className="me-2 bg-blue-500"
+                    onClick={() => JiraConnection()}
+                    >Test Connection</Button> 
+                    {configuration.jiraConnectionStatus == undefined && testJiraConnection == false ?
+                    <Tag color="warning" className="flex items-center">No Connection</Tag>
+                    : null}
+                    {testJiraConnection ? 
+                    <Tag icon={<SyncOutlined spin />} color="purple" className="flex items-center">
+                    Connecting
+                  </Tag> : null
+                    }
+                    {configuration?.jiraConnectionStatus == true ?
+                    <Tooltip title={`Last Test ${formatDate(configuration.jiraConnectionDateTested)}`}>
+                    <Tag color="success" className="flex items-center">Active Connection</Tag>
+                    </Tooltip>
+                    : null}
+                    {configuration.jiraConnectionStatus == false ?
+                    <Tooltip  title={`Last Test ${formatDate(configuration.jiraConnectionDateTested, 'regular')}`}>
+                    <Tag color="error" className="flex items-center">Connection Failed</Tag>
+                        </Tooltip>
+                    : null}
                 <PopConfirmToEdit title={"Edit Connection Information?"} description={"You will be unable to revert"} componentDisabled={componentDisabled} setComponentDisabled={setComponentDisabled}/>
+                </div>
             }>
                 <Form
                 form={form}
                 layout="vertical"
-                initialValues={{
-                    requiredMarkValue: requiredMark,
-                }}
+                onFinish={submitJiraForm}
+                fields={[
+                    {
+                        name: ['JiraDomain'],
+                        value: configuration.JiraDomain
+                    },
+                    {
+                        name: ['jiraApiKey'],
+                        value: configuration.jiraApiKey
+                    },
+                    {
+                        name: ['jiraAdmin'],
+                        value: configuration.jiraAdmin
+                    }
+                ]}
                 onValuesChange={onRequiredTypeChange}
-                requiredMark={requiredMark === 'customize' ? customizeRequiredMark : requiredMark}
                 disabled={componentDisabled}
                 >
-                <Form.Item label="Jira Domain" required tooltip="This is a required field">
-                    <Input placeholder="Jira Domain"
+                <Form.Item label="Jira Domain" name="JiraDomain" required tooltip="This is a required field"
+                rules={[
+                    {
+                      required: true,
+                      message: 'Please input a Domain!',
+                    },
+                  ]}>
+                    <Input placeholder="my-company-domain"
                      />
                 </Form.Item>
-                <Form.Item label="Jira API key" required tooltip="This is a required field">
+                <Form.Item label="Jira API key" required tooltip="This is a required field" name="jiraApiKey"
+                rules={[
+                    {
+                      required: true,
+                      message: 'Please input an API Key!',
+                    },
+                  ]}>
                     <Input placeholder="************" type="password"/>
                 </Form.Item>
-                <Form.Item label="Jira Admin" required tooltip="This is a required field">
+                <Form.Item label="Jira Admin" name="jiraAdmin" required tooltip="This is a required field" 
+                rules={[
+                    {
+                      required: true,
+                      message: 'Please input an email!',
+                    },
+                  ]}>
                     <Input placeholder="test-email@inventive-group.com" type="email"/>
                 </Form.Item>
                <div className="text-end">
+                <Button className="bg-red-500 text-white mr-3 hover:text-red-400">
+                    Reset
+                </Button>
                 <Button htmlType="submit" className="bg-[#1677ff] text-white">
                     Update
                 </Button>
@@ -200,8 +357,8 @@ const Main = () => {
                 {logs.length > 0 ? logs.map((l) => (
 
                 <div className="ms-3 mb-2 mt-2">
-                    <span className={`text-[${typeLog[l.type]}]`}>[{l.type.toUpperCase()}] : : {formatDate(l.createdAt)}</span>
-                    <span className={`${typeLog[l.type] == 'error' ? 'text-red-500' : 'text-white'} ms-8`}>{l.content}</span>
+                    <span className={`${l.type == 'error' ? 'text-red-500' : 'text-[#00FF00]'}`}>[{l.type.toUpperCase()}] : : {formatDate(l.createdAt, 'terminal')}</span>
+                    <span className={`${l.type == 'error' ? 'text-red-500' : 'text-[#00FF00]'} ms-8`}>{l.content}</span>
                 </div>
                 )): null } 
             </div>
