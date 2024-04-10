@@ -354,9 +354,9 @@ const Main = () => {
             }
           >
             <div className="bg-black w-full h-[500px] overflow-y-auto">
-                {logs.length > 0 ? logs.map((l) => (
+                {logs.length > 0 ? logs.map((l, index) => (
 
-                <div className="ms-3 mb-2 mt-2">
+                <div className="ms-3 mb-2 mt-2" key={index}>
                     <span className={`${l.type == 'error' ? 'text-red-500' : 'text-[#00FF00]'}`}>[{l.type.toUpperCase()}] : : {formatDate(l.createdAt, 'terminal')}</span>
                     <span className={`${l.type == 'error' ? 'text-red-500' : 'text-[#00FF00]'} ms-8`}>{l.content}</span>
                 </div>
