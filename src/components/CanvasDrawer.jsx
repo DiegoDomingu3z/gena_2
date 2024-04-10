@@ -326,8 +326,9 @@ export const CanvasButtons = ({
                     user.account.firstName
                   )}-${user.account.lastName}.jpg`}
                 />
-                {user.account.firstName}
-                {user.account.lastName}
+                <span>
+                {user.account.firstName}{user.account.lastName}asdf
+                </span>
               </Space>
             ) : (
               "Welcome to GENA!"

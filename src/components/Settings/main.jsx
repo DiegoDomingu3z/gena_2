@@ -6,6 +6,7 @@ import { api } from "../../../axiosService";
 import { useDispatch, useSelector } from "react-redux";
 import { getConfig, testEmailConnection, testJiraDomainConnection, updateConfig } from "../../../store/Configuration/Thunks";
 import { SyncOutlined } from "@ant-design/icons";
+import CronJobs from "./cronJobs";
 
 const customizeRequiredMark = (label, { required }) => (
     <>
@@ -52,8 +53,6 @@ const Main = () => {
     const [testJiraConnection, setTestJiraConnection] = useState(false)
     const [logs, setLogs] = useState([])
     const configuration = useSelector((state) => state.Configuration.configuration);
-    console.log(configuration.senderEmailAddress, 'email')
-    console.log(configuration, 'config')
     const dispatch = useDispatch()
     const typeLog = {
         'log': '#00FF00',
@@ -245,7 +244,7 @@ const Main = () => {
                </div>
                 </Form>
             </Card>
-
+                  <CronJobs />
             <Card 
             title="Jira Connection Information"
             className="w-full"

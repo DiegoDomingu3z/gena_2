@@ -40,6 +40,7 @@
     "react-in-viewport": "^1.0.0-alpha.30",
     "react-pdf": "^6.2.2",
     "react-redux": "^8.0.5",
+    "react-simple-code-editor": "^0.13.1",
     "react-spinners": "^0.13.8",
     "react-tooltip": "^5.11.2",
     "socket.io-client": "^4.7.2",
