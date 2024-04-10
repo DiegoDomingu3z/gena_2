@@ -326,7 +326,7 @@ const Main = () => {
                 </Form.Item>
                <div className="text-end">
                 <Button className="bg-red-500 text-white mr-3 hover:text-red-400">
-                    Reset
+                    Cancel
                 </Button>
                 <Button htmlType="submit" className="bg-[#1677ff] text-white">
                     Update
