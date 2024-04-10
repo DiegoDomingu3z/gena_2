@@ -10,6 +10,9 @@ import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showResetPassword, setResetShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showForgotPasswordComponent, setForgotPasswordComponent] = useState(false)
   const savedUser = Cookies.get("gena_userName");
   const savedPass = Cookies.get("gena_pass");
   const dispatch = useDispatch();
@@ -31,6 +34,7 @@ const Login = () => {
         alt="GENA Image"
       />
       <div className="md:w-2/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg">
+        {!showForgotPasswordComponent ? (
         <Formik
           initialValues={{
             userName: savedUser ? savedUser : "",
@@ -168,6 +172,93 @@ const Login = () => {
             </Form>
           )}
         </Formik>
+          ) : 
+          <div>
+          <Formik initialValues={{
+            userName: "",
+            password: "",
+            confirmPassword: ""
+          }}>
+            <Form className="space-y-4 md:space-y-6">
+              <div className="relative">
+              <label
+                    htmlFor="userName"
+                    className="block mb-2 text-sm font-medium text-gray-900 mr-auto"
+                  >
+                    Email/Username/Full Name
+                  </label>
+            <Field
+                  type='text'
+                  name="userName"
+                  autoComplete="userName"
+                  id="userName"
+                  className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 `}
+                  placeholder="Email, Username, or Full Name"
+                  required={true}
+                  />
+                <FontAwesomeIcon
+                    className={`absolute top-[53%] right-[10%] laptop:right-[6%] hover:cursor-pointer dark:fill-white w-[20px] ${
+                      showPassword && "hidden"
+                    }`}
+                    onClick={() => {
+                      setResetShowPassword(!showResetPassword)
+                    }}
+                    icon={showResetPassword ? faEye : faEyeSlash}
+                    />
+                       <label
+                    htmlFor="password"
+                    className="block mb-2 text-sm font-medium text-gray-900 mr-auto mt-3"
+                  >
+                    Password
+                  </label>
+            <Field
+                  type={!showResetPassword ? "text" : "password"}
+                  name="password"
+                  autoComplete="password"
+                  id="password"
+                  className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                  placeholder="New Password"
+                  required={true}
+                  />
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block mb-2 text-sm font-medium text-gray-900 mr-auto mt-3"
+                  >
+                    Confirm password
+                  </label>
+            <Field
+                  type={!showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  autoComplete="confirmPassword"
+                  id="userName"
+                  className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 }`}
+                  placeholder="Confirm Password"
+                  required={true}
+                  />
+                  <FontAwesomeIcon
+                    className={`absolute top-[89%] right-[10%] laptop:right-[6%] hover:cursor-pointer dark:fill-white w-[20px] ${
+                      showPassword && "hidden"
+                    }`}
+                    onClick={() => {
+                      setShowConfirmPassword(!showConfirmPassword)
+
+                    }}
+                    icon={showConfirmPassword ? faEye : faEyeSlash}
+                    />
+                  </div>
+                 <button
+                type="submit"
+                className="w-full text-white bg-red-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                Reset Password
+              </button>
+            </Form>
+          </Formik>  
+          </div>}
+        <div className={`text-end mt-4
+        ${showForgotPasswordComponent ? 'text-[#1baded]' : 'text-red-500 '}`}>
+          <button className=" hover:font-semibold ease-in-out transition-all" onClick={() => setForgotPasswordComponent(!showForgotPasswordComponent)}>{showForgotPasswordComponent ? 'Back to sign in' : 'Forgot Password?'}</button>
+        </div>
       </div>
     </div>
   );
