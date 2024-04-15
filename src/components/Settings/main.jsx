@@ -244,7 +244,7 @@ const Main = () => {
                </div>
                 </Form>
             </Card>
-                  <CronJobs />
+                  
             <Card 
             title="Jira Connection Information"
             className="w-full"
@@ -335,6 +335,7 @@ const Main = () => {
                 </Form>
                 
             </Card>
+            <CronJobs />
             <Card 
             title="Server logs"
             className="w-full mt-5 mb-5"

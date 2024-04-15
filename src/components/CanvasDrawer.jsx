@@ -327,7 +327,7 @@ export const CanvasButtons = ({
                   )}-${user.account.lastName}.jpg`}
                 />
                 <span>
-                {user.account.firstName}{user.account.lastName}asdf
+                {user.account.firstName}{user.account.lastName}
                 </span>
               </Space>
             ) : (
