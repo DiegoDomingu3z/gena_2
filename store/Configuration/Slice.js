@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getConfig, testEmailConnection, testJiraDomainConnection, updateConfig } from "./Thunks";
+import { getConfig, getCronJobs, testEmailConnection, testJiraDomainConnection, updateConfig, updateCronJob } from "./Thunks";
 
 
 export const ConfigurationSlice = createSlice({
     name: "Configuration",
     initialState: {
-        configuration: {}
+        configuration: {},
+        crons: []
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -44,6 +45,33 @@ export const ConfigurationSlice = createSlice({
             state.configuration = action.payload
         })
         .addCase(testJiraDomainConnection.rejected, (state, action) => {
+            console.log("REJECTED")
+        })
+        .addCase(getCronJobs.pending, (state, action) => {
+            console.log("Pending")
+        })
+        .addCase(getCronJobs.fulfilled, (state, action) => {
+            state.crons = action.payload
+        })
+        .addCase(getCronJobs.rejected, (state, action) => {
+            console.log("REJECTED")
+        })
+        .addCase(updateCronJob.pending, (state, action) => {
+            console.log("PENDING")
+        })
+        .addCase(updateCronJob.fulfilled, (state, action) => {
+            console.log(state.crons)
+            const arr = state.crons.map(cron => {
+                if (cron['key'] == action.payload['key']) {
+                    return action.payload
+                } else {
+                    return cron
+                }
+            })
+            state.crons = arr
+            console.log(state.crons)
+        })
+        .addCase(updateCronJob.rejected, (state, action) => {
             console.log("REJECTED")
         })
 
