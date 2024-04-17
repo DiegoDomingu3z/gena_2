@@ -57,3 +57,36 @@ export const updateConfig = createAsyncThunk("configuration/update",
         
     }
   })
+
+  export const getCronJobs = createAsyncThunk("crons",
+  async () => {
+  try {
+    const res = await api.get('api/config/crons').then((res) => res.data)
+    for (let i = 0; i < res.length; i++) {
+      let cron = res[i];
+      cron['key'] = cron.fileId
+    }
+    return res
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+})
+
+
+export const updateCronJob = createAsyncThunk('update/cron',
+async ({data, token, id}) => {
+  try {
+    console.log(data)
+    const res = await api.put(`api/config/cron/${id}/update`, data, {
+      headers: {
+        Authorization: token
+      }
+    }).then((res) => res.data)
+    res['key'] = res.fileId
+    return res
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+})

@@ -342,11 +342,12 @@ const Main = () => {
             extra={
                 <>
                 {loading == false ? 
-                    
+                    <Tooltip title="Refresh Logs">
                     <Button className="hover:text-[#1677ff]" onClick={() => refreshLogs()}>
                     <FontAwesomeIcon className="text-slate-400 w-[15px] h-[15px] "
                     icon={faRefresh} />
                     </Button>
+                    </Tooltip>
                     :
                     <Spin />
                 }
