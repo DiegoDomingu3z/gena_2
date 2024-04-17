@@ -255,10 +255,10 @@ const Login = () => {
             </Form>
           </Formik>  
           </div>}
-        <div className={`text-end mt-4
+        {/* <div className={`text-end mt-4
         ${showForgotPasswordComponent ? 'text-[#1baded]' : 'text-red-500 '}`}>
           <button className=" hover:font-semibold ease-in-out transition-all" onClick={() => setForgotPasswordComponent(!showForgotPasswordComponent)}>{showForgotPasswordComponent ? 'Back to sign in' : 'Forgot Password?'}</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
