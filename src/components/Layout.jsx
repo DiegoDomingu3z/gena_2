@@ -10,8 +10,9 @@ import { logout } from "../../store/Account/thunks";
 import { useEffect } from "react";
 import TicketModal from "./TicketModal";
 import { useState } from "react";
+import GenaNav from "./GenaNav";
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children, title, displayTitle }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state) => state.Account);
@@ -64,7 +65,10 @@ const Layout = ({ children, title }) => {
             <FontAwesomeIcon icon={faPowerOff} /> Logout
           </button>
         )}
-        <main className="min-h-screen w-full">{children}</main>
+        <main className="min-h-screen w-full">
+          {/* {user.accessToken && <GenaNav displayTitle={displayTitle} />} */}
+          {children}
+        </main>
       </div>
     </div>
   );
