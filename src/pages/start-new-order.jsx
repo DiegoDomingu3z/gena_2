@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { getAccount } from "../../store/Account/thunks";
 import { api } from "../../axiosService";
 import useDebounce from "~/hooks/useDebounce";
+import GenaNav from "~/components/GenaNav";
 
 const StartNewOrder = () => {
   const dispatch = useDispatch();
@@ -74,9 +75,10 @@ const StartNewOrder = () => {
         render={render}
       />
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
+        {/* <GenaNav /> */}
         <div className="flex items-end ">
           <div className="mr-auto">
-            <h1 className="text-3xl font-medium font-genaPrimary">Labels</h1>
+            <h1 className="text-3xl font-medium">Labels</h1>
           </div>
           <div className="flex justify-end items-end gap-5 md:w-3/5 lg:w-2/5">
             <label htmlFor="labelSearch">

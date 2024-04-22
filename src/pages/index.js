@@ -3,7 +3,6 @@ import Layout from "~/components/Layout";
 import Login from "~/components/Login";
 import Signup from "~/components/Signup";
 import { useEffect, useState } from "react";
-import { LoginProvider } from "~/Contexts/LoginContext";
 import HomeDashboard from "~/components/HomeDashboard";
 import { Provider } from "react-redux";
 import { store } from "../../store";
@@ -11,11 +10,9 @@ import { store } from "../../store";
 export default function Home() {
   return (
     <Provider store={store}>
-      <LoginProvider>
-        <Layout title={"Gena | Login"}>
-          <Login />
-        </Layout>
-      </LoginProvider>
+      <Layout title={"Gena | Login"}>
+        <Login />
+      </Layout>
     </Provider>
   );
 }

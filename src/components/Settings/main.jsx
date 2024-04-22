@@ -218,9 +218,9 @@ const Main = () => {
                       required: true,
                       message: 'Please input an email!',
                     },
-                  ]} initialValue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}>
+                  ]} initialvalue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}>
                     <Input id="senderEmailAddress" placeholder={configuration.senderEmailAddress} onChange={(e) => valueChange('senderEmailAddress', e.target.value)}
-                    initialValue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}
+                    initialvalue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}
                      />
                 </Form.Item>
                 

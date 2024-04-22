@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Login from "~/components/Login";
-import { LoginProvider } from "~/Contexts/LoginContext";
 import Layout from "~/components/Layout";
 import NewLabel from "~/components/PrintShopView/NewLabel";
 import { useSelector } from "react-redux";
@@ -15,11 +14,9 @@ const NewLabelPage = () => {
     }
   }, []);
   return (
-    <LoginProvider>
       <Layout title={"Gena | New Label"}>
         <NewLabel />
       </Layout>
-    </LoginProvider>
   );
 };
 

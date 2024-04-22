@@ -53,6 +53,13 @@ body {
   z-index: 60px;
 }
 
+.btn {
+  @apply bg-[#2ebef9];
+  @apply hover:bg-[#2ebef9c7];
+  @apply text-white;
+  @apply border-none;
+}
+
 @media screen and (min-width: 1200px) {
   .top-margin {
     margin-left: 120px;

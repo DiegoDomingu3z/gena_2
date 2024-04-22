@@ -1,7 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import SideNav from "./SideNav";
-import { LoginProvider } from "~/Contexts/LoginContext";
 import { CanvasProvider } from "~/Contexts/canvasDrawerContext";
 import Navbar from "./Navbar";
 import CanvasDrawer from "./CanvasDrawer";
@@ -61,7 +60,9 @@ const Layout = ({ children, title }) => {
               <FontAwesomeIcon icon={faPowerOff} /> Logout
             </button>
           )}
-          <main className="min-h-screen w-full">{children}</main>
+          <main className="min-h-screen w-full">
+            {children}
+          </main>
         </CanvasProvider>
       </div>
     </div>
