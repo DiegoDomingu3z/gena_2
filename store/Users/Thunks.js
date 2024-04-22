@@ -16,3 +16,21 @@ export const getUsers = createAsyncThunk(
     }
 
 )
+
+export const deleteUser = createAsyncThunk(
+    "account/delete",
+    async ({ id, token }) => {
+      try {
+        const res = await api
+          .delete(`api/account/delete-user/${id}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then((res) => res.data);
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    }
+  );

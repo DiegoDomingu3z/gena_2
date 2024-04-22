@@ -47,7 +47,7 @@ const Users = () => {
                 id="userSearch"
                 name="userSearch"
                 type="text"
-                className="laptop:w-2/3 w-full drop-shadow-md bg-white text-[#233042] rounded-md h-9 transition-all ease-in-out
+                className="laptop:w-full w-full drop-shadow-md bg-white text-[#233042] rounded-md h-9 transition-all ease-in-out
                 outline-none focus:drop-shadow-xl focus:shadow-[0px_-2px_#374151_inset] p-5"
                 placeholder="Search Employee"
                 />
