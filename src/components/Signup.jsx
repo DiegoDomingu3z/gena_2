@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 import { sendCredentials } from "../../store/Emails/Thunks";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
-const Signup = () => {
+const Signup = ({setOpen}) => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Account);
@@ -68,7 +68,7 @@ const Signup = () => {
     >
       <div
         className={
-          "md:w-4/5 w-4/5 self-center justify-self-center bg-white rounded-xl p-5 drop-shadow-lg"
+          "md:w-full self-center justify-self-center "
         }
       >
         <Formik
@@ -95,6 +95,7 @@ const Signup = () => {
                 console.log(error);
               });
             document.getElementById("sign-up-form").reset();
+            setOpen(false)
           }}
         >
           {({ isSubmitting }) => (
@@ -340,14 +341,21 @@ const Signup = () => {
                   </p>
                 )}
               </div>
+              <div className="flex justify-center">
+              <button type="button" onClick={() => setOpen(false)} className="w-44 self-center text-white bg-red-500 hover:bg-red-600
+              focus:ring-4 focus:outline-none focus:ring-primary-300 
+              font-medium rounded-lg text-sm px-5 py-2.5 text-center  transform transition-transform duration-300 hover:scale-y-110 me-2">
+                Cancel
+              </button>
               <button
                 disabled={isSubmitting}
                 type="submit"
                 className="w-44 self-center text-white bg-[#1baded] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 
-                                font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
+                font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transform transition-transform duration-300 hover:scale-y-110"
+                >
                 Sign Up
               </button>
+                </div>
             </Form>
           )}
         </Formik>

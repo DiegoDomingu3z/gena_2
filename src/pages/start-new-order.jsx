@@ -97,7 +97,7 @@ const StartNewOrder = () => {
                 placeholder="Type name of label here"
               />
             <div className="relative ">
-              <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
+              <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)} className="transform transition-transform duration-200 hover:scale-110">
                 <FontAwesomeIcon
                   className="rounded-full drop-shadow-sm text-[#233042] "
                   icon={faShoppingBasket}
