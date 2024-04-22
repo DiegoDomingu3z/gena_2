@@ -9,11 +9,7 @@ import { getCategories } from "../../store/Category/Thunk";
 import { Formik, Field } from "formik";
 import { getAllSubCats } from "../../store/Sub-Category/Thunks";
 import { getLabels, searchLabel } from "../../store/Label/Thunks";
-import { useCanvasDrawer } from "~/Contexts/canvasDrawerContext";
-import CartCanvasDrawer from "~/components/CartCanvasDrawer";
-import { useRouter } from "next/router";
 import { getAccount } from "../../store/Account/thunks";
-import { api } from "../../axiosService";
 import useDebounce from "~/hooks/useDebounce";
 import GenaNav from "~/components/GenaNav";
 
@@ -69,11 +65,6 @@ const StartNewOrder = () => {
 
   return (
     <Layout title={"Gena | New Order"}>
-      <CartCanvasDrawer
-        toggleCartCanvas={toggleCartCanvas}
-        setToggleCartCanvas={setToggleCartCanvas}
-        render={render}
-      />
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
         {/* <GenaNav /> */}
         <div className="flex items-end ">
@@ -88,14 +79,14 @@ const StartNewOrder = () => {
               />
             </label>
             <input
-                onChange={(e) => setSearchInput(e.target.value)}
-                id="labelSearch"
-                name="labelSearch"
-                type="text"
-                className="laptop:w-2/4 w-full drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
+              onChange={(e) => setSearchInput(e.target.value)}
+              id="labelSearch"
+              name="labelSearch"
+              type="text"
+              className="laptop:w-2/4 w-full drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
               outline-none focus:drop-shadow-xl focus:shadow-[0px_-2px_#374151_inset] p-5"
-                placeholder="Type name of label here"
-              />
+              placeholder="Type name of label here"
+            />
             <div className="relative ">
               <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
                 <FontAwesomeIcon
