@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCanvasDrawer } from "~/Contexts/canvasDrawerContext";
-import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightLong, faTrash } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -22,7 +20,7 @@ const CartCanvasDrawer = ({
   const [orderName, setOrderName] = useState("");
   const [orderInput, setOrderInput] = useState({});
   const basket = useSelector((state) => state.Orders.labelBasket);
-  const [invalidLabel, setInvalidLabel] = useState(false)
+  const [invalidLabel, setInvalidLabel] = useState(false);
   const dispatch = useDispatch();
   // const handleNote = (event) => {
   //   let note = event.target.value;
@@ -37,11 +35,11 @@ const CartCanvasDrawer = ({
     setOrderInput((previousInput) => {
       return {
         ...previousInput,
-        [event.target.name]: input
-      }
-    })
-    console.log(orderInput)
-  }
+        [event.target.name]: input,
+      };
+    });
+    console.log(orderInput);
+  };
 
   const toast = async () => {
     const Toast = Swal.mixin({
@@ -65,7 +63,7 @@ const CartCanvasDrawer = ({
   const submitOrder = async () => {
     const token = sessionStorage.getItem("accessToken");
     await dispatch(placeOrder({ orderInput, basket, token }));
-    setOrderInput({orderNote: "", orderName: ""});
+    setOrderInput({ orderNote: "", orderName: "" });
     const basketLabelsCopy = basketLabels.slice();
     basketLabelsCopy.splice(0, 1);
     setBasketLabels(basketLabelsCopy);
@@ -101,7 +99,9 @@ const CartCanvasDrawer = ({
       />
       <div className="absolute bottom-8 w-full flex flex-col items-center">
         <div className="mb-1 text-center rounded-lg w-[calc(100%_-_33px)]">
-          <label className="w-full inline-block text-left mb-[5px]">Order Details</label>
+          <label className="w-full inline-block text-left mb-[5px]">
+            Order Details
+          </label>
           <input
             id="orderNameInput"
             type="text"
@@ -129,10 +129,15 @@ const CartCanvasDrawer = ({
           <button
             onClick={() => submitOrder()}
             disabled={basket.length > 0 && invalidLabel != true ? false : true}
-            className={`${invalidLabel ? 'bg-red-500 hover:bg-red-400' : 'bg-[#1baded]  hover:bg-[#16b9ff]'} mx-3 p-3 rounded-xl text-white hover:tracking-widest transition-all ease-in-out`}
+            className={`${
+              invalidLabel
+                ? "bg-red-500 hover:bg-red-400"
+                : "bg-[#1baded]  hover:bg-[#16b9ff]"
+            } mx-3 p-3 rounded-xl text-white hover:tracking-widest transition-all ease-in-out`}
           >
-            {invalidLabel != true ?
-            'Submit Label' : 'Will not Submit Until Order is Fixed'}
+            {invalidLabel != true
+              ? "Submit Label"
+              : "Will not Submit Until Order is Fixed"}
           </button>
         </div>
       </div>
@@ -147,7 +152,7 @@ const CartCanvasLabelCard = ({
   basketLabels,
   setBasketLabels,
   render,
-  setInvalidLabel
+  setInvalidLabel,
 }) => {
   const dispatch = useDispatch();
   const basket = useSelector((state) => state.Orders.labelBasket);
@@ -194,14 +199,11 @@ const CartCanvasLabelCard = ({
               basket[i]?.textToPut
             );
             setBlobs((prev) => [...prev, modifiedPdf]);
-            setInvalidLabel(false)
+            setInvalidLabel(false);
           } catch (error) {
-            setBlobs((prev) => [...prev, '']);
-            setInvalidLabel(true)
+            setBlobs((prev) => [...prev, ""]);
+            setInvalidLabel(true);
           }
-        
-
-        
         }
       };
       modifyPaths();
@@ -264,8 +266,8 @@ const CartCanvasLabelCard = ({
   };
 
   const seeLabel = (index) => {
-    console.log(blobs)
-    if (blobs[index] != '') {
+    console.log(blobs);
+    if (blobs[index] != "") {
       return (
         <div className="flex justify-center">
           <iframe
@@ -281,7 +283,12 @@ const CartCanvasLabelCard = ({
       return (
         <div className="text-center">
           <b>
-            <img className="m-auto" height="300px" width="150px" src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg" />
+            <img
+              className="m-auto"
+              height="300px"
+              width="150px"
+              src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg"
+            />
             The input exceeds the labels character count and will not print.
             Please delete this label from your order.
           </b>

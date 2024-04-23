@@ -1,7 +1,7 @@
-import { Avatar, List, Popconfirm, Tag } from 'antd';
+import { Avatar, List, Popconfirm, Tag, Tooltip, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../../store/Users/Thunks';
+import { deleteUser, getUsers } from '../../../store/Users/Thunks';
 import AddUserModal from './AddUserModal';
 import { faExclamation, faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,43 +11,56 @@ const UserList = ({open, setOpen, users}) => {
     const [activeUser, setActiveUser] = useState(null)
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [openPopIndex, setOpenPopIndex] = useState(-1);
+    const [api, contextHolder] = notification.useNotification()
+    const dispatch = useDispatch()
     const cleanImg = (string) => {
         const pattern = /\([^()]*\)/g;
         const cleanString = string.replace(pattern, "");
         return cleanString.trim();
       };
 
-      const deleteUser = () => {
+      const removeUser = (user) => {
+        const token = account.accessToken
+        const id = user._id
         setConfirmLoading(true);
+        dispatch(deleteUser({id, token}))
         setTimeout(() => {
           setConfirmLoading(false);
           setOpenPopIndex(-1);
+          api['success']({
+            message: `Removed ${user.firstName} from Gena.`
+          })
         }, 2000);
       };
     return(
         <div className='overflow-auto w-full h-[700px]'>
+            {contextHolder}
         <List
           itemLayout="horizontal"
           dataSource={users}
           renderItem={(item, index) => (
-            <List.Item
+            <List.Item className='hover:scale-y-110 transform duration-200 hover:bg-slate-100 transition-all ease-in-out'
               actions={account.privileges === 'admin' ? [
+                <Tooltip title={`Edit ${item.firstName}'s Account?`}>
                 <button
                   onClick={() => {
-                    setActiveUser(item);
-                  }}
-                  className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full
-                 `}
-                >
+                      setActiveUser(item);
+                    }}
+                    className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full
+                    `}
+                    >
                   <FontAwesomeIcon icon={faPencil} key="edit" />
-                </button>,
+                </button>
+                    </Tooltip>,
                 <span>
+                    <Tooltip title={`Delete ${item.firstName}'s Account?`}>
                   <button
                     onClick={() => setOpenPopIndex(index)}
                     className={`text-[#233043] hover:bg-[#fa2222] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full  ${account._id == item._id ? 'invisible' : ''}`}
-                  >
+                    >
                     <FontAwesomeIcon icon={faTrash} edit="delete" />
                   </button>
+                      </Tooltip>
                   {openPopIndex === index && (
                     <Popconfirm
                     icon={<FontAwesomeIcon icon={faExclamationCircle} className='text-red-500' />}
@@ -59,7 +72,7 @@ const UserList = ({open, setOpen, users}) => {
                         loading: confirmLoading}}
                       okText="Confirm"
                       onConfirm={() => {
-                        deleteUser()
+                        removeUser(item)
                       }}
                       onCancel={() => setOpenPopIndex(-1)} 
                     />

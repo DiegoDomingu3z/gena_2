@@ -1,24 +1,23 @@
 import React from "react";
 import Head from "next/head";
 import SideNav from "./SideNav";
-import { CanvasProvider } from "~/Contexts/canvasDrawerContext";
-import Navbar from "./Navbar";
-import CanvasDrawer from "./CanvasDrawer";
+import SideNavToggle from "./SideNavToggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { logout } from "../../store/Account/thunks";
 import { useEffect } from "react";
-import CartCanvasDrawer from "./CartCanvasDrawer";
 import TicketModal from "./TicketModal";
 import { useState } from "react";
+import GenaNav from "./GenaNav";
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children, title, displayTitle }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state) => state.Account);
   const [ticketModal, setTicketModal] = useState(false);
+  const [sideNavOpen, setSideNavOpen] = useState(false);
   let token;
 
   useEffect(() => {
@@ -39,31 +38,37 @@ const Layout = ({ children, title }) => {
         <title>{title}</title>
       </Head>
       <div className="flex">
-        <CanvasProvider>
-          {ticketModal && (
-            <TicketModal
-              ticketModal={ticketModal}
-              setTicketModal={setTicketModal}
-            />
-          )}
-          <SideNav ticketModal={ticketModal} setTicketModal={setTicketModal} />
-          <Navbar />
-          <CanvasDrawer
+        {ticketModal && (
+          <TicketModal
             ticketModal={ticketModal}
             setTicketModal={setTicketModal}
           />
-          {user.accessToken && (
-            <button
-              onClick={logUserOut}
-              className="text-black mr-5 mt-5 absolute right-5"
-            >
-              <FontAwesomeIcon icon={faPowerOff} /> Logout
-            </button>
-          )}
-          <main className="min-h-screen w-full">
-            {children}
-          </main>
-        </CanvasProvider>
+        )}
+        {user.accessToken && (
+          <SideNav
+            sideNavOpen={sideNavOpen}
+            ticketModal={ticketModal}
+            setTicketModal={setTicketModal}
+          />
+        )}
+        {user.accessToken && (
+          <SideNavToggle
+            sideNavOpen={sideNavOpen}
+            setSideNavOpen={setSideNavOpen}
+          />
+        )}
+        {user.accessToken && (
+          <button
+            onClick={logUserOut}
+            className="text-black mr-5 mt-5 absolute right-5"
+          >
+            <FontAwesomeIcon icon={faPowerOff} /> Logout
+          </button>
+        )}
+        <main className="min-h-screen w-full">
+          {/* {user.accessToken && <GenaNav displayTitle={displayTitle} />} */}
+          {children}
+        </main>
       </div>
     </div>
   );

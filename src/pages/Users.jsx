@@ -1,6 +1,6 @@
 import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "antd";
+import { Button, Statistic } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +8,14 @@ import Layout from "~/components/Layout";
 import Signup from "~/components/Signup";
 import UserList from "~/components/Users/UserList";
 import { getUsers } from "../../store/Users/Thunks";
-
+import CountUp from 'react-countup';
 const Users = () => {
   const account = useSelector((state) => state.Account.account);
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = useState('');
+  const formatter = (value) => <CountUp end={value} separator="," />;
   let users = useSelector((state) => state.Users.users)
   useEffect(() => {
     dispatch(getUsers())
@@ -32,7 +33,7 @@ const Users = () => {
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
         <div className="flex items-end">
           <div className="mr-auto">
-            <h1 className="text-3xl font-medium font-genaPrimary">Users</h1>
+            <h1 className="text-3xl font-medium font-genaPrimary flex">Users (<Statistic value={users.length} formatter={formatter}/>)</h1>
           </div>
           <div className="flex items-center">
             <div className="me-4 flex items-center">
