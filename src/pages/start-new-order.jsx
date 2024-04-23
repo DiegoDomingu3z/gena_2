@@ -89,13 +89,13 @@ const StartNewOrder = () => {
             <div className="flex items-center gap-5 mb-20 laptop:mb-10">
               <Field
                 onChange={filterSubCats}
-                value={activeCategory}
+                value={activeCategory ?? ''}
                 type="text"
                 component="select"
                 name="categoryId"
                 className="select w-52 max-w-xs select-bordered select-sm"
               >
-                <option selected disabled value="">
+                <option disabled value="">
                   Select Category
                 </option>
                 {cats
@@ -113,13 +113,13 @@ const StartNewOrder = () => {
               </Field>
               <Field
                 onChange={singleSubCat}
-                value={activeSubCategoryId}
+                value={activeSubCategoryId ?? ''}
                 type="text"
                 component="select"
                 name="subCategoryId"
                 className="select w-52 max-w-xs select-bordered select-sm"
               >
-                <option selected value="">
+                <option value="">
                   Select Sub-Category
                 </option>
                 {activeSubCats
