@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
 import Layout from "~/components/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import OrderCard from "~/components/OrderCard";
-import { api } from "../../axiosService";
 import { useState, useRef } from "react";
 import OrderModal from "~/components/OrderModal";
-import orders from "~/testDB";
 import { Menu } from "antd";
 import LeadsOrderApproval from "~/components/LeadsOrderApproval";
 import { useDispatch, useSelector } from "react-redux";
