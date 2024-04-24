@@ -78,7 +78,7 @@ const CartCanvasDrawer = ({
       <div className="px-5 mb-5">
         <button
           onClick={() => setToggleCartCanvas(!toggleCartCanvas)}
-          className="btn w-full bg-darkBlue"
+          className="btn w-full bg-darkBlue hover:bg-darkBlue hover:bg-opacity-90"
         >
           <FontAwesomeIcon className="text-xl" icon={faArrowRightLong} /> Close
         </button>

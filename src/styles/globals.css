@@ -52,8 +52,6 @@ body {
 }
 
 .btn {
-  @apply hover:bg-neutral;
-  @apply hover:bg-opacity-80;
   @apply text-white;
   @apply border-none;
 }

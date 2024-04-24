@@ -3,7 +3,13 @@ import React from "react";
 const SideNavToggle = ({ sideNavOpen, setSideNavOpen }) => {
   return (
     <div className="flex z-50 laptop:hidden h-16 fixed items-center px-8 pt-5">
-      <label className="btn btn-circle swap swap-rotate">
+      <label
+        className={`btn btn-circle swap swap-rotate hover:bg-opacity-90 ${
+          sideNavOpen
+            ? "bg-accent hover:bg-accent"
+            : "bg-darkBlue hover:bg-darkBlue"
+        }`}
+      >
         {/* this hidden checkbox controls the state */}
         <input type="checkbox" onClick={() => setSideNavOpen(!sideNavOpen)} />
 
