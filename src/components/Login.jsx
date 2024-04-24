@@ -173,7 +173,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn btn-block"
+                className="btn bg-darkBlue btn-block"
               >
                 Sign in
               </button>

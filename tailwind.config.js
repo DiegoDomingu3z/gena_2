@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         nav: "#959595",
         accent: "#2ebef9",
+        darkBlue: "#233042",
       },
       screens: {
         laptop: "1200px",
@@ -37,7 +38,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwindcss-animated")],
   daisyui: {
     themes: ["light"],
   },
