@@ -10,6 +10,7 @@ import {
 } from "../../store/Orders/thunks";
 import Swal from "sweetalert2";
 import { PDFDocument } from "pdf-lib";
+import Image from "next/image";
 const CartCanvasDrawer = ({
   toggleCartCanvas,
   setToggleCartCanvas,
@@ -72,13 +73,13 @@ const CartCanvasDrawer = ({
       className={
         toggleCartCanvas
           ? "pt-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5 overflow-hidden"
-          : "pt-5 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
+          : "pt-6 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
       }
     >
       <div className="px-5 mb-5">
         <button
           onClick={() => setToggleCartCanvas(!toggleCartCanvas)}
-          className="btn w-full bg-darkBlue hover:bg-darkBlue hover:bg-opacity-90"
+          className="btn w-full rounded-md bg-darkBlue hover:bg-darkBlue hover:bg-opacity-90"
         >
           <FontAwesomeIcon className="text-xl" icon={faArrowRightLong} /> Close
         </button>
@@ -90,15 +91,13 @@ const CartCanvasDrawer = ({
         render={render}
         setInvalidLabel={setInvalidLabel}
       />
-      <div className="absolute bottom-8 w-full flex flex-col items-center">
-        <div className="mb-1 text-center rounded-lg w-[calc(100%_-_33px)]">
-          <label className="w-full inline-block text-left mb-[5px]">
-            Order Details
-          </label>
+      <div className="w-full flex flex-col items-center px-5">
+        <div className="mb-1 text-center rounded-md w-full">
+          <label className="label label-text">Order Details</label>
           <input
             id="orderNameInput"
             type="text"
-            className="rounded-lg bg-[#233042] text-white px-5 py-1 w-full"
+            className="input rounded-md input-bordered w-full input-sm font-light"
             placeholder="Order Name"
             name="orderName"
             maxLength={24}
@@ -106,30 +105,30 @@ const CartCanvasDrawer = ({
             value={orderInput.orderName}
           ></input>
         </div>
-        <div className="mb-1 text-center rounded-lg w-full">
+        <div className="mb-1 text-center rounded-md w-full">
           <textarea
             id="noteInput"
             onChange={handleInput}
             value={orderInput.orderNote}
-            className="rounded-lg bg-[#233042] text-white px-5 py-1 max-h-32 min-h-[6rem]"
+            className="textarea textarea-bordered rounded-md max-h-32 min-h-[6rem] font-light w-full"
             placeholder="Notes..."
             name="orderNote"
             cols="40"
             rows="6"
           ></textarea>
         </div>
-        <div className="w-full flex flex-col justify-center">
+        <div className="w-full">
           <button
             onClick={() => submitOrder()}
             disabled={basket.length > 0 && invalidLabel != true ? false : true}
             className={`${
               invalidLabel
                 ? "bg-red-500 hover:bg-red-400"
-                : "bg-[#1baded]  hover:bg-[#16b9ff]"
-            } mx-3 p-3 rounded-xl text-white hover:tracking-widest transition-all ease-in-out`}
+                : "bg-darkBlue hover:bg-darkBlue"
+            } btn hover:bg-opacity-90 w-full rounded-md`}
           >
             {invalidLabel != true
-              ? "Submit Label"
+              ? "Submit Order"
               : "Will not Submit Until Order is Fixed"}
           </button>
         </div>
@@ -265,8 +264,8 @@ const CartCanvasLabelCard = ({
           <iframe
             className="rounded pointer-events-none"
             src={blobs[index]}
-            width="20%"
-            height="20%"
+            width="120px"
+            height="100px"
             frameBorder="0"
           ></iframe>
         </div>
@@ -290,44 +289,63 @@ const CartCanvasLabelCard = ({
   };
 
   return (
-    <div className="overflow-y-auto	h-3/5 border-b-2 px-5">
+    <div className="overflow-y-auto	h-3/5 border-b-2 px-5 flex flex-col gap-3">
       {basketLabels.length > 0 ? (
         basketLabels.map((label, i) => (
-          <div key={i}>
+          <div className="flex gap-3 border rounded-md shadow-md p-2" key={i}>
             {seeLabel(i)}
-            <div className="border-b-2 p-4 flex mb-2">
-              <div className="flex gap-24 mr-auto">
-                <h4 className="text-gray-500">
-                  DOC #:{" "}
-                  <span className="ms-1 font-semibold">{label.docNum}</span>
-                </h4>
-                <h4 className="text-gray-500">
+            <div className="w-full relative flex flex-col">
+              <button
+                key={label._id}
+                onClick={() => removeFromOrder(i)}
+                className="btn btn-square bg-white min-h-0 h-6 w-6 absolute right-0 drop-shadow-sm"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="red"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+              <div>
+                <h4 className="font-medium">{label.docNum}</h4>
+                <h3 className="text-sm text-gray-500">{label.name}</h3>
+              </div>
+              <div className="border-t-[1px] mt-auto">
+                <h4 className="text-gray-500 text-sm">
                   {basket.length > 0 ? (
                     <div>
-                      Qty:{" "}
-                      <span className="ms-1 font-semibold">
-                        {basket[i]?.qty}
-                      </span>
+                      Qty: <span className="text-black">{basket[i]?.qty}</span>
                     </div>
                   ) : null}
                 </h4>
-              </div>
-              <div>
-                <button
-                  className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
-                  key={label._id}
-                  onClick={() => removeFromOrder(i)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
               </div>
             </div>
           </div>
         ))
       ) : (
         <div className="flex flex-col w-full justify-center h-80 mt-20">
-          <div className="text-center text-xl text-semibold animate-bounce">
+          {/* <div className="text-center text-xl text-semibold animate-bounce">
             No Labels in Cart
+          </div> */}
+          <div className="text-center text-lg">No labels in cart</div>
+          <div className="m-auto relative bg-darkBlue rounded-full overflow-clip">
+            <Image
+              src={"/images/shopping.png"}
+              height={200}
+              width={200}
+              alt="empty cart"
+            />
+            <span className="h-[5px] w-[5px] bg-white absolute rotate-45 bottom-[158px] animate-duration-[2000ms] left-[46px] animate-fade animate-infinite animate-ease-linear animate-alternate"></span>
+            <span className="h-[5px] w-[5px] bg-white absolute rotate-45 bottom-12 right-[49.5px] animate-fade animate-infinite animate-ease-linear animate-alternate"></span>
           </div>
         </div>
       )}
