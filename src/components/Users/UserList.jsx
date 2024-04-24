@@ -2,23 +2,25 @@ import { Avatar, List, Popconfirm, Tag, Tooltip, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser, getUsers } from '../../../store/Users/Thunks';
-import AddUserModal from './AddUserModal';
 import { faExclamation, faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import Signup from '../Signup';
+import UserModal from './UserModal';
+import DepartmentUserModal from '../Department/DepartmentUserModal';
+import { formatImgString } from '../../../func/resuableFunctions';
 const UserList = ({open, setOpen, users}) => {
+    // ! SCOPED VARIABLE */
     const account = useSelector((state) => state.Account.account)
     const [activeUser, setActiveUser] = useState(null)
+    const [openEditModal, setOpenEditModal] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [openPopIndex, setOpenPopIndex] = useState(-1);
+    const [dataForSubmission, setDataForSubmission] = useState(null)
     const [api, contextHolder] = notification.useNotification()
     const dispatch = useDispatch()
-    const cleanImg = (string) => {
-        const pattern = /\([^()]*\)/g;
-        const cleanString = string.replace(pattern, "");
-        return cleanString.trim();
-      };
 
+    // ! SCOPED FUNCTIONS */
       const removeUser = (user) => {
         const token = account.accessToken
         const id = user._id
@@ -32,6 +34,8 @@ const UserList = ({open, setOpen, users}) => {
           })
         }, 2000);
       };
+    
+    // ! RETURNING JSX */
     return(
         <div className='overflow-auto w-full h-[700px]'>
             {contextHolder}
@@ -45,6 +49,7 @@ const UserList = ({open, setOpen, users}) => {
                 <button
                   onClick={() => {
                       setActiveUser(item);
+                      setOpenEditModal(true)
                     }}
                     className={`text-[#233043] hover:bg-[#ff9800] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full
                     `}
@@ -82,7 +87,7 @@ const UserList = ({open, setOpen, users}) => {
               key={index}
             >
               <List.Item.Meta
-                avatar={<Avatar src={`http://192.168.55.26/wp-content/uploads/${cleanImg(
+                avatar={<Avatar src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
                   item.firstName
                 )}-${item.lastName}.jpg`} />}
                 title={<div><span>{item.firstName} {item.lastName}</span>
@@ -95,7 +100,8 @@ const UserList = ({open, setOpen, users}) => {
             </List.Item>
           )}
         />
-        <AddUserModal open={open} setOpen={setOpen} />
+        <UserModal open={open} setOpen={setOpen} component={<Signup setOpen={setOpen}/>} />
+        <UserModal open={openEditModal} setOpen={setOpenEditModal} component={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
       </div>
     )
 }

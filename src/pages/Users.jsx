@@ -61,7 +61,7 @@ const Users = () => {
         </div>
         <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
         
-      <UserList open={open} setOpen={setOpen} users={filteredUsers}/>
+      <UserList open={open} setOpen={setOpen}  users={filteredUsers}/>
       </div>
     </Layout>
   );

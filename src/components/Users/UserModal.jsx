@@ -1,17 +1,15 @@
-import Signup from "../Signup";
-
 const { Modal } = require("antd")
-
-const AddUserModal = ({open, setOpen}) => {
+const UserModal = ({open, setOpen, component}) => {
+    // ! RETURNING JSX */
     return (
         <Modal 
         open={open}
         footer={null}
         onCancel={() => setOpen(false)}
         width={1000}>
-        <Signup setOpen={setOpen}/>
+        {component}
         </Modal>
     )
 }
 
-export default AddUserModal;
+export default UserModal;

@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,6 +8,7 @@ import {
 } from "../../../store/Departments/Thunks";
 import { deleteAccount, updateUser } from "../../../store/Account/thunks";
 import Swal from "sweetalert2";
+import { formatImgString } from "../../../func/resuableFunctions";
 
 const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const dept = useSelector((state) => state.Department.departments);
@@ -17,11 +16,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const groupLeads = useSelector((state) => state.Department.groupLeads);
   const account = useSelector((state) => state.Account.account);
   const dispatch = useDispatch();
-  const cleanImg = (string) => {
-    const pattern = /\([^()]*\)/g;
-    const cleanString = string.replace(pattern, "");
-    return cleanString.trim();
-  };
+
   useEffect(() => {
     dispatch(getDepartments());
     dispatch(getLeads());
@@ -29,40 +24,6 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const removeUser = (id) => {
-    const token = sessionStorage.getItem("accessToken");
-    Swal.fire({
-      title: `Remove ${activeUser.firstName} from Gena?`,
-      text: "You won't be able to revert this!",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Remove",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          "Deleted!",
-          `${activeUser.firstName} was removed from the Gena`,
-          "success"
-        );
-        dispatch(deleteAccount({ id, token }));
-        setModalState(!modalState);
-      }
-    });
-  };
-
-  const dataForSubmission = {
-    firstName: activeUser.firstName,
-    lastName: activeUser.lastName,
-    userName: activeUser.userName,
-    password: "",
-    departmentId: activeUser.departmentId,
-    email: activeUser.email,
-    privileges: activeUser.privileges,
-    groupLeadId: activeUser.groupLeadId,
-    teamLeadId: activeUser.teamLeadId,
-  };
 
   const successToast = async () => {
     const Toast = Swal.mixin({
@@ -101,17 +62,11 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     });
   };
   return (
-    <div className="fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
-      <div className="bg-[#f7f9fc] w-4/5 laptop:w-3/5 laptop:h-[44rem] h-[88rem] rounded-lg px-10 py-5 flex flex-col">
-        <button
-          onClick={() => setModalState(!modalState)}
-          className="text-2xl self-end hover:bg-[#233043] rounded-full h-8 w-8 hover:text-white transition-all ease-in-out"
-        >
-          <FontAwesomeIcon icon={faXmark} />
-        </button>
+    
+      <div className=" w-full laptop:w-full laptop:h-[32rem] h-[88rem] rounded-lg p-5 flex flex-col">
         <div className="flex mb-5">
           <img
-            src={`http://192.168.55.26/wp-content/uploads/${cleanImg(
+            src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
               activeUser.firstName
             )}-${activeUser.lastName}.jpg`}
             alt={`Employee image`}
@@ -123,21 +78,22 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
         </div>
 
         <Formik
-          initialValues={dataForSubmission}
+          initialValues={dataForSubmission ? dataForSubmission : null}
           onSubmit={async (values) => {
             const token = sessionStorage.getItem("accessToken");
             const id = activeUser._id;
             if (JSON.stringify(dataForSubmission) != JSON.stringify(values)) {
               dispatch(updateUser({ token, id, values }));
               successToast();
-              setModalState(!modalState);
+              document.getElementById("user-form").reset();
               return;
             }
             failureToast();
           }}
         >
           {({ isSubmitting }) => (
-            <Form>
+            <Form id="user-form">
+              <form id="user-form">
               <div
                 className={`grid justify-items-center gap-8 laptoplg:grid-cols-3 grid-cols-2 max-h-[80rem]`}
               >
@@ -344,30 +300,30 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                 </div>
               </div>
               <div className="text-center mt-8 latptop:mt-14">
+              <button type="button" onClick={() => {
+                document.getElementById("user-form").reset();
+                setModalState(false)
+              }} className="w-44 self-center text-white bg-red-500 hover:bg-red-600
+              focus:ring-4 focus:outline-none focus:ring-primary-300 
+              font-medium rounded-lg text-sm px-5 py-2.5 text-center  transform transition-transform duration-300 hover:scale-y-110 me-2">
+                Cancel
+              </button>
                 <button
-                  className=" text-white bg-[#1baded] rounded-md py-2 px-8"
+                  className="w-44 self-center text-white bg-[#1baded] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 
+                  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transform transition-transform duration-300 hover:scale-y-110"
                   type="submit"
                   disabled={isSubmitting}
                 >
                   Submit
                 </button>
               </div>
+              </form>
             </Form>
           )}
         </Formik>
-        {account.privileges == "admin" ? (
-          <div>
-            <button
-              id={activeUser._id}
-              className="text-red-500"
-              onClick={() => removeUser(activeUser._id)}
-            >
-              Remove User
-            </button>
-          </div>
-        ) : null}
+       
       </div>
-    </div>
+
   );
 };
 
