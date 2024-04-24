@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Layout from "~/components/Layout";
-import LabelCard from "~/components/LabelCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
@@ -9,10 +7,12 @@ import { getCategories } from "../../store/Category/Thunk";
 import { Formik, Field } from "formik";
 import { getAllSubCats } from "../../store/Sub-Category/Thunks";
 import { getLabels, searchLabel } from "../../store/Label/Thunks";
-import CartCanvasDrawer from "~/components/CartCanvasDrawer";
 import { getAccount } from "../../store/Account/thunks";
-import useDebounce from "~/hooks/useDebounce";
 import { Input, Space } from "antd";
+import Layout from "~/components/Layout";
+import LabelCard from "~/components/LabelCard";
+import CartCanvasDrawer from "~/components/CartCanvasDrawer";
+import useDebounce from "~/hooks/useDebounce";
 
 const StartNewOrder = () => {
   const { Search } = Input;
@@ -89,13 +89,13 @@ const StartNewOrder = () => {
             <div className="flex items-center gap-5 mb-20 laptop:mb-10">
               <Field
                 onChange={filterSubCats}
-                value={activeCategory}
+                value={activeCategory ?? ''}
                 type="text"
                 component="select"
                 name="categoryId"
                 className="select w-52 max-w-xs select-bordered select-sm"
               >
-                <option selected disabled value="">
+                <option disabled value="">
                   Select Category
                 </option>
                 {cats
@@ -113,13 +113,13 @@ const StartNewOrder = () => {
               </Field>
               <Field
                 onChange={singleSubCat}
-                value={activeSubCategoryId}
+                value={activeSubCategoryId ?? ''}
                 type="text"
                 component="select"
                 name="subCategoryId"
                 className="select w-52 max-w-xs select-bordered select-sm"
               >
-                <option selected value="">
+                <option value="">
                   Select Sub-Category
                 </option>
                 {activeSubCats
