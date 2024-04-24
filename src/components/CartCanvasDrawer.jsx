@@ -38,7 +38,6 @@ const CartCanvasDrawer = ({
         [event.target.name]: input,
       };
     });
-    console.log(orderInput);
   };
 
   const toast = async () => {

@@ -553,9 +553,7 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
             {user.accessToken ? (
               <Space>
                 <Avatar
-                  src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
-                    user.account.firstName
-                  )}-${user.account.lastName}.jpg`}
+                  src={`${formatImgString(user.account.firstName, user.account.lastName, "jpg")}`}
                 />
                 <span>
                   {user.account.firstName} {user.account.lastName}

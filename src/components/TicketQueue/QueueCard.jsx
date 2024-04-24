@@ -3,16 +3,23 @@ import { useDispatch } from "react-redux";
 import { updateTicket } from "../../../store/Tickets/Thunks";
 
 const QueueCard = ({ account, ticket }) => {
+  // ! SCOPED VARIABLES */
   const dispatch = useDispatch();
   const ticketStatus =
     ticket.status == "In queue" ? 1 : ticket.status == "In progress" ? 50 : 100;
-
   const dateObject = new Date(
     ticket.status != "Completed" ? ticket.createdOn : ticket.updatedOn
   );
   const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
   const formattedDate = dateObject.toLocaleDateString("en-US", dateOptions);
+  const badgeColor =
+  ticket.priority == "Low"
+    ? "bg-info"
+    : ticket.priority == "Medium"
+    ? "bg-warning"
+    : "bg-error";
 
+  // ! SCOPED FUNCTIONS */
   const updateStatus = async () => {
     const setStatus = ticket.status == "In queue" ? "In progress" : "Completed";
     const id = ticket._id;
@@ -23,12 +30,7 @@ const QueueCard = ({ account, ticket }) => {
     dispatch(updateTicket(data));
   };
 
-  const badgeColor =
-    ticket.priority == "Low"
-      ? "bg-info"
-      : ticket.priority == "Medium"
-      ? "bg-warning"
-      : "bg-error";
+  // ! RETURNING JSX */
   return (
     <div className="card indicator max-w-[500px] w-[90%] bg-base-100 shadow-xl">
       <div

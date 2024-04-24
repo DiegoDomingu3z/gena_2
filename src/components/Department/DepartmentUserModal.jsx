@@ -16,7 +16,6 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   const groupLeads = useSelector((state) => state.Department.groupLeads);
   const account = useSelector((state) => state.Account.account);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getDepartments());
     dispatch(getLeads());
@@ -66,9 +65,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
       <div className=" w-full laptop:w-full laptop:h-[32rem] h-[88rem] rounded-lg p-5 flex flex-col">
         <div className="flex mb-5">
           <img
-            src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
-              activeUser.firstName
-            )}-${activeUser.lastName}.jpg`}
+            src={`${formatImgString(activeUser.firstName, activeUser.lastName, "jpg")}`}
             alt={`Employee image`}
             className="h-14 ms-3 rounded-lg"
           />

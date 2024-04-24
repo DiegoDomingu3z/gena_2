@@ -10,13 +10,12 @@ import UserModal from './UserModal';
 import DepartmentUserModal from '../Department/DepartmentUserModal';
 import { formatImgString } from '../../../func/resuableFunctions';
 const UserList = ({open, setOpen, users}) => {
-    // ! SCOPED VARIABLE */
+    // ! SCOPED VARIABLES */
     const account = useSelector((state) => state.Account.account)
     const [activeUser, setActiveUser] = useState(null)
     const [openEditModal, setOpenEditModal] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [openPopIndex, setOpenPopIndex] = useState(-1);
-    const [dataForSubmission, setDataForSubmission] = useState(null)
     const [api, contextHolder] = notification.useNotification()
     const dispatch = useDispatch()
 
@@ -87,9 +86,7 @@ const UserList = ({open, setOpen, users}) => {
               key={index}
             >
               <List.Item.Meta
-                avatar={<Avatar src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
-                  item.firstName
-                )}-${item.lastName}.jpg`} />}
+                avatar={<Avatar src={`${formatImgString(item.firstName,item.lastName, "jpg" )}`} />}
                 title={<div><span>{item.firstName} {item.lastName}</span>
                 {account._id == item._id ?
                  <Tag className='ms-1' icon={<FontAwesomeIcon icon={faCheckCircle} className='me-1'/>} color="success"> Logged in as</Tag>
