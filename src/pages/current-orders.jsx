@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
 import { getMyOrders } from "../../store/Orders/thunks";
 import { Space, Table, Tag } from "antd";
+import { columns } from "../../lib/orderTableData";
 const { Column, ColumnGroup } = Table;
 
 const CurrentOrders = () => {
@@ -26,14 +27,49 @@ const CurrentOrders = () => {
   const order = useSelector((state) => state.Orders.myOrders.orders);
   const [blobs, setBlobs] = useState([]);
   const [deleted, setDeleted] = useState(false);
+  const [dataSource, setDataSource] = useState([]);
   const pickTab = (e) => {
     setTab(e.key);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
+  useEffect(() => {
+    const mappedOrders = order?.map((order) => {
+      return {
+        orderId: order._id,
+        labels: order.labels.length,
+        date: formatDate(order.createdOn),
+        status: order.status,
+        notes: order.notes ?? "",
+      };
+    });
+    setDataSource(mappedOrders ?? []);
+  }, [order]);
+
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
     dispatch(getMyOrders(token));
-  }, [deleted]);
+
+    const mappedOrders = order?.map((order) => {
+      console.log(order);
+      return {
+        orderId: order._id,
+        labels: order.labels.length,
+        date: formatDate(order.createdOn),
+        status: order.status,
+        notes: order.notes ?? "",
+      };
+    });
+
+    setDataSource(mappedOrders);
+  }, []);
 
   return (
     <Layout title={"Gena | Current Orders"}>
@@ -137,27 +173,13 @@ const CurrentOrders = () => {
               ref={containerRef}
             >
               <h1 className="text-xl font-medium mb-10 pl-5 pt-5">My Orders</h1>
-              <div
-                className={`grid px-5 grid-cols-5 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${
-                  scrollPosition > 88 && "shadow-md"
-                } transition-all ease-in-out duration-500`}
-              >
-                <h4>Order ID</h4>
-                <h4>Labels</h4>
-                <h4>Date</h4>
-                <h4>Status</h4>
-                <h4>Actions</h4>
-              </div>
-              <OrderCard
-                deleted={deleted}
-                setDeleted={setDeleted}
-                modalState={modalState}
-                setModalState={setModalState}
-                blobs={blobs}
-                setBlobs={setBlobs}
-                toggleSort={toggleSort}
-                openAction={openAction}
-                setOpenAction={setOpenAction}
+              <Table
+                scroll={{
+                  y: 560,
+                }}
+                pagination={false}
+                dataSource={dataSource}
+                columns={columns}
               />
             </div>
           </div>

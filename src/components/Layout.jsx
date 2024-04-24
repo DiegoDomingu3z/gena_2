@@ -10,7 +10,9 @@ import { logout } from "../../store/Account/thunks";
 import { useEffect } from "react";
 import TicketModal from "./TicketModal";
 import { useState } from "react";
-import GenaNav from "./GenaNav";
+import { getMyOrders } from "../../store/Orders/thunks";
+import { getAccount } from "../../store/Account/thunks";
+import { getTickets } from "../../store/Tickets/Thunks";
 
 const Layout = ({ children, title, displayTitle }) => {
   const dispatch = useDispatch();
@@ -26,6 +28,14 @@ const Layout = ({ children, title, displayTitle }) => {
       router.push("/");
     }
   }, [user]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    dispatch(getAccount(token));
+    dispatch(getMyOrders(token));
+
+    token && dispatch(getTickets());
+  }, []);
 
   const logUserOut = async () => {
     await router.push("/");
@@ -44,19 +54,15 @@ const Layout = ({ children, title, displayTitle }) => {
             setTicketModal={setTicketModal}
           />
         )}
-        {user.accessToken && (
-          <SideNav
-            sideNavOpen={sideNavOpen}
-            ticketModal={ticketModal}
-            setTicketModal={setTicketModal}
-          />
-        )}
-        {user.accessToken && (
-          <SideNavToggle
-            sideNavOpen={sideNavOpen}
-            setSideNavOpen={setSideNavOpen}
-          />
-        )}
+        <SideNav
+          sideNavOpen={sideNavOpen}
+          ticketModal={ticketModal}
+          setTicketModal={setTicketModal}
+        />
+        <SideNavToggle
+          sideNavOpen={sideNavOpen}
+          setSideNavOpen={setSideNavOpen}
+        />
         {user.accessToken && (
           <button
             onClick={logUserOut}

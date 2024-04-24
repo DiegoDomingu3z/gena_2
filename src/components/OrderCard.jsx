@@ -41,47 +41,12 @@ const OrderCard = ({
     approved: "bg-[#1baded]",
     delivered: "bg-[#63cb67]",
     declined: "bg-[#fb3939]",
-    "ready for pickup": "bg-[#706ff1]"
+    "ready for pickup": "bg-[#706ff1]",
   };
 
-  const deleteOrder = async (id) => {
-    const token = sessionStorage.getItem("accessToken");
-    Swal.fire({
-      title: `Remove Order: <br> ${id}?`,
-      text: "You will not be able to revert this",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Delete",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        let timerInterval;
-        await Swal.fire({
-          title: `Deleting Order: <br> ${id}`,
-          html: "This may take some time <br> <b></b> Seconds left.",
-          timer: 1000,
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-            const b = Swal.getHtmlContainer().querySelector("b");
-            timerInterval = setInterval(() => {
-              b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
-            }, 100);
-          },
-          willClose: () => {
-            clearInterval(timerInterval);
-          },
-        });
-        dispatch(removeOrder({ id, token }));
-        setDeleted(!deleted);
-      }
-    });
-  };
   useEffect(() => {
     const getOrders = async () => {
       const token = sessionStorage.getItem("accessToken");
-      await dispatch(getMyOrders(token));
       await dispatch(getOrdersToApprove(token));
     };
     getOrders();
@@ -171,9 +136,7 @@ const OrderCard = ({
                 key={o._id}
               >
                 <div className="break-all">
-                  <p className="text-sm w-full break-words">
-                    {o._id}
-                  </p>
+                  <p className="text-sm w-full break-words">{o._id}</p>
                   <p className="text-sm w-full break-words relative text-gray-500 top-2">
                     {o.orderName && o.orderName}
                   </p>

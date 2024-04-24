@@ -10,18 +10,9 @@ import { getMyOrders } from "../../store/Orders/thunks";
 import { getTickets } from "../../store/Tickets/Thunks";
 import { formatImgString } from "../../func/resuableFunctions";
 export const NavButtons = ({ ticketModal, setTicketModal }) => {
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.Account);
   const userOrders = useSelector((state) => state.Orders.myOrders.orders);
   const devTickets = useSelector((state) => state.Tickets.tickets);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
-    dispatch(getAccount(token));
-    dispatch(getMyOrders(token));
-
-    token && dispatch(getTickets());
-  }, []);
 
   const router = useRouter();
 

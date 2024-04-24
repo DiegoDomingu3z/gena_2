@@ -7,6 +7,7 @@ import {
   getBasketLabels,
   placeOrder,
   removeFromBasket,
+  getMyOrders,
 } from "../../store/Orders/thunks";
 import Swal from "sweetalert2";
 import { PDFDocument } from "pdf-lib";
@@ -63,6 +64,7 @@ const CartCanvasDrawer = ({
     setBasketLabels(basketLabelsCopy);
     toast();
     dispatch(clearBasket());
+    dispatch(getMyOrders(token));
     setTimeout(() => {
       setToggleCartCanvas(!toggleCartCanvas);
     }, 500);
