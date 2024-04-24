@@ -22,14 +22,7 @@ const CartCanvasDrawer = ({
   const basket = useSelector((state) => state.Orders.labelBasket);
   const [invalidLabel, setInvalidLabel] = useState(false);
   const dispatch = useDispatch();
-  // const handleNote = (event) => {
-  //   let note = event.target.value;
-  //   setOrderNote(note);
-  // };
-  // const handleOrderName = (event) => {
-  //   let name = event.target.value;
-  //   setOrderName(name);
-  // };
+
   const handleInput = (event) => {
     let input = event.target.value;
     setOrderInput((previousInput) => {
@@ -82,10 +75,10 @@ const CartCanvasDrawer = ({
           : "pt-5 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
       }
     >
-      <div className="w-full flex flex-col justify-center mb-8">
+      <div className="px-5 mb-5">
         <button
           onClick={() => setToggleCartCanvas(!toggleCartCanvas)}
-          className="border transition-all ease-in-out duration-300 hover:scale-110 bg-[#233043] hover:bg-white hover:text-inherit w-3/4 self-center rounded-md h-10 text-white text flex items-center justify-center gap-5"
+          className="btn w-full bg-darkBlue"
         >
           <FontAwesomeIcon className="text-xl" icon={faArrowRightLong} /> Close
         </button>
@@ -266,15 +259,14 @@ const CartCanvasLabelCard = ({
   };
 
   const seeLabel = (index) => {
-    console.log(blobs);
     if (blobs[index] != "") {
       return (
-        <div className="flex justify-center">
+        <div className="">
           <iframe
-            className="rounded"
+            className="rounded pointer-events-none"
             src={blobs[index]}
-            width="80%"
-            height="50%"
+            width="20%"
+            height="20%"
             frameBorder="0"
           ></iframe>
         </div>
@@ -298,7 +290,7 @@ const CartCanvasLabelCard = ({
   };
 
   return (
-    <div className="overflow-y-auto	h-3/5 border-b-2">
+    <div className="overflow-y-auto	h-3/5 border-b-2 px-5">
       {basketLabels.length > 0 ? (
         basketLabels.map((label, i) => (
           <div key={i}>

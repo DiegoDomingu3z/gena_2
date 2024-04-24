@@ -11,6 +11,7 @@ const IframeBlock = (props) => {
   const shouldRender = inViewport || alwaysRendered.includes(src._id);
   return (
     <iframe
+      scrolling="no"
       id={src._id}
       ref={forwardedRef}
       src={
