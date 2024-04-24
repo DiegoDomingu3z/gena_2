@@ -4,7 +4,7 @@ import { Button, Statistic } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import UserList from "~/components/Users/UserList";
 import { getUsers } from "../../store/Users/Thunks";
 import CountUp from 'react-countup';

@@ -1,5 +1,5 @@
 const { Modal } = require("antd")
-const UserModal = ({open, setOpen, component}) => {
+const GenaModal = ({open, setOpen, component}) => {
     // ! RETURNING JSX */
     return (
         <Modal 
@@ -12,4 +12,4 @@ const UserModal = ({open, setOpen, component}) => {
     )
 }
 
-export default UserModal;
+export default GenaModal;

@@ -5,10 +5,10 @@ import Image from "next/image";
 import { Avatar, Space } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccount } from "../../store/Account/thunks";
-import { getMyOrders } from "../../store/Orders/thunks";
-import { getTickets } from "../../store/Tickets/Thunks";
-import { formatImgString } from "../../func/resuableFunctions";
+import { getAccount } from "../../../store/Account/thunks";
+import { getMyOrders } from "../../../store/Orders/thunks";
+import { getTickets } from "../../../store/Tickets/Thunks";
+import { formatImgString } from "../../../func/resuableFunctions";
 export const NavButtons = ({ ticketModal, setTicketModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Account);

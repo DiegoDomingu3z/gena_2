@@ -1,14 +1,15 @@
-import { Avatar, List, Popconfirm, Tag, Tooltip, notification } from 'antd';
+import { Avatar, List, Popconfirm, Tag, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getUsers } from '../../../store/Users/Thunks';
-import { faExclamation, faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { deleteUser } from '../../../store/Users/Thunks';
+import { faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import Signup from '../Signup';
-import UserModal from './UserModal';
+import Signup from '../login-signup/Signup';
+import GenaModal from '../toasts-modals/GenaModal';
 import DepartmentUserModal from '../Department/DepartmentUserModal';
 import { formatImgString } from '../../../func/resuableFunctions';
+import useGenaToast from '../toasts-modals/GenaToast';
 const UserList = ({open, setOpen, users}) => {
     // ! SCOPED VARIABLES */
     const account = useSelector((state) => state.Account.account)
@@ -16,22 +17,26 @@ const UserList = ({open, setOpen, users}) => {
     const [openEditModal, setOpenEditModal] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [openPopIndex, setOpenPopIndex] = useState(-1);
-    const [api, contextHolder] = notification.useNotification()
+    const { successToast, errorToast, contextHolder } = useGenaToast();
     const dispatch = useDispatch()
 
     // ! SCOPED FUNCTIONS */
       const removeUser = (user) => {
-        const token = account.accessToken
-        const id = user._id
-        setConfirmLoading(true);
-        dispatch(deleteUser({id, token}))
-        setTimeout(() => {
-          setConfirmLoading(false);
-          setOpenPopIndex(-1);
-          api['success']({
-            message: `Removed ${user.firstName} from Gena.`
-          })
-        }, 2000);
+        try {
+          const token = account.accessToken
+          const id = user._id
+          setConfirmLoading(true);
+          dispatch(deleteUser({id, token}))
+          setTimeout(() => {
+            setConfirmLoading(false);
+            setOpenPopIndex(-1);
+            successToast(`Removed ${user.firstName} from Gena.`)
+          }, 2000);
+        } catch (error) {
+          errorToast(error, error.message)
+          console.log(error)
+        }
+        
       };
     
     // ! RETURNING JSX */
@@ -97,8 +102,8 @@ const UserList = ({open, setOpen, users}) => {
             </List.Item>
           )}
         />
-        <UserModal open={open} setOpen={setOpen} component={<Signup setOpen={setOpen}/>} />
-        <UserModal open={openEditModal} setOpen={setOpenEditModal} component={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+        <GenaModal open={open} setOpen={setOpen} component={<Signup setOpen={setOpen}/>} />
+        <GenaModal open={openEditModal} setOpen={setOpenEditModal} component={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
       </div>
     )
 }

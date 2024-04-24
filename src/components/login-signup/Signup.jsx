@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Formik, Form, Field } from "formik";
-import { createAccount, login } from "../../store/Account/thunks";
+import { createAccount, login } from "../../../store/Account/thunks";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -12,9 +12,9 @@ import {
   getDepartments,
   getGroupLead,
   getLeads,
-} from "../../store/Departments/Thunks";
+} from "../../../store/Departments/Thunks";
 import Swal from "sweetalert2";
-import { sendCredentials } from "../../store/Emails/Thunks";
+import { sendCredentials } from "../../../store/Emails/Thunks";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 const Signup = ({setOpen}) => {

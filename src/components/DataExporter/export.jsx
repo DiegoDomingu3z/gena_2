@@ -4,23 +4,24 @@ import { api } from "../../../axiosService";
 import { useDispatch, useSelector } from "react-redux";
 import { getFilterData } from "../../../store/Exporter/Thunks";
 const { RangePicker } = DatePicker;
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 const Export = () => {
-    const [form] = Form.useForm();
-    const [param, setParam] = useState(false)
-    const [snLabels, setSNLabels] = useState([])
-    const dispatch = useDispatch()
-    const [dataSource, setDataSource] = useState([])
-    const activeData = useSelector((state) => state.Exporter.activeData)
-    const loading = useSelector((state) => state.Exporter.loading)
-    const account = useSelector((state) => state.Account.account)
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const [csvData, setcsvData] = useState('')
+  // ! SCOPED VARIABLES */
+  const [param, setParam] = useState(false)
+  const [snLabels, setSNLabels] = useState([])
+  const [dataSource, setDataSource] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [csvData, setcsvData] = useState('')
+  const [form] = Form.useForm();
+  const dispatch = useDispatch()
+  const activeData = useSelector((state) => state.Exporter.activeData)
+  const loading = useSelector((state) => state.Exporter.loading)
+
+  // ! SCOPED FUNCTIONS */
   const onSelectChange = (newSelectedRowKeys) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
-
 
   const defined = (obj) => {
     for (const key in obj) {
@@ -32,76 +33,65 @@ const Export = () => {
     }
     return true;
   }
-    const submittingForm = (values) => {
-        if (defined(values)) {
-          const dateRangeFrom = `${values.dateRange[0].$y}-${values.dateRange[0].$M + 1}-${values.dateRange[0].$D}`
-          const dateRangeTo = `${values.dateRange[1].$y}-${values.dateRange[1].$M + 1}-${values.dateRange[1].$D}`
-          let params = new URLSearchParams(window.location.search);
-          params.set('labelId', values.labelId);
-          params.set('timestamp', values.dateType);
-          params.set('dateFrom', dateRangeFrom);
-          params.set('dateTo', dateRangeTo);
-          let newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
-          history.pushState({}, "", newUrl)
-          setParam(!param)
-        } 
+
+  const submittingForm = (values) => {
+    if (defined(values)) {
+      const dateRangeFrom = `${values.dateRange[0].$y}-${values.dateRange[0].$M + 1}-${values.dateRange[0].$D}`
+      const dateRangeTo = `${values.dateRange[1].$y}-${values.dateRange[1].$M + 1}-${values.dateRange[1].$D}`
+      let params = new URLSearchParams(window.location.search);
+      params.set('labelId', values.labelId);
+      params.set('timestamp', values.dateType);
+      params.set('dateFrom', dateRangeFrom);
+      params.set('dateTo', dateRangeTo);
+      let newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+      history.pushState({}, "", newUrl)
+      setParam(!param)
+    } 
+  }
+  useEffect(() => {
+    const getLabels = async() => {
+        await api.get('api/sn-labels').then((res) => {
+        setSNLabels(res.data)
+      })
     }
+    getLabels()
+  }, [param])
 
-    useEffect(() => {
-        const getLabels = async() => {
-          await api.get('api/sn-labels').then((res) => {
-            setSNLabels(res.data)
-            console.log(res.data)
-          })
-        }
-    
-    
-          getLabels()
-      }, [param])
+  useEffect(() => {
+    const getFilteredData = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const {  labelId,timestamp, dateFrom, dateTo } = Object.fromEntries(params.entries());
+    const query = `labelId=${labelId}&timestamp=${timestamp}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+    if ( labelId && dateFrom && dateTo) {
+      dispatch(getFilterData({query}))
+      }
+    }
+    getFilteredData()
+  }, [param]) 
 
-      useEffect(() => {
-        const getFilteredData = async () => {
-            const params = new URLSearchParams(window.location.search);
-            const {  labelId,timestamp, dateFrom, dateTo } = Object.fromEntries(params.entries());
-            const query = `labelId=${labelId}&timestamp=${timestamp}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
-            if ( labelId && dateFrom && dateTo) {
-              dispatch(getFilterData({query}))
-            }
-    
-        }
-        getFilteredData()
-      }, [param]) 
-
-      useEffect(() => {
-        const data = []
-                console.log(activeData, 'activeData')
-                for (let i = 0; i < activeData.length; i++) {
-                  const docDefectLogger = activeData[i];
-                  for (let d = 0; d < docDefectLogger.defectLogs.length; d++) {
-                    const log = docDefectLogger.defectLogs[d];
-                    const dateObj = new Date(log.uploadedOn)
-                    const year = dateObj.getFullYear()
-                    const month = dateObj.getMonth() + 1
-                    const day = dateObj.getDay()
-                    data.push({
-                        key: log._id,
-                        docNum: log.docNum,
-                        serialNumbers: log.sn.join(", "),
-                        comment: log.comment,
-                        orderCreator: log.orderInformation.creatorName,
-                        createdOn: `${month}-${day}-${year}`
-
-                    })
-                    
-                  }
-                  
-                }
-                setDataSource(data)
+  useEffect(() => {
+    const data = []
+    for (let i = 0; i < activeData.length; i++) {
+      const docDefectLogger = activeData[i];
+      for (let d = 0; d < docDefectLogger.defectLogs.length; d++) {
+        const log = docDefectLogger.defectLogs[d];
+        const dateObj = new Date(log.uploadedOn)
+        const year = dateObj.getFullYear()
+        const month = dateObj.getMonth() + 1
+        const day = dateObj.getDay()
+        data.push({
+            key: log._id,
+            docNum: log.docNum,
+            serialNumbers: log.sn.join(", "),
+            comment: log.comment,
+            orderCreator: log.orderInformation.creatorName,
+            createdOn: `${month}-${day}-${year}`})            
+      }             
+    }
+    setDataSource(data)
       }, [activeData])
 
-
       const exportRows = async (idArr) => {
-        const token = sessionStorage.getItem("accessToken");
         if(dataSource && idArr.length > 0){
           const rows = dataSource.filter(item => idArr.includes(item.key))
           const keys = Object.keys(rows[0])
@@ -201,7 +191,6 @@ const Export = () => {
           <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
           <div className="">
             <Form form={form} className="bg-gray-100 rounded p-3 " name="filterForm" onFinish={submittingForm}>
-
             <Space>
                 <Form.Item name="labelId" className="w-[200px]">
                <Select placeholder="DocNum" >

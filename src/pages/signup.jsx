@@ -1,6 +1,6 @@
 import React from "react";
-import Layout from "~/components/Layout";
-import Signup from "~/components/Signup";
+import Layout from "~/components/layouts/Layout";
+import Signup from "~/components/login-signup/Signup";
 
 const signup = () => {
   return (

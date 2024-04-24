@@ -4,53 +4,28 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Formik, Form, Field } from "formik";
 import useEasterEgg from "~/hooks/useEasterEgg";
 import { useDispatch } from "react-redux";
-import { reportTicket } from "../../store/Emails/Thunks";
-import Swal from "sweetalert2";
-import { createTicket } from "../../store/Tickets/Thunks";
-
+import { createTicket } from "../../../store/Tickets/Thunks";
+import useGenaToast from "../toasts-modals/GenaToast";
 const TicketModal = ({ setTicketModal, ticketModal }) => {
   useEasterEgg();
   const dispatch = useDispatch();
-
-  const successToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "white",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "success",
-      title: "Ticket Submitted!",
-    });
-  };
-  const failToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "white",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "warning",
-      title: "There was an issue submitting your ticket",
-    });
-  };
+  const {successToast, errorToast, contextHolder} = useGenaToast()
+  const submission = async(data) => {
+    try {
+      dispatch(createTicket(data));
+      successToast('Ticket Submitted!');
+      setTimeout(() => {
+        setTicketModal(!ticketModal);
+      }, 1300)
+    } catch (error) {
+      console.log(error)
+      errorToast("There was an issue submitting your ticket", error.message);
+    }
+  }
 
   return (
     <div className="fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
+      {contextHolder}
       <div className="bg-[#f7f9fc] w-3/5 laptop:w-2/5 laptop:h-[44rem] h-[44rem] rounded-lg px-10 py-5 flex flex-col">
         <button
           onClick={() => setTicketModal(!ticketModal)}
@@ -68,13 +43,10 @@ const TicketModal = ({ setTicketModal, ticketModal }) => {
           onSubmit={async (values, helpers) => {
             try {
               var data = values;
-              const token = sessionStorage.getItem("accessToken");
-              setTicketModal(!ticketModal);
               helpers.resetForm();
-              await dispatch(createTicket(data));
-              successToast();
+              await submission(data)
             } catch (error) {
-              failToast();
+              console.log("ERROR")
             }
           }}
         >

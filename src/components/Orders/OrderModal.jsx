@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import OrderModalCard from "./OrderModalCard";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
 import { useRef } from "react";
+import UpdateOrderCard from "./UpdateOrderCard";
 
 const OrderModal = ({ modalState, setModalState, blobs, setBlobs }) => {
   const containerRef = useRef(null);
@@ -28,7 +28,7 @@ const OrderModal = ({ modalState, setModalState, blobs, setBlobs }) => {
             scrollPosition > 1 && "shadow-inset-top"
           } transition-all ease-in-out duration-500`}
         >
-          <OrderModalCard
+          <UpdateOrderCard
             modalState={modalState}
             blobs={blobs}
             setBlobs={setBlobs}
