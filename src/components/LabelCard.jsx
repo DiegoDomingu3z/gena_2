@@ -5,6 +5,7 @@ import { addToBasket } from "../../store/Orders/thunks";
 const { PDFDocument } = require("pdf-lib");
 import Swal from "sweetalert2";
 import handleViewport from "react-in-viewport";
+import { Popover } from "antd";
 
 const IframeBlock = (props) => {
   const { inViewport, forwardedRef, src, alwaysRendered } = props;
@@ -158,7 +159,9 @@ const LabelCard = ({
                       </div>
                       <div className="px-4 pt-4 pb-2">
                         <div className="font-medium">{l.docNum}</div>
-                        <div className=" text-gray-500 text-sm">{l.name}</div>
+                        <Popover content={l.name}>
+                          <div className=" text-gray-500 text-sm truncate">{l.name}</div>
+                        </Popover>
                         <div className="text-sm text-gray-500">
                           <span>Pack of {l.unitPack}</span>
                         </div>
