@@ -42,8 +42,6 @@ const Layout = ({ children, title, displayTitle }) => {
     dispatch(logout(user.accessToken));
   };
 
-  console.log('%csrc\components\Layout.jsx:45 router', 'color: #26bfa5;', router);
-
   return (
     <div>
       <Head>

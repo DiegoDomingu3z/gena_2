@@ -74,8 +74,8 @@ const CartCanvasDrawer = ({
     <div
       className={
         toggleCartCanvas
-          ? "pt-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5 overflow-hidden"
-          : "pt-6 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
+          ? "py-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5 overflow-hidden"
+          : "py-6 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
       }
     >
       <div className="px-5 mb-5">
@@ -93,7 +93,7 @@ const CartCanvasDrawer = ({
         render={render}
         setInvalidLabel={setInvalidLabel}
       />
-      <div className="w-full flex flex-col items-center px-5">
+      <div className="w-full flex flex-col items-center px-5 mt-auto">
         <div className="mb-1 text-center rounded-md w-full">
           <label className="label label-text">Order Details</label>
           <input
@@ -131,7 +131,7 @@ const CartCanvasDrawer = ({
           >
             {invalidLabel != true
               ? "Submit Order"
-              : "Will not Submit Until Order is Fixed"}
+              : "Will not submit until order is fixed"}
           </button>
         </div>
       </div>
@@ -260,6 +260,7 @@ const CartCanvasLabelCard = ({
   };
 
   const seeLabel = (index) => {
+    console.log('%csrc\components\CartCanvasDrawer.jsx:263 blobs[index]', 'color: #007acc;', blobs[index]);
     if (blobs[index] != "") {
       return (
         <div className="">
@@ -274,24 +275,23 @@ const CartCanvasLabelCard = ({
       );
     } else {
       return (
-        <div className="text-center">
-          <b>
-            <img
+        <div className="text-sm w-full">
+            <Image
               className="m-auto"
-              height="300px"
-              width="150px"
+              height={120}
+              width={100}
               src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg"
+              alt="Label broke order"
             />
             The input exceeds the labels character count and will not print.
             Please delete this label from your order.
-          </b>
         </div>
       );
     }
   };
 
   return (
-    <div className="overflow-y-auto	h-3/5 border-b-2 px-5 flex flex-col gap-3">
+    <div className="overflow-y-auto grow border-b-2 px-5 flex flex-col gap-3">
       {basketLabels.length > 0 ? (
         basketLabels.map((label, i) => (
           <div className="flex gap-3 border rounded-md shadow-md p-2" key={i}>

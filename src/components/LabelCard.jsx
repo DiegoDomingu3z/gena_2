@@ -122,6 +122,7 @@ const LabelCard = ({
                 showFields: false,
               }
             );
+            console.log('%csrc\components\LabelCard.jsx:125 vals', 'color: #007acc;', vals);
             vals["qty"] = "";
             return (
               <Formik
@@ -160,7 +161,7 @@ const LabelCard = ({
                       <div className="px-4 pt-4 pb-2">
                         <div className="font-medium">{l.docNum}</div>
                         <Popover content={l.name}>
-                          <div className=" text-gray-500 text-sm truncate">{l.name}</div>
+                          <div className=" text-gray-500 text-sm truncate max-w-[200px]">{l.name}</div>
                         </Popover>
                         <div className="text-sm text-gray-500">
                           <span>Pack of {l.unitPack}</span>
@@ -285,7 +286,7 @@ const LabelCard = ({
                                           ? labelOptions.map((o, index) => (
                                               <option
                                                 key={`${index}_${f._id}`}
-                                                id={`${index}_${f._id}`}
+                                                id={f._id}
                                                 name={o}
                                                 value={o}
                                               >
