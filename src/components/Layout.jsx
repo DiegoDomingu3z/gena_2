@@ -42,6 +42,8 @@ const Layout = ({ children, title, displayTitle }) => {
     dispatch(logout(user.accessToken));
   };
 
+  console.log('%csrc\components\Layout.jsx:45 router', 'color: #26bfa5;', router);
+
   return (
     <div>
       <Head>
@@ -54,7 +56,7 @@ const Layout = ({ children, title, displayTitle }) => {
             setTicketModal={setTicketModal}
           />
         )}
-        <SideNav
+        {router.route !== '/' && <><SideNav
           sideNavOpen={sideNavOpen}
           ticketModal={ticketModal}
           setTicketModal={setTicketModal}
@@ -63,6 +65,7 @@ const Layout = ({ children, title, displayTitle }) => {
           sideNavOpen={sideNavOpen}
           setSideNavOpen={setSideNavOpen}
         />
+        </>}
         {user.accessToken && (
           <button
             onClick={logUserOut}
