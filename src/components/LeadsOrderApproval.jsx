@@ -22,12 +22,12 @@ import { render } from "react-dom";
 
 const LeadsOrderApproval = () => {
   const dispatch = useDispatch();
+  const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
+  const [orderCollapse, setOrderCollapse] = useState(false);
   const [decline, setDecline] = useState(false);
   const order = useSelector((state) => state.Orders.leadDepartmentOrders);
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Orders.labelsToApprove);
-  const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
-  const [orderCollapse, setOrderCollapse] = useState(false);
   const containerRef = useRef(null);
   const scrollPosition = useScrollPosition(containerRef);
   const statusColors = {
@@ -213,17 +213,6 @@ const LeadsOrderApproval = () => {
 
   return (
     <div ref={containerRef}>
-      <div
-        className={`grid grid-cols-4 z-10 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${
-          scrollPosition > 88 && "shadow-md"
-        } shadow-none transition-all ease-in-out duration-500`}
-      >
-        <h4>Name</h4>
-        {/* <h4>Labels</h4> */}
-        <h4>Date</h4>
-        <h4>Status</h4>
-        <h4>Actions</h4>
-      </div>
       {order.length > 0
         ? order.map((o, index) => (
             <div

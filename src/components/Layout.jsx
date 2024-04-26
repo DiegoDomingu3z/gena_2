@@ -10,7 +10,7 @@ import { logout } from "../../store/Account/thunks";
 import { useEffect } from "react";
 import TicketModal from "./TicketModal";
 import { useState } from "react";
-import { getMyOrders } from "../../store/Orders/thunks";
+import { getMyOrders, getOrdersToApprove } from "../../store/Orders/thunks";
 import { getAccount } from "../../store/Account/thunks";
 import { getTickets } from "../../store/Tickets/Thunks";
 
@@ -33,6 +33,10 @@ const Layout = ({ children, title, displayTitle }) => {
     const token = sessionStorage.getItem("accessToken");
     dispatch(getAccount(token));
     dispatch(getMyOrders(token));
+
+    if (user.account.privileges === 'group-lead' || user.account.privileges === 'team-lead') {
+      dispatch(getOrdersToApprove(token))
+    }
 
     token && dispatch(getTickets());
   }, []);

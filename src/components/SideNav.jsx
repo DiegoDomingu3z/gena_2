@@ -9,9 +9,13 @@ import { getAccount } from "../../store/Account/thunks";
 import { getMyOrders } from "../../store/Orders/thunks";
 import { getTickets } from "../../store/Tickets/Thunks";
 import { formatImgString } from "../../func/resuableFunctions";
+import { useState } from "react";
+import { api } from "../../axiosService";
+
 export const NavButtons = ({ ticketModal, setTicketModal }) => {
   const user = useSelector((state) => state.Account);
   const userOrders = useSelector((state) => state.Orders.myOrders.orders);
+  const teamMemberOrders = useSelector((state) => state.Orders.leadDepartmentOrders)
   const devTickets = useSelector((state) => state.Tickets.tickets);
 
   const router = useRouter();
@@ -133,7 +137,11 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
             </svg>
             <span className="text-sm">Current Orders</span>
             <span className="badge border-none bg-accent text-white absolute right-5">
-              {userOrders?.length}
+                {user.account.privileges === 'team-lead' || user.account.privileges === 'group-lead' ?
+                  `${userOrders?.length + teamMemberOrders?.length}`
+                :
+                  `${userOrders?.length}`
+                }
             </span>
           </button>
         </Link>

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, Form, Formik } from "formik";
 import { addToBasket } from "../../store/Orders/thunks";
+import { Popover } from "antd";
 const { PDFDocument } = require("pdf-lib");
 import Swal from "sweetalert2";
 import handleViewport from "react-in-viewport";
-import { Popover } from "antd";
 
 const IframeBlock = (props) => {
   const { inViewport, forwardedRef, src, alwaysRendered } = props;
@@ -40,7 +40,6 @@ const LabelCard = ({
   const [getBufferCalled, setGetBufferCalled] = useState(false);
   const [alwaysRenderedIframes, setAlwaysRenderedIframes] = useState([]);
   const [currentFetch, setCurrentFetch] = useState({});
-  // const [showFields, setShowFields] = useState(false);
   const [toggle, setToggle] = useState(false);
   useEffect(() => {
     labels.forEach((l) => {
@@ -122,16 +121,15 @@ const LabelCard = ({
                 showFields: false,
               }
             );
-            console.log('%csrc\components\LabelCard.jsx:125 vals', 'color: #007acc;', vals);
             vals["qty"] = "";
             return (
               <Formik
                 key={l._id}
                 initialValues={vals}
                 onSubmit={async (values, helpers) => {
+                  delete values.showFields;
                   const { qty, ...newValues } = values;
                   delete values.qty;
-                  delete values.showFields;
                   let id = l._id;
                   let finalArr = [];
                   for (const property in newValues) {
@@ -161,7 +159,7 @@ const LabelCard = ({
                       <div className="px-4 pt-4 pb-2">
                         <div className="font-medium">{l.docNum}</div>
                         <Popover content={l.name}>
-                          <div className=" text-gray-500 text-sm truncate max-w-[200px]">{l.name}</div>
+                          <div className=" text-gray-500 text-sm truncate max-w-[220px]">{l.name}</div>
                         </Popover>
                         <div className="text-sm text-gray-500">
                           <span>Pack of {l.unitPack}</span>

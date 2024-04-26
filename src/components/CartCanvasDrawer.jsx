@@ -33,7 +33,6 @@ const CartCanvasDrawer = ({
         [event.target.name]: input,
       };
     });
-    console.log(orderInput);
   };
 
   const toast = async () => {
@@ -260,7 +259,6 @@ const CartCanvasLabelCard = ({
   };
 
   const seeLabel = (index) => {
-    console.log('%csrc\components\CartCanvasDrawer.jsx:263 blobs[index]', 'color: #007acc;', blobs[index]);
     if (blobs[index] != "") {
       return (
         <div className="">
