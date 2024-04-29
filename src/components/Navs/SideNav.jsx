@@ -347,7 +347,7 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
                 ></path>{" "}
               </g>
             </svg>
-            <span className="text-sm">Add User</span>
+            <span className="text-sm">Users</span>
           </button>
         </Link>
         <Link href={"/resources"} className={user.accessToken ? "" : "hidden"}>

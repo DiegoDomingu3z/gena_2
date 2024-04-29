@@ -5,11 +5,11 @@ import { deleteUser } from '../../../store/Users/Thunks';
 import { faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import Signup from '../login-signup/Signup';
 import GenaModal from '../toasts-modals/GenaModal';
-import DepartmentUserModal from '../Department/DepartmentUserModal';
+import DepartmentUserModal from '../Department/forms/UpdateUserForm';
 import { formatImgString } from '../../../func/resuableFunctions';
 import useGenaToast from '../toasts-modals/GenaToast';
+import NewUserForm from '../login-signup/NewUserForm';
 const UserList = ({open, setOpen, users}) => {
     // ! SCOPED VARIABLES */
     const account = useSelector((state) => state.Account.account)
@@ -102,8 +102,11 @@ const UserList = ({open, setOpen, users}) => {
             </List.Item>
           )}
         />
-        <GenaModal open={open} setOpen={setOpen} component={<Signup setOpen={setOpen}/>} />
-        <GenaModal open={openEditModal} setOpen={setOpenEditModal} component={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+        <GenaModal open={open} setOpen={setOpen} title="New User Form"  body={<NewUserForm setOpen={setOpen}/>} />
+        {openEditModal && (
+          <GenaModal open={openEditModal} setOpen={setOpenEditModal}  body={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+        )}
+        
       </div>
     )
 }

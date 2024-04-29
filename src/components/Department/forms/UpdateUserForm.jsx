@@ -5,17 +5,32 @@ import {
   getDepartments,
   getGroupLead,
   getLeads,
-} from "../../../store/Departments/Thunks";
-import { deleteAccount, updateUser } from "../../../store/Account/thunks";
+} from "../../../../store/Departments/Thunks";
+import { deleteAccount, updateUser } from "../../../../store/Account/thunks";
 import Swal from "sweetalert2";
-import { formatImgString } from "../../../func/resuableFunctions";
+import { formatImgString } from "../../../../func/resuableFunctions";
+import useGenaToast from "../../toasts-modals/GenaToast";
 
-const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
+const UpdateUserForm = ({ modalState, setModalState, activeUser }) => {
+  // ! SCOPED VARIABLES */
   const dept = useSelector((state) => state.Department.departments);
   const leads = useSelector((state) => state.Department.leads);
   const groupLeads = useSelector((state) => state.Department.groupLeads);
-  const account = useSelector((state) => state.Account.account);
   const dispatch = useDispatch();
+  const { successToast, errorToast, contextHolder } = useGenaToast();
+  const dataForSubmission = {
+    firstName: activeUser.firstName,
+    lastName: activeUser.lastName,
+    userName: activeUser.userName,
+    password: "",
+    departmentId: activeUser.departmentId,
+    email: activeUser.email,
+    privileges: activeUser.privileges,
+    groupLeadId: activeUser.groupLeadId,
+    teamLeadId: activeUser.teamLeadId
+  }
+  
+  // ! SCOPED FUNCTIONS */
   useEffect(() => {
     dispatch(getDepartments());
     dispatch(getLeads());
@@ -23,46 +38,11 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-  const successToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "white",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "success",
-      title: "User Updated!",
-    });
-  };
-  const failureToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "orange",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "warning",
-      title: "No Data Changed!",
-    });
-  };
+  // ! RETURNING JSX */
   return (
     
       <div className=" w-full laptop:w-full laptop:h-[32rem] h-[88rem] rounded-lg p-5 flex flex-col">
+        {contextHolder}
         <div className="flex mb-5">
           <img
             src={`${formatImgString(activeUser.firstName, activeUser.lastName, "jpg")}`}
@@ -75,22 +55,22 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
         </div>
 
         <Formik
-          initialValues={dataForSubmission ? dataForSubmission : null}
+          initialValues={dataForSubmission}
           onSubmit={async (values) => {
             const token = sessionStorage.getItem("accessToken");
             const id = activeUser._id;
+            console.log(id)
             if (JSON.stringify(dataForSubmission) != JSON.stringify(values)) {
               dispatch(updateUser({ token, id, values }));
-              successToast();
-              document.getElementById("user-form").reset();
+              successToast('User Updated!');
               return;
             }
-            failureToast();
+            errorToast('No Data Changed!');
           }}
         >
           {({ isSubmitting }) => (
-            <Form id="user-form">
-              <form id="user-form">
+            <Form >
+  
               <div
                 className={`grid justify-items-center gap-8 laptoplg:grid-cols-3 grid-cols-2 max-h-[80rem]`}
               >
@@ -298,7 +278,6 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
               </div>
               <div className="text-center mt-8 latptop:mt-14">
               <button type="button" onClick={() => {
-                document.getElementById("user-form").reset();
                 setModalState(false)
               }} className="w-44 self-center text-white bg-red-500 hover:bg-red-600
               focus:ring-4 focus:outline-none focus:ring-primary-300 
@@ -314,7 +293,7 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
                   Submit
                 </button>
               </div>
-              </form>
+
             </Form>
           )}
         </Formik>
@@ -324,4 +303,4 @@ const DepartmentUserModal = ({ modalState, setModalState, activeUser }) => {
   );
 };
 
-export default DepartmentUserModal;
+export default UpdateUserForm;

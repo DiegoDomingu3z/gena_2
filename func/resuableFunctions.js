@@ -1,3 +1,5 @@
+import { Tag } from "antd";
+
 // * USED TO FORMAT AND RENDER AVATAR IMG */
 export const formatImgString = (firstName, lastName, imgType) => {
     try {
@@ -30,3 +32,23 @@ export const formatDate = (dateString) => {
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   };
+
+// * USED TO FORMAT ANY STRING THAT REQUIRED CAPITALIZATION
+export const capitalizeFirstLetterOfString = (str) => {
+    if (str.length > 0) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    } else {
+        return str;
+    }
+}
+
+// * TAG USED FOR REQUIRED INPUTS ON FORMS
+export const customizeRequiredMark = (label, { required }) => (
+    <>
+        {required ? <Tag color="error">Required</Tag> : null}
+        {label}
+    </>
+      );
+
+
+

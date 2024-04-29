@@ -8,7 +8,10 @@ export const createAccount = createAsyncThunk(
     try {
       const res = await api
         .post("api/account/create", loginData)
-        .then((res) => res.data);
+        .then((res) => res.data)
+        .catch((err) => {
+          return err
+        })
       return res;
     } catch (error) {
       const { data } = error.response;
@@ -25,7 +28,10 @@ export const getAccount = createAsyncThunk("account/get", async (token) => {
           Authorization: token,
         },
       })
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch((err) => {
+        return err
+      })
     return res;
   } catch (error) {
     throw error;
