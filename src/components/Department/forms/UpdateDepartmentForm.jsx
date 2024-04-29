@@ -24,6 +24,7 @@ const UpdateDepartmentForm = ({modalState, setModalState, department}) => {
         const id = department._id
         dispatch(updateDepartmentName({token, id, newName})).then(() => {
             successToast("Department Updated SuccessFully")
+            setTimeout(() => setModalState(false), 1000)
         }).catch((err) => {
             errorToast("Oops Something went wrong", err)
         })
@@ -37,7 +38,7 @@ const UpdateDepartmentForm = ({modalState, setModalState, department}) => {
        form={form}
        onFinish={updateDepartment}
        initialValues={{
-           requiredMarkValue: customize,
+           requiredMarkValue: 'customize',
         }}
         layout={"vertical"}
         requiredMark={customizeRequiredMark}

@@ -30,8 +30,8 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
 
     // ! SCOPED FUNCTIONS */
     useEffect(() => {
-        if (window.sessionStorage.getItem('accessToken')) {
-            setToken(token)
+        if (sessionStorage.getItem('accessToken')) {
+            setToken(sessionStorage.getItem('accessToken'))
         }
     }, [])
 
@@ -47,6 +47,7 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
       };
 
       const removeDepartment = (id) => {
+        console.log(token)
         dispatch(removeDept({token, id})).then(() => {
             successToast("Deleted Department Successfully!")
         }).catch((err) => {

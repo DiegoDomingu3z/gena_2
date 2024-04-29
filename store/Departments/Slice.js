@@ -7,6 +7,7 @@ import {
   getLeads,
   getUsersInDepartment,
   removeDept,
+  updateDepartmentName,
 } from "./Thunks";
 import { createAccount, deleteAccount } from "../Account/thunks";
 
@@ -110,7 +111,16 @@ export const DepartmentSlice = createSlice({
       })
       .addCase(deleteAccount.rejected, (state, action) => {
         state.loading = false;
-      });
+      })
+      .addCase(updateDepartmentName.pending, (state, action) => {
+        state.loading = true
+      })
+      .addCase(updateDepartmentName.fulfilled, (state, action) => {
+        let i = state.departments.findIndex(obj => obj._id === action.payload._id)
+        if (i !== -1) {
+          state.departments[i] = action.payload
+        }
+      })
   },
 });
 
