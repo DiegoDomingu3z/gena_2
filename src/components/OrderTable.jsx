@@ -1,7 +1,10 @@
 import { Tag, Space, Button, Popconfirm, Popover, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyOrders, removeOrder, setActiveOrder } from "../../store/Orders/thunks";
-const { Column, ColumnGroup } = Table;
+import {
+  getMyOrders,
+  removeOrder,
+  setActiveOrder,
+} from "../../store/Orders/thunks";
 import { useState, useEffect } from "react";
 
 const statusColor = {
@@ -22,11 +25,10 @@ const formatDate = (dateString) => {
   return `${month}/${day}/${year}`;
 };
 
-
-const OrderTable = ({setModalState}) => {
+const OrderTable = ({ setModalState }) => {
   const [dataSource, setDataSource] = useState([]);
   const order = useSelector((state) => state.Orders.myOrders.orders);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const mappedOrders = order?.map((order) => {
@@ -36,6 +38,7 @@ const OrderTable = ({setModalState}) => {
         date: formatDate(order.createdOn),
         status: order.status,
         notes: order.notes ?? "",
+        orderName: order.orderName ?? "",
       };
     });
     setDataSource(mappedOrders ?? []);
@@ -69,17 +72,26 @@ const OrderTable = ({setModalState}) => {
         date: formatDate(order.createdOn),
         status: order.status,
         notes: order.notes ?? "",
+        orderName: order.orderName ?? "",
       };
     });
 
     setDataSource(mappedOrders);
   }, []);
 
-const columns = [
+  const columns = [
     {
       title: "Order ID",
       dataIndex: "orderId",
       key: "orderId",
+      render: (_, order) => (
+        <>
+          <p>{order.orderId}</p>
+          {order.orderName && (
+            <p className="text-sm font-medium">{order.orderName}</p>
+          )}
+        </>
+      ),
     },
     {
       title: "Labels ",
@@ -131,23 +143,23 @@ const columns = [
           case "approved":
             color = statusColor.approved;
             break;
-  
+
           case "declined":
             color = statusColor.declined;
             break;
-  
+
           case "ready for pickup":
             color = statusColor.readyForPickup;
             break;
-  
+
           case "waiting for approval":
             color = statusColor.waitingForApproval;
             break;
-  
+
           case "processing":
             color = statusColor.processing;
             break;
-  
+
           case "delivered":
             color = statusColor.delivered;
             break;
@@ -172,7 +184,11 @@ const columns = [
               style: { backgroundColor: "#1677ff" },
             }}
             cancelButtonProps={{
-              style: { backgroundColor: "red", color: "white", border: "white" },
+              style: {
+                backgroundColor: "red",
+                color: "white",
+                border: "white",
+              },
             }}
             title="Delete order?"
             onConfirm={() => deleteOrderById(order.orderId)}
@@ -219,14 +235,14 @@ const columns = [
 
   return (
     <Table
-    scroll={{
-      y: "561px",
-    }}
+      scroll={{
+        y: "561px",
+      }}
       pagination={false}
       dataSource={dataSource}
       columns={columns}
     />
-  )
-}
+  );
+};
 
-export default OrderTable
+export default OrderTable;

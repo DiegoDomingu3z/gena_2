@@ -1,7 +1,10 @@
 import { Tag, Space, Button, Popconfirm, Popover, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupLeadOrderApproveLabels, getMyOrders, getOrdersToApprove, removeOrder, setActiveOrder } from "../../store/Orders/thunks";
-const { Column, ColumnGroup } = Table;
+import {
+  getGroupLeadOrderApproveLabels,
+  getOrdersToApprove,
+  setActiveOrder,
+} from "../../store/Orders/thunks";
 import { useState, useEffect } from "react";
 
 const statusColor = {
@@ -18,11 +21,10 @@ const formatDate = (dateString) => {
   return `${month}/${day}/${year}`;
 };
 
-
-const OrderTableApprovals = ({setModalState, setApprovalOrderId}) => {
+const OrderTableApprovals = ({ setModalState, setApprovalOrderId }) => {
   const [dataSource, setDataSource] = useState([]);
   const order = useSelector((state) => state.Orders.leadDepartmentOrders);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const getLabels = () => {
     let arr = [];
@@ -36,7 +38,7 @@ const OrderTableApprovals = ({setModalState, setApprovalOrderId}) => {
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
     dispatch(getOrdersToApprove(token));
-    
+
     getLabels();
 
     const mappedOrders = order?.map((order) => {
@@ -47,6 +49,7 @@ const OrderTableApprovals = ({setModalState, setApprovalOrderId}) => {
         date: formatDate(order.createdOn),
         status: order.status,
         notes: order.notes ?? "",
+        orderName: order.orderName ?? "",
       };
     });
 
@@ -62,20 +65,28 @@ const OrderTableApprovals = ({setModalState, setApprovalOrderId}) => {
 
     await dispatch(setActiveOrder(singleOrder));
     setModalState(true);
-    setApprovalOrderId(id)
+    setApprovalOrderId(id);
   };
 
-const columns = [
+  const columns = [
     {
       title: "Team Member",
       dataIndex: "teamMember",
       key: "teamMember",
-      width: 250,
+      width: 200,
     },
     {
       title: "Order ID",
       dataIndex: "orderId",
       key: "orderId",
+      render: (_, order) => (
+        <>
+          <p>{order.orderId}</p>
+          {order.orderName && (
+            <p className="text-sm font-medium">{order.orderName}</p>
+          )}
+        </>
+      ),
     },
     {
       title: "Labels ",
@@ -95,7 +106,7 @@ const columns = [
       dataIndex: "status",
       key: "status",
       render: (_, order) => {
-        const color = statusColor.waitingForApproval
+        const color = statusColor.waitingForApproval;
         return (
           <Tag key={`${order.orderId}_${order.status}`} color={color}>
             {order.status.toUpperCase()}
@@ -109,7 +120,9 @@ const columns = [
       key: "actions",
       render: (_, order) => (
         <Space key={order.orderId} className="flex items-center gap-3">
-          <Button onClick={() => handleUpdateModal(order.orderId)}>View order</Button>
+          <Button onClick={() => handleUpdateModal(order.orderId)}>
+            View order
+          </Button>
           <Popover trigger="click" content={order.notes} title="Order notes">
             {order.notes && (
               <div className="cursor-pointer w-7">
@@ -146,14 +159,14 @@ const columns = [
 
   return (
     <Table
-    scroll={{
-      y: "561px",
-    }}
+      scroll={{
+        y: "561px",
+      }}
       pagination={false}
       dataSource={dataSource}
       columns={columns}
     />
-  )
-}
+  );
+};
 
-export default OrderTableApprovals
+export default OrderTableApprovals;

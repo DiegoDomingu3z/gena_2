@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
-import { getMyOrders, setActiveOrder, updateLabel } from "../../store/Orders/thunks";
+import {
+  getMyOrders,
+  setActiveOrder,
+  updateLabel,
+} from "../../store/Orders/thunks";
 import { PDFDocument, fill } from "pdf-lib";
 import { RingLoader } from "react-spinners";
 import { Popover } from "antd";
@@ -48,22 +52,21 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
               setLabelOptions(options);
             }
             labels[i].textToPut?.map((field) => {
-              if (field.text === 'true' || field.text === 'false') {
-                setCheckboxStates(prevStates => ({
+              if (field.text === "true" || field.text === "false") {
+                setCheckboxStates((prevStates) => ({
                   ...prevStates,
-                  [field._id]: field.text === 'true',
-              }));
+                  [field._id]: field.text === "true",
+                }));
               }
-            })
+            });
           } catch (error) {
             console.error("Error loading PDF document:", error);
           }
         });
-      });
-    }, [activeOrder]);
+    });
+  }, [activeOrder]);
 
-    
-    useEffect(() => {
+  useEffect(() => {
     setBlobs([]);
     const l = [];
     const modifyPaths = async () => {
@@ -118,11 +121,11 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
     });
   };
   const handleCheckboxChange = (fieldId, isChecked) => {
-    setCheckboxStates(prevStates => ({
-        ...prevStates,
-        [fieldId]: isChecked,
+    setCheckboxStates((prevStates) => ({
+      ...prevStates,
+      [fieldId]: isChecked,
     }));
-};
+  };
 
   const modifyPdf = async (path, text) => {
     try {
@@ -139,7 +142,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
           if (fieldName == "AREA") {
             const dropdown = form.getDropdown(fieldName);
             if (!text[i].text || text[i].text == "") {
-              continue
+              continue;
             } else {
               dropdown.select(text[i].text);
             }
@@ -192,15 +195,19 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
       );
     }
   };
+  console.log(labelsArray);
 
   const label = activeLabels.map((label, i) => {
     const { pdf, docNum, name } = label;
-    let vals = labels[i].textToPut.reduce((acc, curr) => {
-      acc[curr.name] = curr.text || "";
-      return acc;
-    }, {
-      showFields: false
-    });
+    let vals = labels[i].textToPut.reduce(
+      (acc, curr) => {
+        acc[curr.name] = curr.text || "";
+        return acc;
+      },
+      {
+        showFields: false,
+      }
+    );
     vals.qty = labels[i].qty;
 
     return (
@@ -209,7 +216,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
           initialValues={vals}
           enableReinitialize
           onSubmit={async (values) => {
-            delete values.showFields
+            delete values.showFields;
             const valuesArray = Object.keys(values).map((key) => {
               return { [key]: values[key] };
             });
@@ -238,12 +245,18 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                 <div className="px-4 pt-4 pb-2">
                   <div className="font-medium">{label.docNum}</div>
                   <Popover content={label.name}>
-                    <div className=" text-gray-500 text-sm truncate max-w-[220px]">{label.name}</div>
+                    <div className=" text-gray-500 text-sm truncate max-w-[220px]">
+                      {label.name}
+                    </div>
                   </Popover>
-                  {activeOrder.labels[i].serialRange && <div className="text-center text-md text-gray-500 mb-2">
-                    <div className="text-red-500 w-full">Serials on this roll:</div>
-                    {activeOrder.labels[i].serialRange}
-                  </div>}
+                  {activeOrder.labels[i].serialRange && (
+                    <div className="text-center text-md text-gray-500 mb-2">
+                      <div className="text-red-500 w-full">
+                        Serials on this roll:
+                      </div>
+                      {activeOrder.labels[i].serialRange}
+                    </div>
+                  )}
                   <div className="text-sm text-gray-500">
                     <span>Pack of {label.unitPack}</span>
                   </div>
@@ -277,9 +290,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                         ></path>{" "}
                       </g>
                     </svg>
-                    <span>
-                      {values.showFields ? "Hide" : "Show"} fields
-                    </span>
+                    <span>{values.showFields ? "Hide" : "Show"} fields</span>
                     <svg
                       className={`w-7 ml-auto transition-all ease-in-out ${
                         values.showFields ? "" : "rotate-90"
@@ -306,10 +317,11 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                       </g>
                     </svg>
                   </div>
-                  <div className={`transition-all overflow-hidden ease-in-out ${
-                    values.showFields ? "max-h-[600px]" : "max-h-[0px]"
-                  }`}
-                  key={label._id}
+                  <div
+                    className={`transition-all overflow-hidden ease-in-out ${
+                      values.showFields ? "max-h-[600px]" : "max-h-[0px]"
+                    }`}
+                    key={label._id}
                   >
                     <div className="flex flex-col">
                       <label
@@ -339,7 +351,9 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                           <div
                             key={field._id}
                             className={
-                              field.text === "true" || field.text === "false" ? "flex gap-5" : ""
+                              field.text === "true" || field.text === "false"
+                                ? "flex gap-5"
+                                : ""
                             }
                           >
                             <label
@@ -359,7 +373,7 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                               {labelOptions.length > 0
                                 ? labelOptions.map((o, index) => (
                                     <option
-                                    key={`${index}_${field._id}`}
+                                      key={`${index}_${field._id}`}
                                       id={o}
                                       name={o}
                                       value={o}
@@ -391,7 +405,8 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                               <label
                                 htmlFor={field._id}
                                 className={`label-text-alt uppercase text-gray-500 font-medium pb-[2px] ${
-                                  field.text === "true" || field.text === "false"
+                                  field.text === "true" ||
+                                  field.text === "false"
                                     ? "order-2"
                                     : ""
                                 }`}
@@ -401,19 +416,24 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
 
                               {/* This renders if the field is NOT a checkbox */}
 
-                              {(field.text !== 'true' && field.text !== 'false') && 
-                                <Field
-                                  className={"input rounded-md input-bordered w-full max-w-xs input-sm focus:outline-none"}
-                                  name={field.name}
-                                  type="text"
-                                  id={field._id}
-                                  key={field._id}
-                                  required={false}
-                                />}
-                              
+                              {field.text !== "true" &&
+                                field.text !== "false" && (
+                                  <Field
+                                    className={
+                                      "input rounded-md input-bordered w-full max-w-xs input-sm focus:outline-none"
+                                    }
+                                    name={field.name}
+                                    type="text"
+                                    id={field._id}
+                                    key={field._id}
+                                    required={false}
+                                  />
+                                )}
+
                               {/* This renders if the field IS a checkbox */}
 
-                              {(field.text === 'true' || field.text === 'false') && 
+                              {(field.text === "true" ||
+                                field.text === "false") && (
                                 <Field
                                   className={"checkbox rounded-md"}
                                   name={field.name}
@@ -423,10 +443,17 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
                                   key={field._id}
                                   required={false}
                                   onChange={(e) => {
-                                    handleCheckboxChange(field._id, e.target.checked)
-                                    setFieldValue(field.name, e.target.checked.toString())
+                                    handleCheckboxChange(
+                                      field._id,
+                                      e.target.checked
+                                    );
+                                    setFieldValue(
+                                      field.name,
+                                      e.target.checked.toString()
+                                    );
                                   }}
-                                />}
+                                />
+                              )}
                             </div>
                           </div>
                         );

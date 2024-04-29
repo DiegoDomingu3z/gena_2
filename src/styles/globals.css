@@ -56,8 +56,13 @@ body {
   @apply border-none;
   @apply rounded-md;
 }
+
 .input {
   @apply rounded-md;
+}
+
+button.ant-btn.css-dev-only-do-not-override-usln0u.ant-btn-primary.ant-btn-sm {
+  background: #1677ff;
 }
 
 @media screen and (min-width: 1200px) {
