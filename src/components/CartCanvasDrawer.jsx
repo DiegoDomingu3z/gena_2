@@ -69,6 +69,8 @@ const CartCanvasDrawer = ({
     }, 500);
   };
 
+  const noteCharacterIndicator = orderInput.orderNote?.length ?? 0;
+
   return (
     <div
       className={
@@ -106,17 +108,29 @@ const CartCanvasDrawer = ({
             value={orderInput.orderName}
           ></input>
         </div>
-        <div className="mb-1 text-center rounded-md w-full">
+        <div className="mb-1 text-center rounded-md w-full relative">
           <textarea
             id="noteInput"
             onChange={handleInput}
             value={orderInput.orderNote}
-            className="textarea textarea-bordered rounded-md max-h-32 min-h-[6rem] font-light w-full"
+            className="textarea textarea-bordered rounded-md max-h-[8rem] min-h-[8rem] font-light w-full"
             placeholder="Notes..."
             name="orderNote"
+            maxLength={80}
             cols="40"
             rows="6"
           ></textarea>
+          <span
+            className={`absolute bottom-2 right-4 text-xs ${
+              noteCharacterIndicator === 80
+                ? "text-error"
+                : noteCharacterIndicator >= 50 && noteCharacterIndicator <= 80
+                ? "text-orange-400"
+                : "text-black"
+            }`}
+          >
+            {noteCharacterIndicator}/80
+          </span>
         </div>
         <div className="w-full">
           <button
@@ -274,15 +288,15 @@ const CartCanvasLabelCard = ({
     } else {
       return (
         <div className="text-sm w-full">
-            <Image
-              className="m-auto"
-              height={120}
-              width={100}
-              src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg"
-              alt="Label broke order"
-            />
-            The input exceeds the labels character count and will not print.
-            Please delete this label from your order.
+          <Image
+            className="m-auto"
+            height={120}
+            width={100}
+            src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg"
+            alt="Label broke order"
+          />
+          The input exceeds the labels character count and will not print.
+          Please delete this label from your order.
         </div>
       );
     }

@@ -6,6 +6,7 @@ import {
   setActiveOrder,
 } from "../../store/Orders/thunks";
 import { useState, useEffect } from "react";
+import { editableStatus } from "../../lib/vars";
 
 const statusColor = {
   approved: "blue",
@@ -85,12 +86,12 @@ const OrderTable = ({ setModalState }) => {
       dataIndex: "orderId",
       key: "orderId",
       render: (_, order) => (
-        <>
+        <div key={`${order.orderId}_orderId`}>
           <p>{order.orderId}</p>
           {order.orderName && (
             <p className="text-sm font-medium">{order.orderName}</p>
           )}
-        </>
+        </div>
       ),
     },
     {
@@ -103,6 +104,7 @@ const OrderTable = ({ setModalState }) => {
       title: "Date",
       dataIndex: "date",
       key: "date",
+      width: 200,
       sorter: (a, b) => new Date(a.date) - new Date(b.date),
     },
     {
@@ -176,9 +178,15 @@ const OrderTable = ({ setModalState }) => {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
+      width: 180,
       render: (_, order) => (
-        <Space key={order.orderId} className="flex items-center gap-3">
-          <Button onClick={() => handleUpdateModal(order.orderId)}>Edit</Button>
+        <Space
+          key={`${order.orderId}_actions`}
+          className="flex items-center gap-3"
+        >
+          <Button onClick={() => handleUpdateModal(order.orderId)}>
+            {editableStatus.includes(order.status) ? "Edit" : "View"}
+          </Button>
           <Popconfirm
             okButtonProps={{
               style: { backgroundColor: "#1677ff" },
@@ -199,6 +207,19 @@ const OrderTable = ({ setModalState }) => {
               </Button>
             )}
           </Popconfirm>
+        </Space>
+      ),
+    },
+    {
+      title: "Notes",
+      dataIndex: "notes",
+      key: "notes",
+      width: 100,
+      render: (_, order) => (
+        <Space
+          key={`${order.orderId}_notes`}
+          className="flex items-center gap-3"
+        >
           <Popover trigger="click" content={order.notes} title="Order notes">
             {order.notes && (
               <div className="cursor-pointer w-7">

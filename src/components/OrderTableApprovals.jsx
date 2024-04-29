@@ -40,7 +40,9 @@ const OrderTableApprovals = ({ setModalState, setApprovalOrderId }) => {
     dispatch(getOrdersToApprove(token));
 
     getLabels();
+  }, []);
 
+  useEffect(() => {
     const mappedOrders = order?.map((order) => {
       return {
         orderId: order._id,
@@ -54,7 +56,7 @@ const OrderTableApprovals = ({ setModalState, setApprovalOrderId }) => {
     });
 
     setDataSource(mappedOrders ?? []);
-  }, []);
+  }, [order]);
 
   const handleUpdateModal = async (id) => {
     const orderId = id;
@@ -73,7 +75,6 @@ const OrderTableApprovals = ({ setModalState, setApprovalOrderId }) => {
       title: "Team Member",
       dataIndex: "teamMember",
       key: "teamMember",
-      width: 200,
     },
     {
       title: "Order ID",
@@ -92,37 +93,31 @@ const OrderTableApprovals = ({ setModalState, setApprovalOrderId }) => {
       title: "Labels ",
       dataIndex: "labels",
       key: "labels",
-      width: 100,
     },
     {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      width: 150,
       sorter: (a, b) => new Date(a.date) - new Date(b.date),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (_, order) => {
-        const color = statusColor.waitingForApproval;
-        return (
-          <Tag key={`${order.orderId}_${order.status}`} color={color}>
-            {order.status.toUpperCase()}
-          </Tag>
-        );
-      },
     },
     {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
+      width: 130,
       render: (_, order) => (
         <Space key={order.orderId} className="flex items-center gap-3">
-          <Button onClick={() => handleUpdateModal(order.orderId)}>
-            View order
-          </Button>
+          <Button onClick={() => handleUpdateModal(order.orderId)}>View</Button>
+        </Space>
+      ),
+    },
+    {
+      title: "Notes",
+      dataIndex: "notes",
+      key: "notes",
+      width: 180,
+      render: (_, order) => (
+        <Space key={order.orderId} className="flex items-center gap-3">
           <Popover trigger="click" content={order.notes} title="Order notes">
             {order.notes && (
               <div className="cursor-pointer w-7">

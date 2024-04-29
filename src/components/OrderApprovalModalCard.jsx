@@ -1,19 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form, Field } from "formik";
-import { getMyOrders, setActiveOrder, updateLabel } from "../../store/Orders/thunks";
-import { PDFDocument, fill } from "pdf-lib";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { PDFDocument } from "pdf-lib";
 import { RingLoader } from "react-spinners";
 import { Popover } from "antd";
 import Swal from "sweetalert2";
 
-const OrderApprovalModalCard = ({ modalState, blobs, setBlobs, approvalOrderId }) => {
-  const dispatch = useDispatch();
-  const [modifiedPDFs, setModifiedPDFs] = useState({});
-  const [triggerPdfRender, setTriggerPdfRender] = useState(0);
-  const [labelOptions, setLabelOptions] = useState([]);
-  const [checkboxStates, setCheckboxStates] = useState({});
-  const [iframeKeys, setIframeKeys] = useState({});
+const OrderApprovalModalCard = ({ blobs, setBlobs }) => {
   const [activeOrder] = useSelector((state) => state.Orders.activeOrder);
   const labelsArray = useSelector((state) => state.Orders.labelsToApprove);
   const labels = activeOrder ? activeOrder.labels : [];
@@ -21,11 +13,10 @@ const OrderApprovalModalCard = ({ modalState, blobs, setBlobs, approvalOrderId }
     .flatMap((innerArray) => innerArray)
     .filter((value) => {
       return value.orderId == activeOrder?._id;
-    });  
-    
+    });
 
   useEffect(() => {
-    activeLabels.forEach(({_doc: l}, i) => {
+    activeLabels.forEach(({ _doc: l }, i) => {
       fetch(
         `/api/getPdfs?categoryName=${l.categoryName}&subCategoryName=${l.subCategoryName}&fileName=${l.fileName}`
       )
@@ -48,23 +39,14 @@ const OrderApprovalModalCard = ({ modalState, blobs, setBlobs, approvalOrderId }
               }
               setLabelOptions(options);
             }
-            labels[i].textToPut?.map((field) => {
-              if (field.text === 'true' || field.text === 'false') {
-                setCheckboxStates(prevStates => ({
-                  ...prevStates,
-                  [field._id]: field.text === 'true',
-              }));
-              }
-            })
           } catch (error) {
             console.error("Error loading PDF document:", error);
           }
         });
-      });
-    }, [activeOrder]);
+    });
+  }, [activeOrder]);
 
-    
-    useEffect(() => {
+  useEffect(() => {
     setBlobs([]);
     const l = [];
     const modifyPaths = async () => {
@@ -100,30 +82,6 @@ const OrderApprovalModalCard = ({ modalState, blobs, setBlobs, approvalOrderId }
       title: "Label Updated!",
     });
   };
-  const qtyTooHighToast = async (qty) => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "orange",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "warning",
-      title: `Exceeds Max Quantity of ${qty}`,
-    });
-  };
-  const handleCheckboxChange = (fieldId, isChecked) => {
-    setCheckboxStates(prevStates => ({
-        ...prevStates,
-        [fieldId]: isChecked,
-    }));
-};
 
   const modifyPdf = async (path, text) => {
     try {
@@ -140,7 +98,7 @@ const OrderApprovalModalCard = ({ modalState, blobs, setBlobs, approvalOrderId }
           if (fieldName == "AREA") {
             const dropdown = form.getDropdown(fieldName);
             if (!text[i].text || text[i].text == "") {
-              continue
+              continue;
             } else {
               dropdown.select(text[i].text);
             }
@@ -194,30 +152,36 @@ const OrderApprovalModalCard = ({ modalState, blobs, setBlobs, approvalOrderId }
     }
   };
 
-  const label = activeLabels.map(({_doc: label}, i) => {
-    const quantity = labels[i].qty
+  const label = activeLabels.map(({ _doc: label }, i) => {
+    const quantity = labels[i].qty;
 
     return (
-      <div key={label._id}>
-              <div className="bg-white w-full max-w-[300px] h-76 laptop:h-auto rounded-md drop-shadow-md">
-                {seeLabels(i)}
-                <div className="px-4 pt-4 pb-2">
-                  <div className="font-medium">{label.docNum}</div>
-                  <Popover content={label.name}>
-                    <div className=" text-gray-500 text-sm truncate max-w-[220px]">{label.name}</div>
-                  </Popover>
-                  {activeOrder.labels[i].serialRange && <div className="text-center text-md text-gray-500 mb-2">
-                    <div className="text-red-500 w-full">Serials on this roll:</div>
-                    {activeOrder.labels[i].serialRange}
-                  </div>}
-                  <div className="text-sm text-gray-500">
-                    <span>Pack of {label.unitPack}</span>
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    <span>Amount ordered: <span className="font-medium">{quantity}</span></span>
-                  </div>
-                </div>
+      <div key={i}>
+        <div className="bg-white w-full max-w-[300px] h-76 laptop:h-auto rounded-md drop-shadow-md">
+          {seeLabels(i)}
+          <div className="px-4 pt-4 pb-2">
+            <div className="font-medium">{label.docNum}</div>
+            <Popover content={label.name}>
+              <div className=" text-gray-500 text-sm truncate max-w-[220px]">
+                {label.name}
               </div>
+            </Popover>
+            {activeOrder.labels[i].serialRange && (
+              <div className="text-center text-md text-gray-500 mb-2">
+                <div className="text-red-500 w-full">Serials on this roll:</div>
+                {activeOrder.labels[i].serialRange}
+              </div>
+            )}
+            <div className="text-sm text-gray-500">
+              <span>Pack of {label.unitPack}</span>
+            </div>
+            <div className="text-sm text-gray-500">
+              <span>
+                Qty ordered: <span className="font-medium">{quantity}</span>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     );
   });
