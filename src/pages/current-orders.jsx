@@ -1,14 +1,9 @@
-import Layout from "~/components/Layout";
-import OrderCard from "~/components/OrderCard";
-import LeadsOrderApproval from "~/components/LeadsOrderApproval";
-import OrderModal from "~/components/OrderModal";
 import OrderTable from "~/components/OrderTable";
-import OrderModalCard from "~/components/OrderModalCard";
-import { useEffect } from "react";
-import { useState, useRef } from "react";
+import UpdateOrderCard from "~/components/Orders/UpdateOrderCard";
+import Layout from "~/components/layouts/Layout";
+import { useState } from "react";
 import { Button, Menu, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useScrollPosition } from "~/hooks/useScrollPosition";
 import { declineOrder, approveOrder } from "../../store/Orders/thunks";
 import OrderTableApprovals from "~/components/OrderTableApprovals";
 import OrderApprovalModalCard from "~/components/OrderApprovalModalCard";
@@ -18,9 +13,7 @@ const CurrentOrders = () => {
   const [modalState, setModalState] = useState(false);
   const [openAction, setOpenAction] = useState(false);
   const [tab, setTab] = useState("my-orders");
-  const [toggleSort, setToggleSort] = useState("newest");
   const [blobs, setBlobs] = useState([]);
-  const [deleted, setDeleted] = useState(false);
   const [approvalOrderId, setApprovalOrderId] = useState("");
   const account = useSelector((state) => state.Account.account);
   const order = useSelector((state) => state.Orders.myOrders.orders);
@@ -124,7 +117,7 @@ const CurrentOrders = () => {
       >
         <div className="h-[600px] p-3 overflow-y-auto grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8">
           {tab !== "approve-order" ? (
-            <OrderModalCard
+            <UpdateOrderCard
               modalState={modalState}
               blobs={blobs}
               setBlobs={setBlobs}

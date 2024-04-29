@@ -1,18 +1,18 @@
 import React from "react";
 import Head from "next/head";
-import SideNav from "./SideNav";
-import SideNavToggle from "./SideNavToggle";
+import SideNav from "../Navs/SideNav";
+import SideNavToggle from "../Navs/SideNavToggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { logout } from "../../store/Account/thunks";
+import { logout } from "../../../store/Account/thunks";
 import { useEffect } from "react";
-import TicketModal from "./TicketModal";
+import TicketModal from "../TicketQueue/TicketModal";
 import { useState } from "react";
-import { getMyOrders, getOrdersToApprove } from "../../store/Orders/thunks";
-import { getAccount } from "../../store/Account/thunks";
-import { getTickets } from "../../store/Tickets/Thunks";
+import { getMyOrders, getOrdersToApprove } from "../../../store/Orders/thunks";
+import { getAccount } from "../../../store/Account/thunks";
+import { getTickets } from "../../../store/Tickets/Thunks";
 
 const Layout = ({ children, title, displayTitle }) => {
   const dispatch = useDispatch();
@@ -34,8 +34,11 @@ const Layout = ({ children, title, displayTitle }) => {
     dispatch(getAccount(token));
     dispatch(getMyOrders(token));
 
-    if (user.account.privileges === 'group-lead' || user.account.privileges === 'team-lead') {
-      dispatch(getOrdersToApprove(token))
+    if (
+      user.account.privileges === "group-lead" ||
+      user.account.privileges === "team-lead"
+    ) {
+      dispatch(getOrdersToApprove(token));
     }
 
     token && dispatch(getTickets());
@@ -58,16 +61,19 @@ const Layout = ({ children, title, displayTitle }) => {
             setTicketModal={setTicketModal}
           />
         )}
-        {router.route !== '/' && <><SideNav
-          sideNavOpen={sideNavOpen}
-          ticketModal={ticketModal}
-          setTicketModal={setTicketModal}
-        />
-        <SideNavToggle
-          sideNavOpen={sideNavOpen}
-          setSideNavOpen={setSideNavOpen}
-        />
-        </>}
+        {router.route !== "/" && (
+          <>
+            <SideNav
+              sideNavOpen={sideNavOpen}
+              ticketModal={ticketModal}
+              setTicketModal={setTicketModal}
+            />
+            <SideNavToggle
+              sideNavOpen={sideNavOpen}
+              setSideNavOpen={setSideNavOpen}
+            />
+          </>
+        )}
         {user.accessToken && (
           <button
             onClick={logUserOut}
@@ -76,10 +82,7 @@ const Layout = ({ children, title, displayTitle }) => {
             <FontAwesomeIcon icon={faPowerOff} /> Logout
           </button>
         )}
-        <main className="min-h-screen w-full">
-          {/* {user.accessToken && <GenaNav displayTitle={displayTitle} />} */}
-          {children}
-        </main>
+        <main className="min-h-screen w-full">{children}</main>
       </div>
     </div>
   );

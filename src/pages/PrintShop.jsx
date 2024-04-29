@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import PrintOrders from "~/components/PrintShopView/PrintOrders";
 import { getApprovedOrders, getDeliveredOrders, getProcessingOrder, getReadyForPickUpOrders } from "../../store/PrintShop/Thunks";
 import { io } from "socket.io-client";

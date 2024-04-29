@@ -7,8 +7,7 @@ import {
   getBasketLabels,
   placeOrder,
   removeFromBasket,
-  getMyOrders,
-} from "../../store/Orders/thunks";
+} from "../../../store/Orders/thunks";
 import Swal from "sweetalert2";
 import { PDFDocument } from "pdf-lib";
 import Image from "next/image";

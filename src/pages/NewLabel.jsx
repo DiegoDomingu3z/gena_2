@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Login from "~/components/Login";
-import Layout from "~/components/Layout";
+import Login from "~/components/login-signup/Login";
+import Layout from "~/components/layouts/Layout";
 import NewLabel from "~/components/PrintShopView/NewLabel";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";

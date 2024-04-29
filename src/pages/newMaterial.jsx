@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import NewMaterial from "~/components/PrintShopView/NewMaterial";
@@ -9,7 +9,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { updateMaterial } from "../../store/Material/Thunks";
 import { getMaterials } from "../../store/Material/Thunks";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
-import Swal from "sweetalert2";
+import useGenaToast from "~/components/toasts-modals/GenaToast";
 
 const Materials = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const Materials = () => {
   const [activeCategory, setActiveCategory] = useState("");
   const [materialsArray, setMaterialsArray] = useState([]);
   const [individualMatCard, setIndividualMatCard] = useState([]);
-
+  const {successToast, errorToast, contextHolder} = useGenaToast()
   const toggleModal = (material) => {
     setActiveCategory(material);
     setModal((modal) => !modal);
@@ -66,55 +66,12 @@ const Materials = () => {
   useEffect(() => {
     fetchMaterials();
   }, []);
-  // useEffect(() => {
-  //   if (account.privileges != 'admin') {
-  //     router.push('/home')
-  //   }
-  // }, [])
-  const successToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "white",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "success",
-      title: "Material Added!",
-    });
-  };
-  const failureToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "orange",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "warning",
-      title: "Material Already Exists!",
-    });
-  };
 
-  const dataForSubmission = {
-    name: "",
-  };
-
+ 
   const MaterialModal = () => {
     return (
       <div className="fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
+        
         <div className="bg-[#f7f9fc] w-3/5 laptop:w-2/5 h-[35rem] rounded-lg px-10 py-5 flex flex-col">
           <button
             onClick={() => {
@@ -136,19 +93,22 @@ const Materials = () => {
                 categoryToUpdate: activeCategory,
               }}
               onSubmit={async (values) => {
-                const token = sessionStorage.getItem("accessToken");
-                const foundMatch = materialsArray.some(
+                try {
+                  const token = sessionStorage.getItem("accessToken");
+                  const foundMatch = materialsArray.some(
                   (v) => v.name.toLowerCase() == values.name.toLowerCase()
-                );
+                  );
                 if (!foundMatch) {
                   dispatch(updateMaterial({ token, values }));
                   fetchMaterials();
                   toggleModal(!modal);
-                  successToast();
+                  successToast(`Material updated to ${values.name}!`)
                   helpers.resetForm();
                   return;
                 }
-                failureToast();
+                } catch (error) {
+                  errorToast("Error Occurred", error.message)
+                }
               }}
             >
               {({ isSubmitting }) => (
@@ -180,6 +140,7 @@ const Materials = () => {
   };
   return (
     <Layout title={"Gena | New Material"}>
+      {contextHolder}
       {modal && <MaterialModal />}
       <NewMaterial
         activeCategory={activeCategory}

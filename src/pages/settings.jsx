@@ -1,6 +1,6 @@
 import React from "react";
-import Login from "~/components/Login";
-import Layout from "~/components/Layout";
+import Login from "~/components/login-signup/Login";
+import Layout from "~/components/layouts/Layout";
 import Main from "~/components/Settings/main";
 
 const Jira = () => {

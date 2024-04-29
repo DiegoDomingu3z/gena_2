@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, Form, Formik } from "formik";
-import { addToBasket } from "../../store/Orders/thunks";
+import { addToBasket } from "../../../store/Orders/thunks";
 import { Popover } from "antd";
 const { PDFDocument } = require("pdf-lib");
 import Swal from "sweetalert2";
@@ -159,7 +159,9 @@ const LabelCard = ({
                       <div className="px-4 pt-4 pb-2">
                         <div className="font-medium">{l.docNum}</div>
                         <Popover content={l.name}>
-                          <div className=" text-gray-500 text-sm truncate max-w-[220px]">{l.name}</div>
+                          <div className=" text-gray-500 text-sm truncate max-w-[220px]">
+                            {l.name}
+                          </div>
                         </Popover>
                         <div className="text-sm text-gray-500">
                           <span>Pack of {l.unitPack}</span>

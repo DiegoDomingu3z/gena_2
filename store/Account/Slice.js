@@ -24,6 +24,16 @@ export const AccountSlice = createSlice({
     builder
       // CREATE ACCOUNT
       // GET ACCOUNT
+      .addCase(createAccount.pending, (state, action) => {
+        state.loading = true
+      })
+      .addCase(createAccount.fulfilled, (state, action) => {
+        state.users.push(action.payload)
+        state.loading = false
+      })
+      .addCase(createAccount.rejected, (state, action) => {
+        console.log("REJECTED")
+      })
       .addCase(getAccount.pending, (state, action) => {
         state.loading = true;
       })

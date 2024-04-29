@@ -1,4 +1,4 @@
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import NewSubCategory from "~/components/PrintShopView/NewSubCategory";
 
 const SubCategory = () => {

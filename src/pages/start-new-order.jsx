@@ -9,9 +9,9 @@ import { getAllSubCats } from "../../store/Sub-Category/Thunks";
 import { getLabels, searchLabel } from "../../store/Label/Thunks";
 import { getAccount } from "../../store/Account/thunks";
 import { Input, Space } from "antd";
-import Layout from "~/components/Layout";
-import LabelCard from "~/components/LabelCard";
-import CartCanvasDrawer from "~/components/CartCanvasDrawer";
+import Layout from "~/components/layouts/Layout";
+import LabelCard from "~/components/Labels/LabelCard";
+import CartCanvasDrawer from "~/components/cart/CartCanvasDrawer";
 import useDebounce from "~/hooks/useDebounce";
 
 const StartNewOrder = () => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import NewCategory from "~/components/PrintShopView/NewCategory";
 import { getCategories } from "../../store/Category/Thunk";
 const NewCategoryPage = () => {

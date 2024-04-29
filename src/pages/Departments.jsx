@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import DepartmentView from "~/components/Department/DepartmentView";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import { getDepartments } from "../../store/Departments/Thunks";
 import { api } from "../../axiosService";
+import DepartmentList from "~/components/Department/DepartmentList";
 
 const Departments = () => {
   const dispatch = useDispatch();
@@ -14,10 +14,8 @@ const Departments = () => {
   return (
     <Layout title={"Gena | Departments"}>
       <div>
-        <DepartmentView
-          triggerUseEffect={triggerUseEffect}
-          setTriggerUseEffect={setTriggerUseEffect}
-        />
+        <DepartmentList triggerUseEffect={triggerUseEffect}
+          setTriggerUseEffect={setTriggerUseEffect}/>
       </div>
     </Layout>
   );

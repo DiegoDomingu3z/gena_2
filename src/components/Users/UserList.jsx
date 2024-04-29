@@ -1,38 +1,42 @@
-import { Avatar, List, Popconfirm, Tag, Tooltip, notification } from 'antd';
+import { Avatar, List, Popconfirm, Tag, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, getUsers } from '../../../store/Users/Thunks';
-import { faExclamation, faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { deleteUser } from '../../../store/Users/Thunks';
+import { faExclamationCircle, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import Signup from '../Signup';
-import UserModal from './UserModal';
-import DepartmentUserModal from '../Department/DepartmentUserModal';
+import GenaModal from '../toasts-modals/GenaModal';
+import DepartmentUserModal from '../Department/forms/UpdateUserForm';
 import { formatImgString } from '../../../func/resuableFunctions';
+import useGenaToast from '../toasts-modals/GenaToast';
+import NewUserForm from '../login-signup/NewUserForm';
 const UserList = ({open, setOpen, users}) => {
-    // ! SCOPED VARIABLE */
+    // ! SCOPED VARIABLES */
     const account = useSelector((state) => state.Account.account)
     const [activeUser, setActiveUser] = useState(null)
     const [openEditModal, setOpenEditModal] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [openPopIndex, setOpenPopIndex] = useState(-1);
-    const [dataForSubmission, setDataForSubmission] = useState(null)
-    const [api, contextHolder] = notification.useNotification()
+    const { successToast, errorToast, contextHolder } = useGenaToast();
     const dispatch = useDispatch()
 
     // ! SCOPED FUNCTIONS */
       const removeUser = (user) => {
-        const token = account.accessToken
-        const id = user._id
-        setConfirmLoading(true);
-        dispatch(deleteUser({id, token}))
-        setTimeout(() => {
-          setConfirmLoading(false);
-          setOpenPopIndex(-1);
-          api['success']({
-            message: `Removed ${user.firstName} from Gena.`
-          })
-        }, 2000);
+        try {
+          const token = account.accessToken
+          const id = user._id
+          setConfirmLoading(true);
+          dispatch(deleteUser({id, token}))
+          setTimeout(() => {
+            setConfirmLoading(false);
+            setOpenPopIndex(-1);
+            successToast(`Removed ${user.firstName} from Gena.`)
+          }, 2000);
+        } catch (error) {
+          errorToast(error, error.message)
+          console.log(error)
+        }
+        
       };
     
     // ! RETURNING JSX */
@@ -87,9 +91,7 @@ const UserList = ({open, setOpen, users}) => {
               key={index}
             >
               <List.Item.Meta
-                avatar={<Avatar src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
-                  item.firstName
-                )}-${item.lastName}.jpg`} />}
+                avatar={<Avatar src={`${formatImgString(item.firstName,item.lastName, "jpg" )}`} />}
                 title={<div><span>{item.firstName} {item.lastName}</span>
                 {account._id == item._id ?
                  <Tag className='ms-1' icon={<FontAwesomeIcon icon={faCheckCircle} className='me-1'/>} color="success"> Logged in as</Tag>
@@ -100,8 +102,11 @@ const UserList = ({open, setOpen, users}) => {
             </List.Item>
           )}
         />
-        <UserModal open={open} setOpen={setOpen} component={<Signup setOpen={setOpen}/>} />
-        <UserModal open={openEditModal} setOpen={setOpenEditModal} component={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+        <GenaModal open={open} setOpen={setOpen} title="New User Form"  body={<NewUserForm setOpen={setOpen}/>} />
+        {openEditModal && (
+          <GenaModal open={openEditModal} setOpen={setOpenEditModal}  body={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+        )}
+        
       </div>
     )
 }

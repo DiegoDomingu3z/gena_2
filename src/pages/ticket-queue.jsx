@@ -1,4 +1,4 @@
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import TicketDashboard from "~/components/TicketQueue/TicketDashboard";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ const TicketQueue = () => {
 
   useEffect(() => {
     dispatch(getTickets());
-  }, [tickets]);
+  }, []);
   return (
     <Layout title={"GENA | Home"}>
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>

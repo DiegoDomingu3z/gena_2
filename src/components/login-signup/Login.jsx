@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/Account/thunks";
+import { login } from "../../../store/Account/thunks";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
