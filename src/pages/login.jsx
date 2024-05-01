@@ -3,11 +3,7 @@ import Login from "~/components/login-signup/Login";
 import Layout from "~/components/layouts/Layout";
 
 const login = () => {
-  return (
-      <Layout title={"Gena | Login"}>
-        <Login />
-      </Layout>
-  );
+  return <Login />;
 };
 
 export default login;

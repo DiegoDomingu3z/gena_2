@@ -10,7 +10,10 @@ import { logout } from "../../../store/Account/thunks";
 import { useEffect } from "react";
 import TicketModal from "../TicketQueue/TicketModal";
 import { useState } from "react";
-
+import { getMyOrders, getOrdersToApprove } from "../../../store/Orders/thunks";
+import { getAccount } from "../../../store/Account/thunks";
+import { getTickets } from "../../../store/Tickets/Thunks";
+import GenaNav from "../Navs/GenaNav";
 
 const Layout = ({ children, title, displayTitle }) => {
   const dispatch = useDispatch();
@@ -26,6 +29,21 @@ const Layout = ({ children, title, displayTitle }) => {
       router.push("/");
     }
   }, [user]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    dispatch(getAccount(token));
+    dispatch(getMyOrders(token));
+
+    if (
+      user.account.privileges === "group-lead" ||
+      user.account.privileges === "team-lead"
+    ) {
+      dispatch(getOrdersToApprove(token));
+    }
+
+    token && dispatch(getTickets());
+  }, []);
 
   const logUserOut = async () => {
     await router.push("/");
@@ -44,28 +62,21 @@ const Layout = ({ children, title, displayTitle }) => {
             setTicketModal={setTicketModal}
           />
         )}
-        {user.accessToken && (
-          <SideNav
-            sideNavOpen={sideNavOpen}
-            ticketModal={ticketModal}
-            setTicketModal={setTicketModal}
-          />
+        {router.route !== "/" && (
+          <>
+            <SideNav
+              sideNavOpen={sideNavOpen}
+              ticketModal={ticketModal}
+              setTicketModal={setTicketModal}
+            />
+            <SideNavToggle
+              sideNavOpen={sideNavOpen}
+              setSideNavOpen={setSideNavOpen}
+            />
+          </>
         )}
-        {user.accessToken && (
-          <SideNavToggle
-            sideNavOpen={sideNavOpen}
-            setSideNavOpen={setSideNavOpen}
-          />
-        )}
-        {user.accessToken && (
-          <button
-            onClick={logUserOut}
-            className="text-black mr-5 mt-5 absolute right-5"
-          >
-            <FontAwesomeIcon icon={faPowerOff} /> Logout
-          </button>
-        )}
-        <main className="min-h-screen w-full">
+        <main className="min-h-screen w-full relative">
+          <GenaNav displayTitle={displayTitle} />
           {children}
         </main>
       </div>
