@@ -45,11 +45,6 @@ const Layout = ({ children, title, displayTitle }) => {
     token && dispatch(getTickets());
   }, []);
 
-  const logUserOut = async () => {
-    await router.push("/");
-    dispatch(logout(user.accessToken));
-  };
-
   return (
     <div>
       <Head>
@@ -69,14 +64,14 @@ const Layout = ({ children, title, displayTitle }) => {
               ticketModal={ticketModal}
               setTicketModal={setTicketModal}
             />
-            <SideNavToggle
-              sideNavOpen={sideNavOpen}
-              setSideNavOpen={setSideNavOpen}
-            />
           </>
         )}
         <main className="min-h-screen w-full relative">
-          <GenaNav displayTitle={displayTitle} />
+          <GenaNav
+            sideNavOpen={sideNavOpen}
+            setSideNavOpen={setSideNavOpen}
+            displayTitle={displayTitle}
+          />
           {children}
         </main>
       </div>

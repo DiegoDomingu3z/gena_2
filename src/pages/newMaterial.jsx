@@ -19,7 +19,7 @@ const Materials = () => {
   const [activeCategory, setActiveCategory] = useState("");
   const [materialsArray, setMaterialsArray] = useState([]);
   const [individualMatCard, setIndividualMatCard] = useState([]);
-  const {successToast, errorToast, contextHolder} = useGenaToast()
+  const { successToast, errorToast, contextHolder } = useGenaToast();
   const toggleModal = (material) => {
     setActiveCategory(material);
     setModal((modal) => !modal);
@@ -67,11 +67,9 @@ const Materials = () => {
     fetchMaterials();
   }, []);
 
- 
   const MaterialModal = () => {
     return (
       <div className="fixed left-0 w-screen h-screen laptop:h-screen bg-slate-400 bg-opacity-80 z-40 backdrop-blur-sm flex justify-center items-center">
-        
         <div className="bg-[#f7f9fc] w-3/5 laptop:w-2/5 h-[35rem] rounded-lg px-10 py-5 flex flex-col">
           <button
             onClick={() => {
@@ -96,18 +94,18 @@ const Materials = () => {
                 try {
                   const token = sessionStorage.getItem("accessToken");
                   const foundMatch = materialsArray.some(
-                  (v) => v.name.toLowerCase() == values.name.toLowerCase()
+                    (v) => v.name.toLowerCase() == values.name.toLowerCase()
                   );
-                if (!foundMatch) {
-                  dispatch(updateMaterial({ token, values }));
-                  fetchMaterials();
-                  toggleModal(!modal);
-                  successToast(`Material updated to ${values.name}!`)
-                  helpers.resetForm();
-                  return;
-                }
+                  if (!foundMatch) {
+                    dispatch(updateMaterial({ token, values }));
+                    fetchMaterials();
+                    toggleModal(!modal);
+                    successToast(`Material updated to ${values.name}!`);
+                    helpers.resetForm();
+                    return;
+                  }
                 } catch (error) {
-                  errorToast("Error Occurred", error.message)
+                  errorToast("Error Occurred", error.message);
                 }
               }}
             >
@@ -139,7 +137,7 @@ const Materials = () => {
     );
   };
   return (
-    <Layout title={"Gena | New Material"}>
+    <Layout displayTitle={"Materials"} title={"Gena | Materials"}>
       {contextHolder}
       {modal && <MaterialModal />}
       <NewMaterial

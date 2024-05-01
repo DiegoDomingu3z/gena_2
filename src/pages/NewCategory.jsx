@@ -12,12 +12,12 @@ const NewCategoryPage = () => {
   }, [triggerFetch]);
 
   return (
-      <Layout title={"Gena | New Category"}>
-        <NewCategory
-          triggerFetch={triggerFetch}
-          setTriggerFetch={setTriggerFetch}
-        />
-      </Layout>
+    <Layout displayTitle={"Label Categories"} title={"Gena | Categories"}>
+      <NewCategory
+        triggerFetch={triggerFetch}
+        setTriggerFetch={setTriggerFetch}
+      />
+    </Layout>
   );
 };
 

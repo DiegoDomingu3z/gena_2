@@ -10,8 +10,8 @@ export const createAccount = createAsyncThunk(
         .post("api/account/create", loginData)
         .then((res) => res.data)
         .catch((err) => {
-          return err
-        })
+          return err;
+        });
       return res;
     } catch (error) {
       const { data } = error.response;
@@ -30,8 +30,8 @@ export const getAccount = createAsyncThunk("account/get", async (token) => {
       })
       .then((res) => res.data)
       .catch((err) => {
-        return err
-      })
+        return err;
+      });
     return res;
   } catch (error) {
     throw error;

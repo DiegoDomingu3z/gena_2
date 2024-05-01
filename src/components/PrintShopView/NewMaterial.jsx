@@ -15,19 +15,11 @@ const NewMaterial = ({
   fetchMaterials,
 }) => {
   const dispatch = useDispatch();
-  const {successToast, errorToast, contextHolder} = useGenaToast()
-  
+  const { successToast, errorToast, contextHolder } = useGenaToast();
+
   return (
     <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
       {contextHolder}
-      <div className="flex items-end">
-        <div className="mr-auto">
-          <h1 className="text-3xl font-medium font-genaPrimary">
-            Create A New Material
-          </h1>
-        </div>
-      </div>
-      <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
       <div
         className={
           "flex gap-10 flex-col items-center overflow-auto h-[90rem] laptop:h-[44.5rem] pb-5"
@@ -39,12 +31,12 @@ const NewMaterial = ({
           }
         >
           <Formik
-            initialValues={{name: ""}}
+            initialValues={{ name: "" }}
             onSubmit={async (values, helpers) => {
               try {
                 const token = sessionStorage.getItem("accessToken");
                 const foundMatch = materialsArray.some(
-                (v) => v.name.toLowerCase() == values.name.toLowerCase()
+                  (v) => v.name.toLowerCase() == values.name.toLowerCase()
                 );
                 if (!foundMatch) {
                   await dispatch(createNewMaterial({ token, values }));
@@ -54,10 +46,9 @@ const NewMaterial = ({
                   return;
                 }
               } catch (error) {
-                console.log(error)
+                console.log(error);
                 errorToast("Error Occurred", error.message);
               }
-              
             }}
           >
             {({ isSubmitting }) => (

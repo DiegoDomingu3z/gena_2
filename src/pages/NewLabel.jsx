@@ -14,9 +14,9 @@ const NewLabelPage = () => {
     }
   }, []);
   return (
-      <Layout title={"Gena | New Label"}>
-        <NewLabel />
-      </Layout>
+    <Layout displayTitle={"New Label"} title={"Gena | New Label"}>
+      <NewLabel />
+    </Layout>
   );
 };
 

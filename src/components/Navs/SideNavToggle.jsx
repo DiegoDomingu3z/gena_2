@@ -2,20 +2,14 @@ import React from "react";
 
 const SideNavToggle = ({ sideNavOpen, setSideNavOpen }) => {
   return (
-    <div className="flex z-50 laptop:hidden h-16 fixed items-center px-8 pt-5">
-      <label
-        className={`btn btn-circle swap swap-rotate hover:bg-opacity-90 ${
-          sideNavOpen
-            ? "bg-accent hover:bg-accent"
-            : "bg-darkBlue hover:bg-darkBlue"
-        }`}
-      >
+    <div className="flex mr-5 z-50 laptop:hidden h-8 items-center">
+      <label className={`btn btn-circle swap swap-rotate hover:bg-opacity-90`}>
         {/* this hidden checkbox controls the state */}
         <input type="checkbox" onClick={() => setSideNavOpen(!sideNavOpen)} />
 
         {/* hamburger icon */}
         <svg
-          className="swap-off fill-current"
+          className="swap-off fill-black"
           xmlns="http://www.w3.org/2000/svg"
           width="32"
           height="32"
@@ -26,7 +20,7 @@ const SideNavToggle = ({ sideNavOpen, setSideNavOpen }) => {
 
         {/* close icon */}
         <svg
-          className="swap-on fill-current"
+          className="swap-on fill-black"
           xmlns="http://www.w3.org/2000/svg"
           width="32"
           height="32"
