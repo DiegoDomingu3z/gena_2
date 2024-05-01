@@ -35,20 +35,11 @@ const CurrentOrders = () => {
   };
 
   return (
-    <Layout title={"Gena | Current Orders"}>
+    <Layout displayTitle={"Current Orders"} title={"Gena | Current Orders"}>
       <div
         onClick={openAction ? () => setOpenAction(false) : null}
         className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}
       >
-        <div className="flex items-end">
-          <div className="mr-auto">
-            <h1 className="text-3xl font-medium font-genaPrimary">
-              Current Orders
-            </h1>
-          </div>
-        </div>
-
-        <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
 
         {account.privileges == "team-lead" ||
         account.privileges == "group-lead" ? (

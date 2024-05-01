@@ -13,6 +13,7 @@ import { useState } from "react";
 import { getMyOrders, getOrdersToApprove } from "../../../store/Orders/thunks";
 import { getAccount } from "../../../store/Account/thunks";
 import { getTickets } from "../../../store/Tickets/Thunks";
+import GenaNav from "../Navs/GenaNav";
 
 const Layout = ({ children, title, displayTitle }) => {
   const dispatch = useDispatch();
@@ -74,15 +75,10 @@ const Layout = ({ children, title, displayTitle }) => {
             />
           </>
         )}
-        {user.accessToken && (
-          <button
-            onClick={logUserOut}
-            className="text-black mr-5 mt-5 absolute right-5"
-          >
-            <FontAwesomeIcon icon={faPowerOff} /> Logout
-          </button>
-        )}
-        <main className="min-h-screen w-full">{children}</main>
+        <main className="min-h-screen w-full relative">
+          <GenaNav displayTitle={displayTitle} />
+          {children}
+        </main>
       </div>
     </div>
   );
