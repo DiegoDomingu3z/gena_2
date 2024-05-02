@@ -13,9 +13,10 @@ import {
   getOrdersToApprove,
   removeOrder,
   setActiveOrder,
-} from "../../store/Orders/thunks";
+} from "../../../store/Orders/thunks";
 import { Tooltip } from "antd";
 import Swal from "sweetalert2";
+import { formatDate } from "../../../func/resuableFunctions";
 
 const OrderCard = ({
   deleted,
@@ -52,13 +53,7 @@ const OrderCard = ({
     getOrders();
   }, []);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
+
 
   const handleUpdateModal = async (id) => {
     const orderId = id;

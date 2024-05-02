@@ -26,6 +26,7 @@ import {
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import Swal from "sweetalert2";
 import { getMaterials } from "../../../store/Material/Thunks";
+import { formatDate } from "../../../func/resuableFunctions";
 const { Panel } = Collapse;
 const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
   //////////////////////////////////// VARIABLES ///////////////////////////////////
@@ -38,13 +39,6 @@ const PrintShopApproved = ({ multipleOrders, setMultipleOrders }) => {
   const dispatch = useDispatch();
   ///////////////////////////////////////////////////////////////////////////////////
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");

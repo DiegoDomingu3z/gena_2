@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { removeLabel, updateJiraLabelPoints, updateSerialLabel } from "../../store/Label/Thunks";
+import { removeLabel, updateJiraLabelPoints, updateSerialLabel } from "../../../store/Label/Thunks";
 import { Button, Divider, Form, InputNumber, Modal, Switch } from 'antd'
 const UpdateLabels = ({ serialModal, setSerialModal }) => {
+  // ! SCOPED VARIABLES */
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Label.activeLabels);
   const [activeLabel, setActiveLabel] = useState(null)
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
   const dispatch = useDispatch();
-  const [form] = Form.useForm();
 
-
+  // ! SCOPED FUNCTIONS */
   const showModal = async (label) => {
     const { value: formValues } = await Swal.fire({
       title: `${label.name}`,

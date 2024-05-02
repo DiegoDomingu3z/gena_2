@@ -1,5 +1,5 @@
 import Export from "~/components/DataExporter/export";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 
 const Exporter = () => {
     return (

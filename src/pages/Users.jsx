@@ -4,19 +4,21 @@ import { Button, Statistic } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "~/components/Layout";
-import Signup from "~/components/Signup";
+import Layout from "~/components/layouts/Layout";
 import UserList from "~/components/Users/UserList";
 import { getUsers } from "../../store/Users/Thunks";
 import CountUp from 'react-countup';
 const Users = () => {
+  // ! SCOPED VARIABLES */
   const account = useSelector((state) => state.Account.account);
+  let users = useSelector((state) => state.Users.users)
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = useState('');
+  const dispatch = useDispatch()
+
+  // ! SCOPED FUNCTIONS */
   const formatter = (value) => <CountUp end={value} separator="," />;
-  let users = useSelector((state) => state.Users.users)
   useEffect(() => {
     dispatch(getUsers())
     if (account.privileges != "admin") {
@@ -28,6 +30,8 @@ const Users = () => {
     const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
   });
+
+  // ! RETURNING JSX */
   return (
     <Layout title={"Gena | Add User"}>
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>

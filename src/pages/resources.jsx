@@ -1,4 +1,4 @@
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const Resources = () => {

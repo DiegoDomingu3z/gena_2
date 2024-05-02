@@ -1,7 +1,7 @@
-import Layout from "~/components/Layout";
-import OrderCard from "~/components/OrderCard";
-import LeadsOrderApproval from "~/components/LeadsOrderApproval";
-import OrderModal from "~/components/OrderModal";
+import Layout from "~/components/layouts/Layout";
+import OrderCard from "~/components/Orders/OrderCard";
+import LeadsOrderApproval from "~/components/Orders/LeadsOrderApproval";
+import OrderModal from "~/components/Orders/OrderModal";
 import { useEffect } from "react";
 import { useState, useRef } from "react";
 import { Menu } from "antd";

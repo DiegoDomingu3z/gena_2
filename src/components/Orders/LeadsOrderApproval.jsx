@@ -5,7 +5,7 @@ import {
   declineOrder,
   getGroupLeadOrderApproveLabels,
   getOrdersToApprove,
-} from "../../store/Orders/thunks";
+} from "../../../store/Orders/thunks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -13,55 +13,28 @@ import {
   faNoteSticky,
 } from "@fortawesome/free-solid-svg-icons";
 import { PDFDocument } from "pdf-lib";
-import { Collapse, Divider, Tooltip } from "antd";
+import { Collapse, Tooltip } from "antd";
 const { Panel } = Collapse;
 import Swal from "sweetalert2";
 import { useScrollPosition } from "~/hooks/useScrollPosition";
-import { getLabelById } from "../../store/Label/Thunks";
-import { render } from "react-dom";
+import useGenaToast from "../toasts-modals/GenaToast";
+import { formatDate } from "../../../func/resuableFunctions";
 
 const LeadsOrderApproval = () => {
   const dispatch = useDispatch();
   const [decline, setDecline] = useState(false);
   const order = useSelector((state) => state.Orders.leadDepartmentOrders);
-  const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Orders.labelsToApprove);
   const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
   const [orderCollapse, setOrderCollapse] = useState(false);
   const containerRef = useRef(null);
   const scrollPosition = useScrollPosition(containerRef);
+  const {successToast, errorToast, contextHolder} = useGenaToast()
   const statusColors = {
     "waiting for approval": "bg-[#ef5350]",
     processing: "bg-[#ff9800]",
     approved: "bg-[#1baded]",
     delivered: "bg-[#63cb67]",
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
-
-  const toast = async (id, name) => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-right",
-      iconColor: "white",
-      customClass: {
-        popup: "colored-toast",
-      },
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "success",
-      title: `Approved ${name}'s order! <br>
-            OrderId: ${id}`,
-    });
   };
 
   const getLabels = () => {
@@ -120,10 +93,16 @@ const LeadsOrderApproval = () => {
   };
 
   const approveOrderNow = async (id, name, index) => {
-    const token = sessionStorage.getItem("accessToken");
-    await dispatch(approveOrder({ token, id }));
-    await handleOrderDeletion(index);
-    toast(id, name);
+    try {
+      const token = sessionStorage.getItem("accessToken");
+      await dispatch(approveOrder({ token, id }));
+      await handleOrderDeletion(index);
+      successToast(`Approved ${name}'s order!`, `OrderId: ${id}`)
+    } catch (error) {
+      console.log(error)
+      errorToast(`Couldn't Approve order`, error)
+    }
+    
   };
 
   useEffect(() => {
@@ -148,7 +127,6 @@ const LeadsOrderApproval = () => {
         console.error("Error modifying PDF:", error);
       }
     };
-
     modifyAndStorePdfDataUris();
   }, [labels, order]);
 
@@ -158,10 +136,8 @@ const LeadsOrderApproval = () => {
         res.arrayBuffer()
       );
       const pdfDoc = await PDFDocument.load(existingPdfBytes);
-
       const form = pdfDoc.getForm();
       const fieldNames = form.getFields().map((field) => field.getName());
-
       for (let i = 0; i < fieldNames.length; i++) {
         const fieldName = fieldNames[i];
         if (fieldName == "AREA") {
@@ -176,10 +152,8 @@ const LeadsOrderApproval = () => {
           fieldToFill.setText(text[i].text);
         }
       }
-
       const modifiedPdfBytes = await pdfDoc.save();
       const pdfDataUri = createDataUri(modifiedPdfBytes);
-
       return pdfDataUri;
     } catch (error) {
       const existingPdfBytes = await fetch(path).then((res) =>
@@ -213,6 +187,7 @@ const LeadsOrderApproval = () => {
 
   return (
     <div ref={containerRef}>
+      {contextHolder}
       <div
         className={`grid grid-cols-4 z-10 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${
           scrollPosition > 88 && "shadow-md"

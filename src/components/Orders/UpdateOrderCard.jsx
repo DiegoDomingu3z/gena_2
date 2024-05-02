@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
-import { getMyOrders, updateLabel } from "../../store/Orders/thunks";
+import { getMyOrders, updateLabel } from "../../../store/Orders/thunks";
 import Swal from "sweetalert2";
 import { PDFDocument, fill } from "pdf-lib";
 import { RingLoader } from "react-spinners";
 
-const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
+const UpdateOrderCard = ({ modalState, blobs, setBlobs }) => {
   // const [activeLabels, setActiveLabels] = useState('')
   const [submit, setSubmit] = useState(false);
   const [modifiedPDFs, setModifiedPDFs] = useState({});
@@ -307,4 +307,4 @@ const OrderModalCard = ({ modalState, blobs, setBlobs }) => {
   return <>{label}</>;
 };
 
-export default OrderModalCard;
+export default UpdateOrderCard;

@@ -5,10 +5,10 @@ import Image from "next/image";
 import { Avatar, Space } from "antd";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccount } from "../../store/Account/thunks";
-import { getMyOrders } from "../../store/Orders/thunks";
-import { getTickets } from "../../store/Tickets/Thunks";
-import { formatImgString } from "../../func/resuableFunctions";
+import { getAccount } from "../../../store/Account/thunks";
+import { getMyOrders } from "../../../store/Orders/thunks";
+import { getTickets } from "../../../store/Tickets/Thunks";
+import { formatImgString } from "../../../func/resuableFunctions";
 export const NavButtons = ({ ticketModal, setTicketModal }) => {
   const user = useSelector((state) => state.Account);
   const userOrders = useSelector((state) => state.Orders.myOrders.orders);
@@ -338,7 +338,7 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
                 ></path>{" "}
               </g>
             </svg>
-            <span className="text-sm">Add User</span>
+            <span className="text-sm">Users</span>
           </button>
         </Link>
         <Link href={"/resources"} className={user.accessToken ? "" : "hidden"}>
@@ -544,9 +544,7 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
             {user.accessToken ? (
               <Space>
                 <Avatar
-                  src={`http://192.168.55.26/wp-content/uploads/${formatImgString(
-                    user.account.firstName
-                  )}-${user.account.lastName}.jpg`}
+                  src={`${formatImgString(user.account.firstName, user.account.lastName, "jpg")}`}
                 />
                 <span>
                   {user.account.firstName} {user.account.lastName}

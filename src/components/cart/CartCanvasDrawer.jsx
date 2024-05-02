@@ -7,8 +7,7 @@ import {
   getBasketLabels,
   placeOrder,
   removeFromBasket,
-  getMyOrders,
-} from "../../store/Orders/thunks";
+} from "../../../store/Orders/thunks";
 import Swal from "sweetalert2";
 import { PDFDocument } from "pdf-lib";
 import Image from "next/image";
@@ -33,7 +32,6 @@ const CartCanvasDrawer = ({
         [event.target.name]: input,
       };
     });
-    console.log(orderInput);
   };
 
   const toast = async () => {
@@ -64,7 +62,6 @@ const CartCanvasDrawer = ({
     setBasketLabels(basketLabelsCopy);
     toast();
     dispatch(clearBasket());
-    dispatch(getMyOrders(token));
     setTimeout(() => {
       setToggleCartCanvas(!toggleCartCanvas);
     }, 500);
