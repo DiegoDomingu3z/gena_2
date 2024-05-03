@@ -154,14 +154,6 @@ const Main = () => {
     return (
         <div className="flex flex-col pl-20 pr-20 pt-20 pb-4">
         <div className={""}>
-          <div className="flex items-end">
-            <div className="mr-auto">
-              <h1 className="text-3xl font-medium font-genaPrimary">
-                Gena Settings
-              </h1>
-            </div>
-          </div>
-          <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
           <Card 
             title="Email Configuration"
             className="w-full mt-5 mb-5"
@@ -218,9 +210,9 @@ const Main = () => {
                       required: true,
                       message: 'Please input an email!',
                     },
-                  ]} initialValue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}>
+                  ]} initialvalue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}>
                     <Input id="senderEmailAddress" placeholder={configuration.senderEmailAddress} onChange={(e) => valueChange('senderEmailAddress', e.target.value)}
-                    initialValue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}
+                    initialvalue={configuration.senderEmailAddress} value={configuration.senderEmailAddress}
                      />
                 </Form.Item>
                 

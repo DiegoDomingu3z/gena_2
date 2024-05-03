@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Layout from "~/components/Layout";
-import LabelCard from "~/components/LabelCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
@@ -9,14 +7,15 @@ import { getCategories } from "../../store/Category/Thunk";
 import { Formik, Field } from "formik";
 import { getAllSubCats } from "../../store/Sub-Category/Thunks";
 import { getLabels, searchLabel } from "../../store/Label/Thunks";
-import { useCanvasDrawer } from "~/Contexts/canvasDrawerContext";
-import CartCanvasDrawer from "~/components/CartCanvasDrawer";
-import { useRouter } from "next/router";
 import { getAccount } from "../../store/Account/thunks";
-import { api } from "../../axiosService";
+import { Input, Space } from "antd";
+import Layout from "~/components/layouts/Layout";
+import LabelCard from "~/components/Labels/LabelCard";
+import CartCanvasDrawer from "~/components/cart/CartCanvasDrawer";
 import useDebounce from "~/hooks/useDebounce";
 
 const StartNewOrder = () => {
+  const { Search } = Input;
   const dispatch = useDispatch();
   const cats = useSelector((state) => state.Category.categories);
   const subCats = useSelector((state) => state.SubCategory.subCats);
@@ -67,68 +66,30 @@ const StartNewOrder = () => {
   }, [activeCategory, activeSubCategoryId]);
 
   return (
-    <Layout title={"Gena | New Order"}>
+    <Layout displayTitle={"New Order"} title={"Gena | New Order"}>
       <CartCanvasDrawer
         toggleCartCanvas={toggleCartCanvas}
         setToggleCartCanvas={setToggleCartCanvas}
         render={render}
       />
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
-        <div className="flex items-end ">
-          <div className="mr-auto">
-            <h1 className="text-3xl font-medium font-genaPrimary">Labels</h1>
-          </div>
-          <div className="flex justify-end items-end gap-5 md:w-3/5 lg:w-2/5">
-            <label htmlFor="labelSearch">
-              <FontAwesomeIcon
-                className="p-3 cursor-pointer rounded-full drop-shadow-sm bg-[#233042] text-white relative bottom-[-6px]"
-                icon={faMagnifyingGlass}
-              />
-            </label>
-            <input
-                onChange={(e) => setSearchInput(e.target.value)}
-                id="labelSearch"
-                name="labelSearch"
-                type="text"
-                className="laptop:w-2/4 w-full drop-shadow-md bg-white text-[#233042] rounded-md h-10 transition-all ease-in-out
-              outline-none focus:drop-shadow-xl focus:shadow-[0px_-2px_#374151_inset] p-5"
-                placeholder="Type name of label here"
-              />
-            <div className="relative ">
-              <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
-                <FontAwesomeIcon
-                  className="rounded-full drop-shadow-sm text-[#233042] "
-                  icon={faShoppingBasket}
-                  size="2xl"
-                />
-                <div className="absolute top-0 right-0 bg-red-500 rounded-full h-5 w-5 flex items-center justify-center text-white text-xs">
-                  {basket ? basket.length : 0}
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
-        <div className=" items-center justify-around mb-5">
+        <div className="flex mb-5 justify-between items-start">
           <Formik
             initialValues={{
               categoryId: "",
               subCategoryId: "",
             }}
           >
-            <div className="flex items-center justify-around mb-20 laptop:mb-10">
+            <div className="flex items-center gap-5 mb-20 laptop:mb-10">
               <Field
                 onChange={filterSubCats}
-                value={activeCategory}
+                value={activeCategory ?? ""}
                 type="text"
                 component="select"
                 name="categoryId"
-                className="bg-gray-50 border border-gray-300
-                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-2/5 lg:w-1/5 p-2.5
-                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                        dark:focus:border-blue-500"
+                className="select w-52 max-w-xs select-bordered select-sm"
               >
-                <option selected disabled value="">
+                <option disabled value="">
                   Select Category
                 </option>
                 {cats
@@ -146,18 +107,13 @@ const StartNewOrder = () => {
               </Field>
               <Field
                 onChange={singleSubCat}
-                value={activeSubCategoryId}
+                value={activeSubCategoryId ?? ""}
                 type="text"
                 component="select"
                 name="subCategoryId"
-                className="bg-gray-50 border border-gray-300
-                                        text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-2/5 lg:w-1/5 p-2.5
-                                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                        dark:focus:border-blue-500"
+                className="select w-52 max-w-xs select-bordered select-sm"
               >
-                <option selected value="">
-                  Select Sub-Category
-                </option>
+                <option value="">Select Sub-Category</option>
                 {activeSubCats
                   ? activeSubCats.map((a) => (
                       <option key={a._id} value={a._id} id={a._id}>
@@ -166,8 +122,63 @@ const StartNewOrder = () => {
                     ))
                   : null}
               </Field>
+              {(activeCategory || activeSubCats) && (
+                <span
+                  className="btn btn-sm bg-accent hover:bg-accent hover:bg-opacity-90"
+                  onClick={() => {
+                    setActiveCategory("");
+                    setActiveSubCats("");
+                    setActiveSubCategoryId("");
+                  }}
+                >
+                  Clear
+                </span>
+              )}
             </div>
           </Formik>
+          <div className="flex items-start justify-end gap-5 md:w-3/5 lg:w-2/5">
+            <Search
+              placeholder="type label name"
+              allowClear
+              onSearch={(e) => console.log(e)}
+              style={{
+                width: 200,
+              }}
+              onChange={(e) => setSearchInput(e.target.value)}
+              id="labelSearch"
+              name="labelSearch"
+            />
+            <div className="relative indicator">
+              <button onClick={() => setToggleCartCanvas(!toggleCartCanvas)}>
+                <span className="indicator-item badge badge-neutral">
+                  {basket.length}
+                </span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8"
+                >
+                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M20 10L18.5145 17.4276C18.3312 18.3439 18.2396 18.8021 18.0004 19.1448C17.7894 19.447 17.499 19.685 17.1613 19.8326C16.7783 20 16.3111 20 15.3766 20H8.62337C7.6889 20 7.22166 20 6.83869 19.8326C6.50097 19.685 6.2106 19.447 5.99964 19.1448C5.76041 18.8021 5.66878 18.3439 5.48551 17.4276L4 10M20 10H18M20 10H21M4 10H3M4 10H6M6 10H18M6 10L9 4M18 10L15 4M9 13V16M12 13V16M15 13V16"
+                      stroke="#233043"
+                      strokeWidth="1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
         <div className="">
           {(activeCategory || searchInput) && (

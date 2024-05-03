@@ -4,13 +4,13 @@ import { useScrollPosition } from "~/hooks/useScrollPosition";
 import { useRef } from "react";
 
 const TicketDashboard = ({ account, tickets }) => {
+  // ! SCOPED VARIABLES */
   // Separate tickets into different arrays based on status
   const inQueue = tickets.filter((ticket) => ticket.status === "In queue");
   const inProgress = tickets.filter(
     (ticket) => ticket.status === "In progress"
   );
   const completed = tickets.filter((ticket) => ticket.status === "Completed");
-
   // Map each array to QueueCard components
   const inQueueCards = inQueue.map((ticket, i) => (
     <QueueCard key={i} ticket={ticket} account={account} />
@@ -21,10 +21,10 @@ const TicketDashboard = ({ account, tickets }) => {
   const completedCards = completed.map((ticket, i) => (
     <QueueCard key={i} ticket={ticket} account={account} />
   ));
-
   const containerRef = useRef(null);
   const scrollPosition = useScrollPosition(containerRef);
-
+  
+  // ! RETURNING JSX */
   return (
     <div
       ref={containerRef}

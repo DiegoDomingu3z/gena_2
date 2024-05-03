@@ -1,16 +1,13 @@
 import React from "react";
-import Login from "~/components/Login";
-import { LoginProvider } from "~/Contexts/LoginContext";
-import Layout from "~/components/Layout";
+import Login from "~/components/login-signup/Login";
+import Layout from "~/components/layouts/Layout";
 import Main from "~/components/Settings/main";
 
 const Jira = () => {
   return (
-    <LoginProvider>
-      <Layout title={"Gena | Jira"}>
+      <Layout displayTitle={'Gena Settings'} title={"Gena | Settings"}>
         <Main />
       </Layout>
-    </LoginProvider>
   );
 };
 
