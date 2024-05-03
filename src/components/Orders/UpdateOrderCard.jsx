@@ -19,10 +19,10 @@ const UpdateOrderCard = ({ modalState, blobs, setBlobs }) => {
   const labelsArray = useSelector((state) => state.Orders.myOrders.arr);
   const labels = activeOrder ? activeOrder.labels : [];
   const activeLabels = labelsArray
-    .flatMap((innerArray) => innerArray)
-    .filter((value, i) => {
+    ?.flatMap((innerArray) => innerArray)
+    ?.filter((value, i) => {
       return value.orderId == activeOrder?._id;
-    });
+    }) ?? []
 
   useEffect(() => {
     activeLabels.forEach((l, i) => {

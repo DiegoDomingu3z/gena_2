@@ -10,10 +10,10 @@ const OrderApprovalModalCard = ({ blobs, setBlobs }) => {
   const labelsArray = useSelector((state) => state.Orders.labelsToApprove);
   const labels = activeOrder ? activeOrder.labels : [];
   const activeLabels = labelsArray
-    .flatMap((innerArray) => innerArray)
-    .filter((value) => {
+    ?.flatMap((innerArray) => innerArray)
+    ?.filter((value) => {
       return value.orderId == activeOrder?._id;
-    });
+    }) ?? []
 
   useEffect(() => {
     activeLabels.forEach(({ _doc: l }, i) => {

@@ -3,6 +3,9 @@ import { Tag } from "antd";
 // * USED TO FORMAT AND RENDER AVATAR IMG */
 export const formatImgString = (firstName, lastName, imgType) => {
   try {
+    if (!firstName || !lastName || !imgType) {
+      return;
+    }
     switch (imgType) {
       case "jpg":
         break;
