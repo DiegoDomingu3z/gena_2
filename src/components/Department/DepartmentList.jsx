@@ -83,9 +83,9 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
           itemLayout="horizontal"
           dataSource={dept}
           renderItem={(item, index) => (
-              <List.Item onClick={() => showUsers(item._id, item.name)} className='mt-3 hover:scale-y-110 transform duration-200 hover:bg-slate-100 transition-all ease-in-out cursor-pointer'
+              <List.Item key={index} onClick={() => showUsers(item._id, item.name)} className='mt-3 hover:scale-y-110 transform duration-200 hover:bg-slate-100 transition-all ease-in-out cursor-pointer'
               actions={account.privileges === 'admin' ? [
-                  <Tooltip title={`Edit ${item.name}?`}>
+                  <Tooltip key={index} title={`Edit ${item.name}?`}>
                 <button
                   onClick={(event) => {
                       event.stopPropagation()
@@ -98,8 +98,8 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
                   <FontAwesomeIcon icon={faPencil} key="edit" />
                 </button>
                     </Tooltip>,
-                <span>
-                    <Tooltip title={`Delete ${item.name} Department?`}>
+                <span key={index}>
+                    <Tooltip key={index} title={`Delete ${item.name} Department?`}>
                   <button
                     onClick={(event) => {
                         event.stopPropagation();
@@ -132,7 +132,6 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
                 )}
                 </span>
               ] : null}
-              key={index}
               >
               <List.Item.Meta
                 title={<div><span>{capitalizeFirstLetterOfString(item.name)}</span>
