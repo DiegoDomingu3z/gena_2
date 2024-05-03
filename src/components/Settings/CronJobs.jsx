@@ -136,7 +136,7 @@ const CronJobs = () => {
   }
 
 
-  const generatedRow = ({record}) => {
+  const GeneratedRow = ({record}) => {
     const [value, setValue] = useState(record.cronTime);
     const id = record._id
     const updateCronTime = () => {
@@ -175,7 +175,7 @@ const CronJobs = () => {
       </div>
     );
   }
-  const MemoizedExpandedRowRender = memo(generatedRow);
+  const MemoizedExpandedRowRender = memo(GeneratedRow);
 
     return(
         <>

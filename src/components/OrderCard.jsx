@@ -204,7 +204,7 @@ const OrderCard = ({
                     <button
                       onClick={() => deleteOrder(o._id)}
                       className={`text-[#233043] hover:bg-[#ff1b1b] hidden lg:block hover:text-white transition-all ease-in-out w-7 h-7 rounded-full ${
-                        o.status === "processing" && "pointer-events-none"
+                        o.status === "processing" || o.status == "ready for pickup" ? 'pointer-events-none' : ''
                       }`}
                     >
                       <FontAwesomeIcon icon={faTrash} />
