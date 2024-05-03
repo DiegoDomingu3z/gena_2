@@ -11,6 +11,7 @@ import PrintShopReducer from "./PrintShop/Slice";
 import ExportReducer from "./Exporter/Slice";
 import TicketReducer from "./Tickets/Slice";
 import ConfigurationReducer from "./Configuration/Slice"
+import UserReducer from "./Users/Slice"
 export const store = configureStore({
   reducer: {
     Account: AccountReducer,
@@ -24,5 +25,6 @@ export const store = configureStore({
     Exporter: ExportReducer,
     Tickets: TicketReducer,
     Configuration: ConfigurationReducer,
+    Users: UserReducer
   },
 });

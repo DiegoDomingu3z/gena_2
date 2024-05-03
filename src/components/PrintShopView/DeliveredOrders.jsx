@@ -28,6 +28,7 @@ import {
 } from "../../../store/PrintShop/Thunks";
 import Swal from "sweetalert2";
 import { FaSort } from "react-icons/fa";
+import { formatDate } from "../../../func/resuableFunctions";
 
 const { Panel } = Collapse;
 const DeliveredOrders = ({
@@ -71,18 +72,6 @@ const DeliveredOrders = ({
     });
   };
 
-  const getUserName = (id) => {
-    const singleUser = user.filter((u) => u._id == id).shift();
-    return `${singleUser.firstName}-${singleUser.lastName}`;
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
 
   const today = new Date();
   const day = today.getDate();

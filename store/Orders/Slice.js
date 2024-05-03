@@ -31,8 +31,7 @@ export const OrdersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addToBasket.pending, (state, action) => {
-      })
+      .addCase(addToBasket.pending, (state, action) => {})
       .addCase(addToBasket.fulfilled, (state, action) => {
         state.labelBasket.push(action.payload);
       })
@@ -127,8 +126,7 @@ export const OrdersSlice = createSlice({
       .addCase(setActiveOrder.rejected, (state, action) => {
         console.log(action.error);
       })
-      .addCase(updateLabel.fulfilled, (state, action) => {
-      })
+      .addCase(updateLabel.fulfilled, (state, action) => {})
       .addCase(updateLabel.rejected, (state, action) => {
         console.log(action.error);
       })

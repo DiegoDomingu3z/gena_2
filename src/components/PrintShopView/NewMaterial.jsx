@@ -3,6 +3,7 @@ import { Formik, Field, Form } from "formik";
 import { createNewMaterial } from "../../../store/Material/Thunks";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import useGenaToast from "../toasts-modals/GenaToast";
 
 const NewMaterial = ({
   modal,
@@ -14,63 +15,11 @@ const NewMaterial = ({
   fetchMaterials,
 }) => {
   const dispatch = useDispatch();
-
-  const toggleModal = (material) => {
-    setActiveCategory(material);
-    setModal((modal) => !modal);
-  };
-
-  const successToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "white",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "success",
-      title: "Material Added!",
-    });
-  };
-  const failureToast = async () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "center",
-      iconColor: "orange",
-      customClass: {
-        popup: "colored-toast",
-        container: "addToCartToast",
-      },
-      showConfirmButton: false,
-      timer: 1500,
-      timerProgressBar: true,
-    });
-    await Toast.fire({
-      icon: "warning",
-      title: "Material Already Exists!",
-    });
-  };
-
-  const dataForSubmission = {
-    name: "",
-  };
+  const { successToast, errorToast, contextHolder } = useGenaToast();
 
   return (
     <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
-      <div className="flex items-end">
-        <div className="mr-auto">
-          <h1 className="text-3xl font-medium font-genaPrimary">
-            Create A New Material
-          </h1>
-        </div>
-      </div>
-      <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
+      {contextHolder}
       <div
         className={
           "flex gap-10 flex-col items-center overflow-auto h-[90rem] laptop:h-[44.5rem] pb-5"
@@ -82,20 +31,24 @@ const NewMaterial = ({
           }
         >
           <Formik
-            initialValues={dataForSubmission}
+            initialValues={{ name: "" }}
             onSubmit={async (values, helpers) => {
-              const token = sessionStorage.getItem("accessToken");
-              const foundMatch = materialsArray.some(
-                (v) => v.name.toLowerCase() == values.name.toLowerCase()
-              );
-              if (!foundMatch) {
-                await dispatch(createNewMaterial({ token, values }));
-                await fetchMaterials();
-                successToast();
-                helpers.resetForm();
-                return;
+              try {
+                const token = sessionStorage.getItem("accessToken");
+                const foundMatch = materialsArray.some(
+                  (v) => v.name.toLowerCase() == values.name.toLowerCase()
+                );
+                if (!foundMatch) {
+                  await dispatch(createNewMaterial({ token, values }));
+                  await fetchMaterials();
+                  successToast(`${values.name} added to Gena!`);
+                  helpers.resetForm();
+                  return;
+                }
+              } catch (error) {
+                console.log(error);
+                errorToast("Error Occurred", error.message);
               }
-              failureToast();
             }}
           >
             {({ isSubmitting }) => (
