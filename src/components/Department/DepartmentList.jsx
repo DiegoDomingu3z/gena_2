@@ -30,7 +30,7 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
 
     // ! SCOPED FUNCTIONS */
     useEffect(() => {
-        if (window.sessionStorage.getItem('accessToken')) {
+        if (sessionStorage.getItem('accessToken')) {
             setToken(token)
         }
     }, [])
@@ -47,7 +47,9 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
       };
 
       const removeDepartment = (id) => {
+        const token = sessionStorage.getItem('accessToken')
         dispatch(removeDept({token, id})).then(() => {
+            console.log(token)
             successToast("Deleted Department Successfully!")
         }).catch((err) => {
             errorToast("Oops something went wrong", err)
@@ -146,14 +148,17 @@ const DepartmentList = ({triggerUseEffect, setTriggerUseEffect,}) => {
           <GenaModal 
           open={openEditModal} setOpen={setOpenEditModal}
             title={`Updating ${capitalizeFirstLetterOfString(activeDepartment.name)} Department`}
-           body={<UpdateDepartmentForm 
+            >
+            <UpdateDepartmentForm 
             modalState={openEditModal} 
             setModalState={setOpenEditModal} 
-            department={activeDepartment} />} />
+            department={activeDepartment} />
+          </GenaModal>
         )}
         {open && (
-            <GenaModal open={open} setOpen={setOpen} title={`Add new department`}
-             body={<AddDepartmentForm setOpen={setOpen} />} />
+            <GenaModal open={open} setOpen={setOpen} title={`Add new department`}>
+              <AddDepartmentForm setOpen={setOpen} />
+            </GenaModal>
         )}
         
       </div>

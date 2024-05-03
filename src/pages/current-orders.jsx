@@ -1,12 +1,13 @@
-import OrderTable from "~/components/OrderTable";
+import OrderTable from "~/components/Orders/OrderTable";
 import UpdateOrderCard from "~/components/Orders/UpdateOrderCard";
 import Layout from "~/components/layouts/Layout";
 import { useState } from "react";
 import { Button, Menu, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { declineOrder, approveOrder } from "../../store/Orders/thunks";
-import OrderTableApprovals from "~/components/OrderTableApprovals";
-import OrderApprovalModalCard from "~/components/OrderApprovalModalCard";
+import OrderTableApprovals from "~/components/Orders/OrderTableApprovals";
+import OrderApprovalModalCard from "~/components/Orders/OrderApprovalModalCard";
+import GenaModal from "~/components/toasts-modals/GenaModal";
 
 const CurrentOrders = () => {
   const dispatch = useDispatch();
@@ -94,17 +95,17 @@ const CurrentOrders = () => {
           </div>
         )}
       </div>
-      <Modal
-        width={"950px"}
+      <GenaModal
+        // width={"950px"}
         title="Labels in this order"
         open={modalState}
-        onCancel={() => setModalState(false)}
-        cancelButtonProps={{
-          style: { display: "none" },
-        }}
-        okButtonProps={{
-          style: { display: "none" },
-        }}
+        setOpen={setModalState}
+        // cancelButtonProps={{
+        //   style: { display: "none" },
+        // }}
+        // okButtonProps={{
+        //   style: { display: "none" },
+        // }}
       >
         <div className="h-[600px] p-3 overflow-y-auto grid justify-items-center laptoplg:grid-cols-3 grid-cols-2 gap-8">
           {tab !== "approve-order" ? (
@@ -124,8 +125,9 @@ const CurrentOrders = () => {
         {tab === "approve-order" && (
           <div className="flex justify-end gap-2">
             <Button
+            type="primary"
               onClick={() => handleOrderApprove(approvalOrderId)}
-              className="text-[#1677ff] border-[#1677ff]"
+              className="bg-[#1677ff] border-none"
             >
               Approve
             </Button>
@@ -134,7 +136,7 @@ const CurrentOrders = () => {
             </Button>
           </div>
         )}
-      </Modal>
+      </GenaModal>
     </Layout>
   );
 };

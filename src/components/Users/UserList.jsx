@@ -102,9 +102,13 @@ const UserList = ({open, setOpen, users}) => {
             </List.Item>
           )}
         />
-        <GenaModal open={open} setOpen={setOpen} title="New User Form"  body={<NewUserForm setOpen={setOpen}/>} />
+        <GenaModal open={open} setOpen={setOpen} title="New User Form">
+          <NewUserForm setOpen={setOpen}/>
+        </GenaModal>
         {openEditModal && (
-          <GenaModal open={openEditModal} setOpen={setOpenEditModal}  body={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+          <GenaModal open={openEditModal} setOpen={setOpenEditModal}>
+            <DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />
+          </GenaModal>
         )}
         
       </div>

@@ -12,7 +12,7 @@ const Departments = () => {
     dispatch(getDepartments());
   }, [triggerUseEffect]);
   return (
-    <Layout title={"Gena | Departments"}>
+    <Layout displayTitle={'Departments'} title={"Gena | Departments"}>
       <div>
         <DepartmentList triggerUseEffect={triggerUseEffect}
           setTriggerUseEffect={setTriggerUseEffect}/>

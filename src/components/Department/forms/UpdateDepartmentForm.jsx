@@ -37,7 +37,7 @@ const UpdateDepartmentForm = ({modalState, setModalState, department}) => {
        form={form}
        onFinish={updateDepartment}
        initialValues={{
-           requiredMarkValue: customize,
+           requiredMarkValue: 'customize',
         }}
         layout={"vertical"}
         requiredMark={customizeRequiredMark}

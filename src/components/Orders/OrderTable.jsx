@@ -4,9 +4,9 @@ import {
   getMyOrders,
   removeOrder,
   setActiveOrder,
-} from "../../store/Orders/thunks";
+} from "../../../store/Orders/thunks";
 import { useState, useEffect } from "react";
-import { editableStatus } from "../../lib/vars";
+import { editableStatus } from "../../../lib/vars";
 
 const statusColor = {
   approved: "blue",

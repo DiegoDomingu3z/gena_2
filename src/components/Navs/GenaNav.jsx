@@ -12,8 +12,8 @@ const GenaNav = ({ displayTitle, sideNavOpen, setSideNavOpen }) => {
   const router = useRouter();
 
   const logUserOut = async () => {
-    await router.push("/");
-    dispatch(logout(user.accessToken));
+    await dispatch(logout(user.accessToken));
+    router.push("/");
   };
 
   return (

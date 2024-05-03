@@ -1,5 +1,5 @@
 const { Modal } = require("antd")
-const GenaModal = ({open, setOpen, title, body}) => {
+const GenaModal = ({open, setOpen, title, children}) => {
     // ! RETURNING JSX */
     return (
         <Modal 
@@ -12,7 +12,7 @@ const GenaModal = ({open, setOpen, title, body}) => {
             <h1 className="text-2xl font-medium">{title}</h1>
             <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
         </div> : null}
-        {body}
+        {children}
         </Modal>
     )
 }
