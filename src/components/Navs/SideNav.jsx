@@ -18,6 +18,35 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
   return (
     <>
       <div className="w-full flex flex-col justify-center mb-auto">
+      <Link
+          href={"/Dashboard"}
+          className={
+            user.accessToken ? "" : "hidden"
+          }
+        >
+          <button
+            className={`w-full md:pl-8 pl-4 py-2 flex items-center gap-4 transition-all ease-in-out duration-150 hover:border-t-0 hover:border-l-0 hover:border-b-0 hover:bg-opacity-30 hover:bg-slate-900 hover:border-r-white hover:border-8 ${
+              router.pathname === "/Dashboard"
+                ? "bg-slate-900 bg-opacity-30 border-r-white border-t-0 border-l-0 border-b-0 border-8 text-white"
+                : "text-nav"
+            }`}
+          >
+            <svg 
+            className="w-7"
+            viewBox="0 0 24 24"
+             fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                </g><g id="SVGRepo_iconCarrier"> 
+                <path 
+                d="M21 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4802 3 18.9201 3 17.8V3M7 15L12 9L16 13L21 7"
+                 stroke="#b3b3b3" 
+                 stroke-width="1" 
+                 stroke-linecap="round" 
+                 stroke-linejoin="round"></path> </g></svg>
+            <span className="text-sm">Dashboard</span>
+          </button>
+        </Link>
         <Link
           href={"/PrintShop"}
           className={
