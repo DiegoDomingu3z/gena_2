@@ -89,8 +89,8 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
   };
 
   const updateJiraPoints = async (name, id, jiraPoints) => {
-    const token = sessionStorage.getItem("accessToken")
-    const {value: newJiraPoints} = await Swal.fire({
+    const token = sessionStorage.getItem("accessToken");
+    const { value: newJiraPoints } = await Swal.fire({
       title: `Update jira points for ${name}?`,
       html: `<small>Category jira points take the least priority</small>`,
       input: "number",
@@ -108,7 +108,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Update",
-    })
+    });
     if (newJiraPoints) {
       let timerInterval;
       let seconds = (await Math.floor(Math.random() * 8)) + 1;
@@ -143,13 +143,7 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
       });
       setTriggerFetch(!triggerFetch);
     }
-    
-  }
-
-
-
-
-
+  };
 
   const updateCat = async (id, name) => {
     const token = sessionStorage.getItem("accessToken");
@@ -365,16 +359,6 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
     <>
       {togglePopup && <DepartmentPopup />}
       <div className="flex flex-col pl-20 pr-20 pt-20 pb-4">
-        <div>
-          <div className="flex items-end">
-            <div className="mr-auto">
-              <h1 className="text-3xl font-medium font-genaPrimary">
-                Categories
-              </h1>
-            </div>
-          </div>
-          <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
-        </div>
         <div
           className={
             "bg-white p-5 rounded-md shadow-md overflow-auto h-[90rem] laptop:h-[44rem]"
@@ -404,29 +388,27 @@ const NewCategory = ({ triggerFetch, setTriggerFetch }) => {
                   </button>
                   </Tooltip> */}
                   <Tooltip title="Edit Name">
-
-                  <button
-                    className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
-                    onClick={(event) => {
-                      event.stopPropagation(); // Stop propagation here
-                      updateCat(c._id, c.name);
-                    }}
+                    <button
+                      className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                      onClick={(event) => {
+                        event.stopPropagation(); // Stop propagation here
+                        updateCat(c._id, c.name);
+                      }}
                     >
-                    <FontAwesomeIcon icon={faPencil} />
-                  </button>
-                    </Tooltip>
-                    <Tooltip title="Delete Category">
-
-                  <button
-                    className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
-                    onClick={(event) => {
-                      event.stopPropagation(); // Stop propagation here
-                      deleteCat(c._id, c.name);
-                    }}
+                      <FontAwesomeIcon icon={faPencil} />
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="Delete Category">
+                    <button
+                      className="text-[#233043] hover:bg-[#233043] hover:text-white transition-all ease-in-out w-7 h-7 rounded-full"
+                      onClick={(event) => {
+                        event.stopPropagation(); // Stop propagation here
+                        deleteCat(c._id, c.name);
+                      }}
                     >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                    </Tooltip>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </Tooltip>
                 </div>
               </div>
             ))

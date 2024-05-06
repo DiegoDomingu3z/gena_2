@@ -181,14 +181,6 @@ const Export = () => {
     return(
         <div className="flex flex-col pl-20 pr-20 pt-20 pb-4">
         <div className={""}>
-          <div className="flex items-end">
-            <div className="mr-auto">
-              <h1 className="text-3xl font-medium font-genaPrimary">
-                Export Data
-              </h1>
-            </div>
-          </div>
-          <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
           <div className="">
             <Form form={form} className="bg-gray-100 rounded p-3 " name="filterForm" onFinish={submittingForm}>
             <Space>

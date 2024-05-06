@@ -49,7 +49,7 @@ const UserList = ({open, setOpen, users}) => {
           renderItem={(item, index) => (
             <List.Item className='hover:scale-y-110 transform duration-200 hover:bg-slate-100 transition-all ease-in-out'
               actions={account.privileges === 'admin' ? [
-                <Tooltip title={`Edit ${item.firstName}'s Account?`}>
+                <Tooltip key={index} title={`Edit ${item.firstName}'s Account?`}>
                 <button
                   onClick={() => {
                       setActiveUser(item);
@@ -61,7 +61,7 @@ const UserList = ({open, setOpen, users}) => {
                   <FontAwesomeIcon icon={faPencil} key="edit" />
                 </button>
                     </Tooltip>,
-                <span>
+                <span key={index}>
                     <Tooltip title={`Delete ${item.firstName}'s Account?`}>
                   <button
                     onClick={() => setOpenPopIndex(index)}
@@ -102,9 +102,13 @@ const UserList = ({open, setOpen, users}) => {
             </List.Item>
           )}
         />
-        <GenaModal open={open} setOpen={setOpen} title="New User Form"  body={<NewUserForm setOpen={setOpen}/>} />
+        <GenaModal open={open} setOpen={setOpen} title="New User Form">
+          <NewUserForm setOpen={setOpen}/>
+        </GenaModal>
         {openEditModal && (
-          <GenaModal open={openEditModal} setOpen={setOpenEditModal}  body={<DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />} />
+          <GenaModal open={openEditModal} setOpen={setOpenEditModal}>
+            <DepartmentUserModal modalState={openEditModal} setModalState={setOpenEditModal} activeUser={activeUser} />
+          </GenaModal>
         )}
         
       </div>

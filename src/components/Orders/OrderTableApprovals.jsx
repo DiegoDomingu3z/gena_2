@@ -4,7 +4,7 @@ import {
   getGroupLeadOrderApproveLabels,
   getOrdersToApprove,
   setActiveOrder,
-} from "../../store/Orders/thunks";
+} from "../../../store/Orders/thunks";
 import { useState, useEffect } from "react";
 
 const statusColor = {
