@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import DashDatePicker from "./filters/DashDatePicker"
 import { faFilter } from "@fortawesome/free-solid-svg-icons"
-import { Button, Col, Row } from "antd"
+import { Button, Card, Col, Row } from "antd"
 import { useState } from "react"
 import TopCards from "./top-cards/TopCards"
 import Chart from "./analytics/Departments/chart"
+import TopLabels from "./analytics/labels/TopLabels"
+import TopMaterials from "./analytics/Materials/TopMaterials"
 
 const Main = () => {
     const [showCalendar, setShowCalendar] = useState(false)
@@ -24,8 +26,14 @@ const Main = () => {
         </div>
           <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
           <TopCards />
-          <Row gutter={12}>
-            <Col span={12}>
+          <Row gutter={12} className="mt-6">
+            <Col span={8}>
+            <TopLabels />
+              </Col>
+              <Col span={8}>
+                <TopMaterials />
+              </Col>
+            <Col span={8}>
           <Chart />
             </Col>
           </Row>

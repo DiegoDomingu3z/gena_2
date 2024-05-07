@@ -46,7 +46,7 @@ const Chart = () => {
     };
 
     return (
-        <Card title="Total order by department" className='mt-4'>
+        <Card title="Total order by department" className=''>
             <Pie {...config}/>
         </Card>
     )
