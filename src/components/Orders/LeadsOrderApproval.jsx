@@ -22,14 +22,14 @@ import { formatDate } from "../../../func/resuableFunctions";
 
 const LeadsOrderApproval = () => {
   const dispatch = useDispatch();
+  const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
+  const [orderCollapse, setOrderCollapse] = useState(false);
   const [decline, setDecline] = useState(false);
   const order = useSelector((state) => state.Orders.leadDepartmentOrders);
   const labels = useSelector((state) => state.Orders.labelsToApprove);
-  const [modifiedPdfDataUris, setModifiedPdfDataUris] = useState([]);
-  const [orderCollapse, setOrderCollapse] = useState(false);
   const containerRef = useRef(null);
   const scrollPosition = useScrollPosition(containerRef);
-  const {successToast, errorToast, contextHolder} = useGenaToast()
+  const { successToast, errorToast, contextHolder } = useGenaToast();
   const statusColors = {
     "waiting for approval": "bg-[#ef5350]",
     processing: "bg-[#ff9800]",
@@ -97,12 +97,11 @@ const LeadsOrderApproval = () => {
       const token = sessionStorage.getItem("accessToken");
       await dispatch(approveOrder({ token, id }));
       await handleOrderDeletion(index);
-      successToast(`Approved ${name}'s order!`, `OrderId: ${id}`)
+      successToast(`Approved ${name}'s order!`, `OrderId: ${id}`);
     } catch (error) {
-      console.log(error)
-      errorToast(`Couldn't Approve order`, error)
+      console.log(error);
+      errorToast(`Couldn't Approve order`, error);
     }
-    
   };
 
   useEffect(() => {
@@ -143,7 +142,7 @@ const LeadsOrderApproval = () => {
         if (fieldName == "AREA") {
           const dropdown = form.getDropdown(fieldName);
           if (!text[i].text || text[i].text == "") {
-            continue
+            continue;
           } else {
             dropdown.select(text[i].text);
           }
@@ -187,18 +186,6 @@ const LeadsOrderApproval = () => {
 
   return (
     <div ref={containerRef}>
-      {contextHolder}
-      <div
-        className={`grid grid-cols-4 z-10 justify-items-center font-medium h-10 sticky top-0 bg-white items-center ${
-          scrollPosition > 88 && "shadow-md"
-        } shadow-none transition-all ease-in-out duration-500`}
-      >
-        <h4>Name</h4>
-        {/* <h4>Labels</h4> */}
-        <h4>Date</h4>
-        <h4>Status</h4>
-        <h4>Actions</h4>
-      </div>
       {order.length > 0
         ? order.map((o, index) => (
             <div

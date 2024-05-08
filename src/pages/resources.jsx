@@ -3,12 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faFilePdf } from "@fortawesome/free-solid-svg-icons";
 const Resources = () => {
   return (
-    <Layout title={"Gena | Resources"}>
+    <Layout displayTitle={'Resources'} title={"Gena | Resources"}>
       <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
-        <div className="flex justify-between">
-          <h1 className="text-3xl font-medium font-genaPrimary">Resources</h1>
-        </div>
-        <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
         <h1 className="text-2xl font-semibold">How Do I...</h1>
         <div
           className={`grid grid-cols-3 font-medium text-lg h-14 items-center transition-all ease-in-out duration-100 mt-10`}

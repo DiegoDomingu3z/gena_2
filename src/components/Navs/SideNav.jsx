@@ -3,15 +3,14 @@ import { useRouter } from "next/router";
 import React from "react";
 import Image from "next/image";
 import { Avatar, Space } from "antd";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAccount } from "../../../store/Account/thunks";
-import { getMyOrders } from "../../../store/Orders/thunks";
-import { getTickets } from "../../../store/Tickets/Thunks";
+import { useSelector } from "react-redux";
 import { formatImgString } from "../../../func/resuableFunctions";
 export const NavButtons = ({ ticketModal, setTicketModal }) => {
   const user = useSelector((state) => state.Account);
   const userOrders = useSelector((state) => state.Orders.myOrders.orders);
+  const teamMemberOrders = useSelector(
+    (state) => state.Orders.leadDepartmentOrders
+  );
   const devTickets = useSelector((state) => state.Tickets.tickets);
 
   const router = useRouter();
@@ -133,7 +132,10 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
             </svg>
             <span className="text-sm">Current Orders</span>
             <span className="badge border-none bg-accent text-white absolute right-5">
-              {userOrders?.length}
+              {user.account.privileges === "team-lead" ||
+              user.account.privileges === "group-lead"
+                ? `${userOrders?.length + teamMemberOrders?.length}`
+                : `${userOrders?.length}`}
             </span>
           </button>
         </Link>
@@ -544,7 +546,11 @@ export const NavButtons = ({ ticketModal, setTicketModal }) => {
             {user.accessToken ? (
               <Space>
                 <Avatar
-                  src={`${formatImgString(user.account.firstName, user.account.lastName, "jpg")}`}
+                  src={`${formatImgString(
+                    user.account.firstName,
+                    user.account.lastName,
+                    "jpg"
+                  )}`}
                 />
                 <span>
                   {user.account.firstName} {user.account.lastName}

@@ -56,6 +56,7 @@ body {
   @apply border-none;
   @apply rounded-md;
 }
+
 .input {
   @apply rounded-md;
 }
@@ -69,3 +70,15 @@ body {
     margin-left: 120px;
   }
 }
+
+/* BEGIN Antd style overrides */
+
+button.ant-btn.css-dev-only-do-not-override-usln0u.ant-btn-primary.ant-btn-sm {
+  background: #1677ff;
+}
+
+.ant-popover.css-dev-only-do-not-override-usln0u.css-dev-only-do-not-override-usln0u.ant-popover-placement-top {
+  max-width: 300px;
+}
+
+/* END Antd style overrides */

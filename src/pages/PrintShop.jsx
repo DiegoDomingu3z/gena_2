@@ -30,7 +30,7 @@ const PrintShop = () => {
         };
     }, [])
     return (
-        <Layout>
+        <Layout displayTitle={"Print Shop"} title={"Gena | Print Shop"}>
             <PrintOrders />
         </Layout>
     )

@@ -67,12 +67,14 @@ const CartCanvasDrawer = ({
     }, 500);
   };
 
+  const noteCharacterIndicator = orderInput.orderNote?.length ?? 0;
+
   return (
     <div
       className={
         toggleCartCanvas
-          ? "pt-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5 overflow-hidden"
-          : "pt-6 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
+          ? "py-6 top-0 right-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col gap-5 overflow-hidden"
+          : "py-6 top-0 w-96 bg-white drop-shadow-2xl fixed h-full z-40 ease-in-out duration-500 flex flex-col -right-full gap-20 overflow-hidden"
       }
     >
       <div className="px-5 mb-5">
@@ -90,7 +92,7 @@ const CartCanvasDrawer = ({
         render={render}
         setInvalidLabel={setInvalidLabel}
       />
-      <div className="w-full flex flex-col items-center px-5">
+      <div className="w-full flex flex-col items-center px-5 mt-auto">
         <div className="mb-1 text-center rounded-md w-full">
           <label className="label label-text">Order Details</label>
           <input
@@ -104,17 +106,29 @@ const CartCanvasDrawer = ({
             value={orderInput.orderName}
           ></input>
         </div>
-        <div className="mb-1 text-center rounded-md w-full">
+        <div className="mb-1 text-center rounded-md w-full relative">
           <textarea
             id="noteInput"
             onChange={handleInput}
             value={orderInput.orderNote}
-            className="textarea textarea-bordered rounded-md max-h-32 min-h-[6rem] font-light w-full"
+            className="textarea textarea-bordered rounded-md max-h-[8rem] min-h-[8rem] font-light w-full"
             placeholder="Notes..."
             name="orderNote"
+            maxLength={80}
             cols="40"
             rows="6"
           ></textarea>
+          <span
+            className={`absolute bottom-2 right-4 text-xs ${
+              noteCharacterIndicator === 80
+                ? "text-error"
+                : noteCharacterIndicator >= 50 && noteCharacterIndicator <= 80
+                ? "text-orange-400"
+                : "text-black"
+            }`}
+          >
+            {noteCharacterIndicator}/80
+          </span>
         </div>
         <div className="w-full">
           <button
@@ -128,7 +142,7 @@ const CartCanvasDrawer = ({
           >
             {invalidLabel != true
               ? "Submit Order"
-              : "Will not Submit Until Order is Fixed"}
+              : "Will not submit until order is fixed"}
           </button>
         </div>
       </div>
@@ -271,24 +285,23 @@ const CartCanvasLabelCard = ({
       );
     } else {
       return (
-        <div className="text-center">
-          <b>
-            <img
-              className="m-auto"
-              height="300px"
-              width="150px"
-              src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg"
-            />
-            The input exceeds the labels character count and will not print.
-            Please delete this label from your order.
-          </b>
+        <div className="text-sm w-full">
+          <Image
+            className="m-auto"
+            height={120}
+            width={100}
+            src="https://img.freepik.com/premium-vector/hand-sign-icon-no-entry-stop-symbol-give-me-five-graphic-element-white-background-vector_549897-1642.jpg"
+            alt="Label broke order"
+          />
+          The input exceeds the labels character count and will not print.
+          Please delete this label from your order.
         </div>
       );
     }
   };
 
   return (
-    <div className="overflow-y-auto	h-3/5 border-b-2 px-5 flex flex-col gap-3">
+    <div className="overflow-y-auto grow border-b-2 px-5 flex flex-col gap-3">
       {basketLabels.length > 0 ? (
         basketLabels.map((label, i) => (
           <div className="flex gap-3 border rounded-md shadow-md p-2" key={i}>

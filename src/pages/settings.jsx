@@ -5,7 +5,7 @@ import Main from "~/components/Settings/main";
 
 const Jira = () => {
   return (
-      <Layout title={"Gena | Jira"}>
+      <Layout displayTitle={'Gena Settings'} title={"Gena | Settings"}>
         <Main />
       </Layout>
   );

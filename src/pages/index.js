@@ -6,9 +6,9 @@ import { store } from "../../store";
 export default function Home() {
   return (
     <Provider store={store}>
-      <Layout title={"Gena | Login"}>
+      <main className="min-h-screen flex justify-center items-center">
         <Login />
-      </Layout>
+      </main>
     </Provider>
   );
 }
