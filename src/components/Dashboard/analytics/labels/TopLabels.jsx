@@ -1,73 +1,121 @@
 import { SettingOutlined } from "@ant-design/icons"
-import { Button, Card, Col, Row, Avatar, List, Space  } from "antd"
+import { Button, Card, Col, Row, Avatar, List, Space, Tooltip, Dropdown, Tag, Statistic, Breadcrumb  } from "antd"
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import React from 'react';
-import { getTopLabels } from "./DataFetchers"
+import { DROPDOWNS, getTopLabels } from "./DataFetchers"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import CountUp from 'react-countup';
 
 const TopLabels = () => {
     const [topLabels, setTopLabels] = useState([])
-    // useEffect(async() => {
-    //     const fetchData = async () => {
-    //         const data = await getTopLabels() 
-    //         setTopLabels(data)
-    //     }
-    //     await fetchData()
-    // }, [])
+    const formatter = (value) => <CountUp end={value} separator="," />;
+    const [filterLabel, setFilterLabel] = useState(DROPDOWNS[0].label)
+    useEffect(() => {
+      const fetchData = async () => {
+          const data = await getTopLabels(15);
+          setTopLabels(data);
+          console.log(data);
+      };
+  
+      fetchData();
+  
+  }, []);
 
-    const data = Array.from({
-        length: 23,
-      }).map((_, i) => ({
-        href: 'https://ant.design',
-        title: `ant design part ${i}`,
-        avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${i}`,
-        description:
-          'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-        content:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      }));
+  const filterDropdown = useCallback(async({key}) => {
+      setFilterLabel(DROPDOWNS[key - 1].label)
+  }, [])
 
 
-      const IconText = ({ icon, text }) => (
-        <Space>
-          {React.createElement(icon)}
-          {text}
-        </Space>
-      );
     return(
         <Card
         className=""
         title={
         <div className="flex items-center justify-between">
-            <div>Top Labels Ordered</div>
-            <div><SettingOutlined />
+            <div className="flex items-center justify-between w-full"><div>Top Labels</div> <Tag color="blue">{filterLabel}</Tag></div>
+            <div>
+            <Dropdown menu={{items: DROPDOWNS, onClick: filterDropdown, selectable: true, defaultSelectedKeys:[DROPDOWNS[0]]}} trigger={['click']}>
+
+<Button type='text' className='flex items-center' >
+<SettingOutlined size={15}/>
+</Button>
+</Dropdown>
             </div>
             </div>}>
-            <List dataSource={data} itemLayout="vertical" pagination={{onChange: (page) => {
-                console.log(page)
-            },
-            pageSize: 5}}
-            renderItem={(item) => (
+            <List dataSource={topLabels} itemLayout="vertical" pagination={{
+                onChange: (page) => {
+                  console.log(page)
+                },
+                pageSize: 3
+            }}
+            renderItem={(item, index) => (
                 <List.Item
-                  key={item.title}
+                  key={index}
                   actions={[
-                    <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
-                    <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                    <div>
+                      <Space className="flex items-center">
+                      <Tooltip title={"Total Printed"}>
+                    
+                 <Tag color="blue" className="flex items-center gap-3 cursor-pointer transition-all ease-in-out hover:scale-125">
+                 <svg
+              className="w-4"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                ></g>
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
+                  stroke="#1e1e1f"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  ></path>{" "}
+              </g>
+            </svg>
+                  {formatter(item.orderedNum)}</Tag>
+                  </Tooltip>
+                  <Tooltip title="Document Number" >
+                  <Tag color="warning" className="cursor-pointer transition-all ease-in-out hover:scale-125">
+                  {item.docNum}
+                  </Tag>
+                  </Tooltip>
+                  { item.isSerial ?
+                    <Tooltip title={"Label Type"} className="cursor-pointer transition-all ease-in-out hover:scale-125">
+                    <Tag color="success">Serial</Tag>
+                  </Tooltip> : null
+                  }
+                  </Space>
+                    </div>
                   ]}
                   extra={
-                    <img
-                      width={50}
-                      alt="logo"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                    />
+                   <iframe
+                   className="rounded pointer-events-none"
+            src={ `/api/getPdfs?categoryName=${item.categoryName}&subCategoryName=${item.subCategoryName}&fileName=${item.fileName}`}
+            width="100px"
+            height="100px"
+            frameBorder="0"></iframe>
                   }
                 >
                   <List.Item.Meta
-                    title={<span>Extra Stock Card</span>}
+                    title={
+                      <div>
+                    <div>{item.name}</div>
+                     <div className="text-sm mt-1 text-gray-500">
+                      <Tooltip title="Category" className="cursor-pointer">{item.categoryName}</Tooltip> &gt; <Tooltip className="cursor-pointer" title="Sub Category">{item.subCategoryName}</Tooltip></div>
+                      </div>
+                  }
                     description={<></>}
                   />
-                  {item.content}
+                  
                 </List.Item>
               )}/>
 

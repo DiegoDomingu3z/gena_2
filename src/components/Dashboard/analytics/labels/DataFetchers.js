@@ -5,3 +5,15 @@ export const getTopLabels = async(count) => {
     .catch((err) => console.log(err))
     return res
 }
+
+
+export const DROPDOWNS = [
+    {
+        key: 1,
+        label: "Kanban"
+    },
+    {
+        key: 2,
+        label: "Singular" 
+    },
+]
