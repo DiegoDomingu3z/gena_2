@@ -19,3 +19,10 @@ export const printShopActivity = async () => {
     .catch((err) => console.log(err))
     return res
 }
+
+
+export const fetchCompletedOrderCount = async () => {
+  const res = await api.get('/api/analytics/orders-completed').then((res) => res.data)
+  .catch((err) => console.log(err))
+  return res
+}

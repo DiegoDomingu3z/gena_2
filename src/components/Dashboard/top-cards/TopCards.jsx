@@ -3,9 +3,9 @@ import { ArrowDownOutlined, ArrowUpOutlined, CheckCircleOutlined, MailOutlined, 
 import { useCallback, useEffect, useState } from 'react';
 import { items, OrdersByDateArr} from './GlobalStatVariables';
 import { api } from '../../../../axiosService';
-import { fetchOrderCount, orderDateFilter, printShopActivity } from './DateFetchers';
+import { fetchCompletedOrderCount, fetchOrderCount, orderDateFilter, printShopActivity } from './DateFetchers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { faDoorClosed, faDoorOpen, faPrint } from '@fortawesome/free-solid-svg-icons';
 const { Meta } = Card;
 const TopCards = () => {
     const [orderStat, setOrderStat] = useState(items[0])
@@ -13,6 +13,7 @@ const TopCards = () => {
     const [orderCount, setOrderCount] = useState(0)
     const [isPrintShopActive, setIsPrintShopActive] = useState(false)
     const [ordersByDate, setOrdersByDate] = useState(null)
+    const [completedOrderCount, setCompletedOrderCount] = useState(0)
     const [icon, setIcon] = useState({jsx: <SyncOutlined spin />, color: '#3f8600'})
 
     const setFilterOrderStatus = useCallback(async ({key}) => {
@@ -60,8 +61,10 @@ const TopCards = () => {
           await fetchOrderCount("waiting for approval", setOrderCount);
           const data = await orderDateFilter("pastWeek");
           const activity = await printShopActivity()
+          const count = await fetchCompletedOrderCount()
           setIsPrintShopActive(activity)
           setOrdersByDate(data);
+          setCompletedOrderCount(count.orderCount)
       };
   
       fetchData();
@@ -148,22 +151,20 @@ const TopCards = () => {
     </Col>
     
     <Col span={6}>
-      <Card bordered={false}>
+      <Card bordered={false} className='h-full'>
         <Statistic
-          title="Print Shop"
-          value={9.3}
-          precision={2}
+          title="Total Orders Completed Today"
+          value={completedOrderCount}
           valueStyle={{
-            color: '#cf1322',
+            color: '#2ebef9',
           }}
-          prefix={<ArrowDownOutlined />}
-          suffix="%"
+          prefix={<FontAwesomeIcon icon={faPrint} />}
         />
       </Card>
     </Col>
     <Col span={6}>
-      <Card bordered={false}>
-        <Statistic
+      <Card bordered={false} className='h-full'>
+        <Statistic 
           title="Print Shop"
           value={isPrintShopActive.isActive ? "Open" : "Closed"}
           valueStyle={{

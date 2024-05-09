@@ -14,7 +14,7 @@ const TopLabels = () => {
     const [filterLabel, setFilterLabel] = useState(DROPDOWNS[0].label)
     useEffect(() => {
       const fetchData = async () => {
-          const data = await getTopLabels(15);
+          const data = await getTopLabels(15, true);
           setTopLabels(data);
           console.log(data);
       };
@@ -24,7 +24,10 @@ const TopLabels = () => {
   }, []);
 
   const filterDropdown = useCallback(async({key}) => {
-      setFilterLabel(DROPDOWNS[key - 1].label)
+    const typeChecker = key == 1 ? 'true' : 'false'
+    setFilterLabel(DROPDOWNS[key - 1].label)
+    const data = await getTopLabels(15, typeChecker)
+    setTopLabels(data)
   }, [])
 
 
@@ -53,7 +56,7 @@ const TopLabels = () => {
                 <List.Item
                   key={index}
                   actions={[
-                    <div>
+                    <div key={1}>
                       <Space className="flex items-center">
                       <Tooltip title={"Total Printed"}>
                     
@@ -108,7 +111,7 @@ const TopLabels = () => {
                   <List.Item.Meta
                     title={
                       <div>
-                    <div>{item.name}</div>
+                    <div><b>{index + 1}. </b>{item.name}</div>
                      <div className="text-sm mt-1 text-gray-500">
                       <Tooltip title="Category" className="cursor-pointer">{item.categoryName}</Tooltip> &gt; <Tooltip className="cursor-pointer" title="Sub Category">{item.subCategoryName}</Tooltip></div>
                       </div>

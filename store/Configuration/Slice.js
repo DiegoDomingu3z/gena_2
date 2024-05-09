@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getConfig, getCronJobs, testEmailConnection, testJiraDomainConnection, updateConfig, updateCronJob } from "./Thunks";
+import { getConfig, getCronJobs, testEmailConnection, testJiraDomainConnection, updateConfig, updateCronJob, updateMainPrintAccount } from "./Thunks";
 
 
 export const ConfigurationSlice = createSlice({
@@ -72,6 +72,15 @@ export const ConfigurationSlice = createSlice({
             console.log(state.crons)
         })
         .addCase(updateCronJob.rejected, (state, action) => {
+            console.log("REJECTED")
+        })
+        .addCase(updateMainPrintAccount.pending, (state, action) => {
+            console.log("PENDING")
+        })
+        .addCase(updateMainPrintAccount.fulfilled, (state, action) => {
+            state.configuration = action.payload
+        })
+        .addCase(updateMainPrintAccount.rejected, (state, action) => {
             console.log("REJECTED")
         })
 

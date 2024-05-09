@@ -9,19 +9,12 @@ import TopLabels from "./analytics/labels/TopLabels"
 import TopMaterials from "./analytics/Materials/TopMaterials"
 
 const Main = () => {
-    const [showCalendar, setShowCalendar] = useState(false)
     return (
         <div className="flex flex-col pl-20 pr-20 pt-20 pb-4">
         <div className={""}>
         <div className="flex items-end">
           <div className="mr-auto">
             <h1 className="text-3xl font-medium font-genaPrimary flex">Print Shop Analytics</h1>
-          </div>
-          <div className="">
-            <Button className="transform transition-transform duration-300 hover:scale-105" onClick={() => setShowCalendar(!showCalendar)}>
-           <FontAwesomeIcon icon={faFilter} />
-            </Button>
-            <DashDatePicker showCalendar={showCalendar} setShowCalendar={setShowCalendar}/>
           </div>
         </div>
           <div className="mb-10 mt-5 border-t border-gray-300 rounded-full" />
