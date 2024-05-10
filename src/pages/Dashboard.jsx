@@ -9,12 +9,12 @@ import Layout from "~/components/layouts/Layout";
 const DashBoard = () => {
     return (
         <Layout displayTitle={"Gena Dashboard"} title={"Gena | Dashboard"}>
-            <Spin tip={<div>
+            {/* <Spin tip={<div>
                 <h1>Gathering Data...</h1>
                 <h2>This may take a couple of weeks</h2>
-            </div>} size="large" spinning={true}>
+            </div>} size="large" spinning={true}> */}
             <Main />
-            </Spin>
+            {/* </Spin> */}
         </Layout>
     )
 }
