@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const DepartmentUsers = () => {
   return (
-    <Layout title={"Gena | Deparment Users"}>
+    <Layout title={"Gena | Department Users"}>
       <DepartmentUsersComponent />
     </Layout>
   );

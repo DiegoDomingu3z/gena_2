@@ -23,11 +23,12 @@ const Login = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
-    token && router.push("/start-new-order");
+    token && router.push("/Dashboard");
   }, [user]);
 
   return (
-    <div className="h-full flex flex-col justify-center items-center gap-y-10">
+    <div className="h-full flex flex-col justify-center items-center gap-y-10
+    ">
       <Image
         src="/images/GENA-Logo.png"
         className="bg-[#233043] rounded p-2"

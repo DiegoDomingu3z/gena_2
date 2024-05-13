@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getConfig, testEmailConnection, testJiraDomainConnection, updateConfig } from "../../../store/Configuration/Thunks";
 import { SyncOutlined } from "@ant-design/icons";
 import CronJobs from "./cronJobs";
+import MainPrintShopAccount from "./PrintshopAccountForm";
 
 const customizeRequiredMark = (label, { required }) => (
     <>
@@ -328,6 +329,7 @@ const Main = () => {
                 
             </Card>
             <CronJobs />
+            <MainPrintShopAccount />
             <Card 
             title="Server logs"
             className="w-full mt-5 mb-5"

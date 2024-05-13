@@ -90,3 +90,20 @@ async ({data, token, id}) => {
     throw error;
   }
 })
+
+
+export const updateMainPrintAccount = createAsyncThunk('update/print-account',
+  async ({values, token, id}) => {
+    try {
+      const res = await api.put(`api/config/update/${id}/main-print-shop-account`, values, {
+        headers: {
+          Authorization: token
+        }
+      }).then((res) => res.data)
+      return res
+    } catch (error) {
+      console.log(error)
+      return error
+    }
+  }
+)
