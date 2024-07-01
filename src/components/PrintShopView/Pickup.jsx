@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 import { api } from "../../../axiosService";
 import { RingLoader } from "react-spinners";
 import DefectSNForm from "./defectSNForm";
+import { formatDate } from "../../../func/resuableFunctions";
 
 const { Panel } = Collapse;
 const Pickup = ({ readyForPickupOrders }) => {
@@ -35,13 +36,7 @@ const Pickup = ({ readyForPickupOrders }) => {
     dispatch(getReadyForPickUpOrders(token));
   }, []);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  };
+
 
   const sanitizePath = (path) => {
     // MIGHT HAVE TO CHANGE IN THE FUTURE

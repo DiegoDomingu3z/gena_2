@@ -12,6 +12,11 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        nav: "#959595",
+        accent: "#2ebef9",
+        darkBlue: "#233042",
+      },
       screens: {
         laptop: "1200px",
         laptoplg: "1486px",
@@ -33,7 +38,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwindcss-animated")],
   daisyui: {
     themes: ["light"],
   },

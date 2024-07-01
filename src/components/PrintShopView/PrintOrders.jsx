@@ -29,11 +29,6 @@ const PrintOrders = () => {
   return (
     <div className={"flex flex-col pl-20 pr-20 pt-20 pb-4"}>
       <div className="flex justify-between">
-        <div className="mr-auto flex">
-          <h1 className="text-3xl font-medium font-genaPrimary">
-            Print Orders
-          </h1>
-        </div>
         {multipleOrders.length > 0 ? (
           <div>
             <button className="bg-[#1baded] text-white px-4 py-1 rounded-full">
@@ -42,7 +37,6 @@ const PrintOrders = () => {
           </div>
         ) : null}
       </div>
-      <div className="mb-2 mt-5 border-t border-gray-300 rounded-full" />
       <Menu onClick={pickTab} selectedKeys={[tab]} mode="horizontal">
         <Menu.Item className="absolute" key="approved-orders">
           Approved Orders

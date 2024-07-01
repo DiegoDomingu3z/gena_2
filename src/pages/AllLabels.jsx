@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import { getLabels } from "../../store/Label/Thunks";
-import UpdateLabels from "~/components/UpdateLabels";
+import UpdateLabels from "~/components/Labels/UpdateLabels";
 import SerialUpdateForm from "~/components/PrintShopView/SerialUpdateForm";
 
 const AllLabels = () => {

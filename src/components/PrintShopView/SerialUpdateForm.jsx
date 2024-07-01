@@ -10,7 +10,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
   const dispatch = useDispatch();
   const account = useSelector((state) => state.Account.account);
   const labels = useSelector((state) => state.Label.activeLabels);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([new File([""], "blank.pdf", { type: "application/pdf" })]);
   const [labelName, setLabelName] = useState({
     fileName: "",
     bulkFileName: "",
@@ -23,7 +23,7 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
   });
 
   useEffect(() => {
-    setFiles([]);
+    setFiles([new File([""], "blank.pdf", { type: "application/pdf" })]);
     const labelData = labels.find((label) => label._id === serialModal.labelId);
     const data = serialModal.isOpen
       ? {
@@ -62,9 +62,17 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
 
   const handleFileInputChange = (e) => {
     const fieldName = e.target.name;
-    setFiles((prev) => {
-      return [...prev, e.target.files[0]];
-    });
+    const newFile = e.target.files[0]
+    if (fieldName === 'bulkFileName') {
+      setFiles((prev) => {
+        return [prev[0], newFile];
+      });
+    }
+    if (fieldName === 'fileName') {
+      setFiles((prev) => {
+        return [newFile, prev[1]];
+      });
+    }
 
     setActiveLabel((prev) => {
       return {
@@ -92,6 +100,9 @@ const SerialUpdateForm = ({ serialModal, setSerialModal }) => {
 
   const pushFiles = () => {
     if (files.length > 0) {
+      if (files.length === 1 && files[0].name === 'blank.pdf'){
+        return null
+      }
       return new Promise((resolve) => {
         const formData = new FormData();
         for (let i = 0; i < files.length; i++) {

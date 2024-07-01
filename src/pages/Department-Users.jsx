@@ -1,10 +1,10 @@
 import DepartmentUsersComponent from "~/components/Department/DepartmentUsers";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import { useState } from "react";
 
 const DepartmentUsers = () => {
   return (
-    <Layout title={"Gena | Deparment Users"}>
+    <Layout title={"Gena | Department Users"}>
       <DepartmentUsersComponent />
     </Layout>
   );

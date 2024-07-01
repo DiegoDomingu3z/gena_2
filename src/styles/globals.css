@@ -18,14 +18,12 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 3px grey;
-  border-radius: 6px;
+  box-shadow: inset 0 0 2px grey;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #233043;
-  border-radius: 6px;
 }
 
 /* Handle on hover */
@@ -53,6 +51,16 @@ body {
   z-index: 60px;
 }
 
+.btn {
+  @apply text-white;
+  @apply border-none;
+  @apply rounded-md;
+}
+
+.input {
+  @apply rounded-md;
+}
+
 @media screen and (min-width: 1200px) {
   .top-margin {
     margin-left: 120px;
@@ -62,3 +70,23 @@ body {
     margin-left: 120px;
   }
 }
+
+/* BEGIN Antd style overrides */
+
+button.ant-btn.css-dev-only-do-not-override-usln0u.ant-btn-primary.ant-btn-sm {
+  background: #1677ff;
+}
+
+.ant-popover.css-dev-only-do-not-override-usln0u.css-dev-only-do-not-override-usln0u.ant-popover-placement-top {
+  max-width: 300px;
+}
+
+.RangePicker {
+  visibility: hidden;
+  height: 0;
+  padding: 0;
+  width: 0;
+  position: absolute;
+}
+
+/* END Antd style overrides */

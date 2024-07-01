@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LoginProvider } from "~/Contexts/LoginContext";
-import Layout from "~/components/Layout";
+import Layout from "~/components/layouts/Layout";
 import NewCategory from "~/components/PrintShopView/NewCategory";
 import { getCategories } from "../../store/Category/Thunk";
 const NewCategoryPage = () => {
@@ -13,14 +12,12 @@ const NewCategoryPage = () => {
   }, [triggerFetch]);
 
   return (
-    <LoginProvider>
-      <Layout title={"Gena | New Category"}>
-        <NewCategory
-          triggerFetch={triggerFetch}
-          setTriggerFetch={setTriggerFetch}
-        />
-      </Layout>
-    </LoginProvider>
+    <Layout displayTitle={"Label Categories"} title={"Gena | Categories"}>
+      <NewCategory
+        triggerFetch={triggerFetch}
+        setTriggerFetch={setTriggerFetch}
+      />
+    </Layout>
   );
 };
 
